@@ -41,7 +41,11 @@ public class SwerveDrive {
   }
 
   public void desiredStateDrive(SwerveModuleState state_fl, SwerveModuleState state_fr, SwerveModuleState state_bl, SwerveModuleState state_br) {
-    // TODO: Implement by using PID controllers in swerve modules
+    state_fl = SwerveModuleState.optimize(state_fl, Rotation2d.fromDegrees(modules[0].getAngle()));
+    state_fr = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
+    state_bl = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
+    state_br = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
+    // TODO: Implement somehow
   }
 
   /**
