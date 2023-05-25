@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.util.SwerveModule.SwerveModuleIDs;
+import frc.robot.util.SwerveModule.SwerveModuleConstants;
+import edu.wpi.first.math.geometry.Translation2d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -41,11 +42,11 @@ public final class Constants {
       kIntakeTiltLeftID = 8;
 
     // WIP: Swerve
-    public static final SwerveModuleIDs
-      kSwerve_fl = new SwerveModuleIDs(31, 32, 33),
-      kSwerve_fr = new SwerveModuleIDs(41, 42, 43),
-      kSwerve_bl = new SwerveModuleIDs(51, 52, 53),
-      kSwerve_br = new SwerveModuleIDs(61, 62, 63);
+    public static final SwerveModuleConstants
+      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(1, 1)),
+      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(1, -1)),
+      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-1, 1)),
+      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-1, -1));
   }
 
   public static class DrivetrainConstants {

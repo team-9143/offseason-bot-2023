@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.MotorSafety;
 import frc.robot.Constants.PhysConstants;
+import edu.wpi.first.math.geometry.Translation2d;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,20 +13,23 @@ import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 /** Controls a single swerve module. Protected by {@link MotorSafety}. */
 public class SwerveModule extends MotorSafety {
-  public static class SwerveModuleIDs {
+  public static class SwerveModuleConstants {
     public final byte drive_ID;
     public final byte angle_ID;
     public final byte cancoder_ID;
+    public final Translation2d location;
 
     /**
      * @param drive_ID driving motor ID (brushless NEO)
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
+     * @param location location of the wheel relative to the physical center of the robot (UNIT: meters)
      */
-    public SwerveModuleIDs(int drive_ID, int angle_ID, int cancoder_ID) {
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, Translation2d location) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
+      this.location = location;
     }
   }
 
@@ -34,7 +38,7 @@ public class SwerveModule extends MotorSafety {
   private final CANCoder cancoder;
   private final RelativeEncoder drive_encoder;
 
-  protected SwerveModule(SwerveModuleIDs constants) {
+  protected SwerveModule(SwerveModuleConstants constants) {
     drive_motor = new CANSparkMax(constants.drive_ID, CANSparkMax.MotorType.kBrushless);
     angle_motor = new CANSparkMax(constants.angle_ID, CANSparkMax.MotorType.kBrushless);
     cancoder = new CANCoder(constants.cancoder_ID);
