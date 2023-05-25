@@ -70,12 +70,12 @@ public class SwerveModule extends MotorSafety {
     return cancoder.getPosition();
   }
 
-  /** @return the distance traveled by the module (UNIT: inches) */
+  /** @return the distance traveled by the module (UNIT: meters) */
   public double getDistance() {
     return drive_encoder.getPosition();
   }
 
-  /** @return the velocity of the module (UNIT: inches/s) */
+  /** @return the velocity of the module (UNIT: meters/s) */
   public double getVelocity() {
     return drive_encoder.getVelocity();
   }
@@ -85,6 +85,7 @@ public class SwerveModule extends MotorSafety {
     drive_motor.stopMotor();
     angle_motor.stopMotor();
     feed();
+    // TODO: implement PID disabling on stop
   }
 
   @Override
