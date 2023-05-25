@@ -1,13 +1,21 @@
 package frc.robot.util;
 
+import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Rotation2d;
 
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
 /** Controls a set of four {@link SwerveModule SwerveModules}. */
 public class SwerveDrive {
   public final SwerveModule[] modules;
+  private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
@@ -17,6 +25,12 @@ public class SwerveDrive {
       new SwerveModule(consts_bl),
       new SwerveModule(consts_br)
     };
+
+    controller = new HolonomicDriveController(
+      new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD),
+      new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD),
+      new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel))
+    );
 
     kinematics = new SwerveDriveKinematics(
       consts_fl.location,

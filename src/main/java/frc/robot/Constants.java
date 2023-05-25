@@ -25,7 +25,7 @@ public final class Constants {
 
     // WIP: Swerve
     public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
-    public static final double kSwerveWheelCircumference = 10; // UNIT: meters
+    public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
 
   public static class DeviceConstants {
@@ -75,6 +75,23 @@ public final class Constants {
     // Charge station balancing
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceSpeed = 0.08;
+
+    // WIP: Swerve
+    public static final double kModuleTurnMaxVel = 5676 * 2 * Math.PI * 0.4; // 40% of free speed (UNIT: radians/s)
+    public static final double kModuleTurnMaxAccel = kModuleTurnMaxVel * 3; // UNIT: radians/s/s
+
+    public static final double
+      kXerrP = 0.7,
+      kXerrI = 0.4,
+      kXerrD = 0.5;
+    public static final double
+      kYerrP = 0.7,
+      kYerrI = 0.4,
+      kYerrD = 0.5;
+    public static final double
+      kTerrP = 0.637, // 90 degrees (maximum optimized rotation) is full power
+      kTerrI = 0.2,
+      kTerrD = 0.3;
   }
 
   public static class IntakeConstants {
