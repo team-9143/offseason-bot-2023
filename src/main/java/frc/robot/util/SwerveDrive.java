@@ -18,4 +18,8 @@ public class SwerveDrive {
   // Distance-based driving
 
   // Turning somehow??? how does one turn while moving??????? holonomic drive controller ftw????
+
+  public void stop() {
+    for (SwerveModule module : modules) {module.stopMotor();}
+  }
 }
