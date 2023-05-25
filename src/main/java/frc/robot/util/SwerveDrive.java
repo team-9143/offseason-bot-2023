@@ -1,8 +1,11 @@
 package frc.robot.util;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
-/** Controls a full set of {@link SwerveModule SwerveModules}. */
+/** Controls a set of four {@link SwerveModule SwerveModules}. */
 public class SwerveDrive {
   public final SwerveModule[] modules;
   private final SwerveDriveKinematics kinematics;
@@ -23,7 +26,21 @@ public class SwerveDrive {
     );
   }
 
-  // Speed-based driving
+  public void desiredStateDrive(SwerveModuleState state_fl, SwerveModuleState state_fr, SwerveModuleState state_bl, SwerveModuleState state_br) {
+    // TODO: Implement by using PID controllers in swerve modules
+  }
+
+  /**
+   * Velocity-based driving.
+   *
+   * @param forward forward speed (UNIT: meters/s)
+   * @param left left speed (UNIT: meters/s)
+   * @param ccw counter-clockwise speed (UNIT: degrees/s)
+   */
+  public void velocityDrive(double forward, double left, double ccw) {
+    var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, Math.toRadians(ccw)));
+    desiredStateDrive(states[0], states[1], states[2], states[3]);
+  }
 
   // Distance-based driving
 
