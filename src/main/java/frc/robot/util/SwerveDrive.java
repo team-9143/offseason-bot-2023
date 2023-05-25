@@ -4,7 +4,7 @@ package frc.robot.util;
 public class SwerveDrive {
   public final SwerveModule[] modules;
 
-  public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
+  public SwerveDrive(SwerveModule.SwerveModuleIDs consts_fl, SwerveModule.SwerveModuleIDs consts_fr, SwerveModule.SwerveModuleIDs consts_bl, SwerveModule.SwerveModuleIDs consts_br) {
     modules = new SwerveModule[] {
       new SwerveModule(consts_fl),
       new SwerveModule(consts_fr),

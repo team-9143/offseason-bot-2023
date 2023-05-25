@@ -12,7 +12,7 @@ import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 /** Controls a single swerve module. Protected by {@link MotorSafety}. */
 public class SwerveModule extends MotorSafety {
-  public static class SwerveModuleConstants {
+  public static class SwerveModuleIDs {
     public final byte drive_ID;
     public final byte angle_ID;
     public final byte cancoder_ID;
@@ -22,7 +22,7 @@ public class SwerveModule extends MotorSafety {
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
      */
-    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID) {
+    public SwerveModuleIDs(int drive_ID, int angle_ID, int cancoder_ID) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
@@ -34,7 +34,7 @@ public class SwerveModule extends MotorSafety {
   private final CANCoder cancoder;
   private final RelativeEncoder drive_encoder;
 
-  protected SwerveModule(SwerveModuleConstants constants) {
+  protected SwerveModule(SwerveModuleIDs constants) {
     drive_motor = new CANSparkMax(constants.drive_ID, CANSparkMax.MotorType.kBrushless);
     angle_motor = new CANSparkMax(constants.angle_ID, CANSparkMax.MotorType.kBrushless);
     cancoder = new CANCoder(constants.cancoder_ID);
