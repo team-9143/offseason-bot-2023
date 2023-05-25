@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.util.SwerveModule.SwerveModuleConstants;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -18,10 +20,11 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
+    public static final double kWheelCircumference = 6 * Math.PI; // UNIT: inches
+
+    // WIP: Swerve
     public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
     public static final double kSwerveWheelCircumference = 10; // UNIT: meters
-
-    public static final double kWheelCircumference = 6 * Math.PI; // UNIT: inches
   }
 
   public static class DeviceConstants {
@@ -36,6 +39,13 @@ public final class Constants {
       kIntakeWheelsID = 6,
       kIntakeTiltRightID = 7,
       kIntakeTiltLeftID = 8;
+
+    // WIP: Swerve
+    public static final SwerveModuleConstants
+      kSwerve_fl = new SwerveModuleConstants(31, 32, 33),
+      kSwerve_fr = new SwerveModuleConstants(41, 42, 43),
+      kSwerve_bl = new SwerveModuleConstants(51, 52, 53),
+      kSwerve_br = new SwerveModuleConstants(61, 62, 63);
   }
 
   public static class DrivetrainConstants {

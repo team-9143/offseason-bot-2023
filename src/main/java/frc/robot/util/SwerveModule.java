@@ -22,10 +22,10 @@ public class SwerveModule extends MotorSafety {
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
      */
-    public SwerveModuleConstants(byte drive_ID, byte angle_ID, byte cancoder_ID) {
-      this.drive_ID = drive_ID;
-      this.angle_ID = angle_ID;
-      this.cancoder_ID = cancoder_ID;
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID) {
+      this.drive_ID = (byte) drive_ID;
+      this.angle_ID = (byte) angle_ID;
+      this.cancoder_ID = (byte) cancoder_ID;
     }
   }
 
