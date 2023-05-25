@@ -5,11 +5,12 @@ import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
@@ -20,7 +21,7 @@ public class SwerveDrive {
   public final SwerveModule[] modules;
   private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
-  private final SwerveDriveOdometry odometry;
+  private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
     modules = new SwerveModule[] {
@@ -43,12 +44,14 @@ public class SwerveDrive {
       consts_br.location
     );
 
-    odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(OI.pigeon.getYaw()), new SwerveModulePosition[] {
-      new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
-      new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
-      new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
-      new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
-    });
+    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(OI.pigeon.getYaw()),
+      new SwerveModulePosition[] {
+        new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
+        new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
+        new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
+        new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
+      },
+    new Pose2d());
   }
 
   /** Updates the drivetrain with current desired states. */
@@ -69,7 +72,7 @@ public class SwerveDrive {
     state_fr = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
     state_bl = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
     state_br = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
-    // TODO: Implement somehow
+    // TODO: Set desired states in swerve modules and optimize there, then run with PID controllers on frc.robot.util.SwerveDrive#update
   }
 
   /**
