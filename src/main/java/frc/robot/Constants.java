@@ -18,7 +18,7 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
-    public static final double kSwerveWheelGearbox = 1;
+    public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
     public static final double kSwerveWheelCircumference = 10; // UNIT: meters
 
     public static final double kWheelCircumference = 6 * Math.PI; // UNIT: inches
