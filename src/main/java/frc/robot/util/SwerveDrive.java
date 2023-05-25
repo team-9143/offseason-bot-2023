@@ -1,17 +1,16 @@
 package frc.robot.util;
 
+/** Controls a full set of {@link SwerveModule SwerveModules}. */
 public class SwerveDrive {
-  public final SwerveModule
-    module_fl,
-    module_fr,
-    module_bl,
-    module_br;
+  public final SwerveModule[] modules;
 
-  public SwerveDrive(SwerveModule.SwerveModuleConstants module_fl, SwerveModule.SwerveModuleConstants module_fr, SwerveModule.SwerveModuleConstants module_bl, SwerveModule.SwerveModuleConstants module_br) {
-    this.module_fl = new SwerveModule(module_fl);
-    this.module_fr = new SwerveModule(module_fr);
-    this.module_bl = new SwerveModule(module_bl);
-    this.module_br = new SwerveModule(module_br);
+  public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
+    modules = new SwerveModule[] {
+      new SwerveModule(consts_fl),
+      new SwerveModule(consts_fr),
+      new SwerveModule(consts_bl),
+      new SwerveModule(consts_br)
+    };
   }
 
   // Speed-based driving
