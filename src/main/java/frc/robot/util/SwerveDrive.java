@@ -44,6 +44,9 @@ public class SwerveDrive {
   }
 
   private static final HolonomicDriveController m_controller = new HolonomicDriveController(x_controller, y_controller, theta_controller);
+  static {
+    m_controller.setTolerance(new Pose2d(DrivetrainConstants.kLinearPosTolerance, DrivetrainConstants.kLinearPosTolerance, Rotation2d.fromDegrees(DrivetrainConstants.kAngularPosTolerance)));
+  }
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
     modules = new SwerveModule[] {
@@ -148,6 +151,9 @@ public class SwerveDrive {
 
   /** @return the robot's current location */
   public Pose2d getPose() {return odometry.getEstimatedPosition();}
+
+  /** @return {@code true} if location control is on and robot is near desired location */
+  public boolean atReference() {return locationControl && m_controller.atReference();}
 
   /** @return the drivetrain's desired velocities */
   public ChassisSpeeds getDesiredSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}

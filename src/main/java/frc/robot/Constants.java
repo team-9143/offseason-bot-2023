@@ -95,6 +95,10 @@ public final class Constants {
       kTerrP = 0.637, // 90 degrees (maximum optimized rotation) is full power
       kTerrI = 0.2,
       kTerrD = 0.3;
+
+    // Drivetrain location control tolerance
+    public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
+    public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
   }
 
   public static class IntakeConstants {
