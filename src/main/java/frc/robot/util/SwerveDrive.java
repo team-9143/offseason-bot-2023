@@ -113,10 +113,10 @@ public class SwerveDrive {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: degrees/s)
+   * @param ccw counter-clockwise speed (UNIT: radians/s)
    */
   public void setDesiredVelocity(double forward, double left, double ccw) {
-    var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, Math.toRadians(ccw)));
+    var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, ccw));
     setDesiredStates(states[0], states[1], states[2], states[3]);
   }
 
