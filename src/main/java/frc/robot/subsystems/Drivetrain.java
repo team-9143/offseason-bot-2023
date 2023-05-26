@@ -2,22 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
-import frc.robot.Constants.PhysConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.DeviceConstants;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import java.lang.Runnable;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-
-import frc.robot.util.RobotDrive;
-import frc.robot.util.RobotDrive.WheelSpeeds;
-
-import frc.robot.shuffleboard.ShuffleboardManager;
-import frc.robot.shuffleboard.SimulationTab;
 
 import frc.robot.util.SwerveDrive;
 
@@ -26,57 +18,13 @@ public class Drivetrain extends SubsystemBase {
   private static Drivetrain m_instance;
 
   /** @return the singleton instance */
-  @SuppressWarnings("unused")
   public static synchronized Drivetrain getInstance() {
     if (m_instance == null) {
-      if (!(ShuffleboardManager.m_simulation && ShuffleboardManager.m_simulatedDrive)) {
-        m_instance = new Drivetrain();
-      } else {
-        m_instance = new Drivetrain() {
-          @Override
-          public double getPosition() {
-            if (SimulationTab.drivetrainPos_sim != null) {
-              return SimulationTab.drivetrainPos_sim.getDouble(0);
-            }
-            return 0;
-          }
-
-          @Override
-          public void resetEncoders() {
-            if (SimulationTab.drivetrainPos_sim != null) {
-              SimulationTab.drivetrainPos_sim.setDouble(0);
-            }
-          }
-        };
-      }
+      m_instance = new Drivetrain();
     }
     return m_instance;
   }
 
-  // Initialize motors, encoders, and differential drive
-  private static final RelativeEncoder l_encoder;
-  private static final RelativeEncoder r_encoder;
-  private static final RobotDrive m_drive;
-
-  static {
-    @SuppressWarnings("resource")
-    final CANSparkMax
-      fl_motor = new CANSparkMax(DeviceConstants.kFrontLeftID, MotorType.kBrushless),
-      bl_motor = new CANSparkMax(DeviceConstants.kBackLeftID, MotorType.kBrushless),
-      fr_motor = new CANSparkMax(DeviceConstants.kFrontRightID, MotorType.kBrushless),
-      br_motor = new CANSparkMax(DeviceConstants.kBackRightID, MotorType.kBrushless);
-
-    l_encoder = fl_motor.getEncoder();
-    r_encoder = fr_motor.getEncoder();
-
-    // IMPORTANT: Ensures motors have consistent output
-    bl_motor.follow(fl_motor, false);
-    br_motor.follow(fr_motor, false);
-    // m_drive = new RobotDrive(fl_motor, fr_motor);
-    m_drive = null;
-  }
-
-  // WIP: Swerve
   public static final SwerveDrive m_swerve = new SwerveDrive(
     DeviceConstants.kSwerve_fl,
     DeviceConstants.kSwerve_fr,
@@ -85,71 +33,57 @@ public class Drivetrain extends SubsystemBase {
   );
 
   private Drivetrain() {
-    l_encoder.setPositionConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox); // UNIT: inches
-    l_encoder.setVelocityConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox / 60); // UNIT: inches/s
-    l_encoder.setMeasurementPeriod(20);
-    l_encoder.setPosition(0);
-
-    r_encoder.setPositionConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox); // UNIT: inches
-    r_encoder.setVelocityConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox / 60); // UNIT: inches/s
-    r_encoder.setMeasurementPeriod(20);
-    r_encoder.setPosition(0);
-
-    // Teleop drive: single joystick or turn in place with triggers
-    // setDefaultCommand(run(() -> {
-    //   double triggers = OI.driver_cntlr.getTriggers();
-    //   if (triggers == 0.0) {
-    //     // Arcade drive, input from left stick (higher priority)
-    //     m_drive.arcadeDrive(
-    //       -DrivetrainConstants.kSpeedMult * OI.driver_cntlr.getLeftY(),
-    //       DrivetrainConstants.kTurnMult * OI.driver_cntlr.getLeftX()
-    //     );
-    //   } else {
-    //     // Turn in place, input from triggers (lower priority)
-    //     turnInPlace(DrivetrainConstants.kTurnMult * Math.copySign(triggers * triggers, triggers));
-    //   }
-    // }));
-
     setDefaultCommand(run(() -> {
       m_swerve.setDesiredVelocityFieldRelative(
         -OI.driver_cntlr.getLeftY() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
-        OI.driver_cntlr.getLeftX() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
-        -OI.driver_cntlr.getTriggers() * Math.PI
+        -OI.driver_cntlr.getLeftX() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
+        -OI.driver_cntlr.getRightX() * Math.PI
       );
     }));
   }
 
   @Override
   public void periodic() {
+    // TODO: Fix lag by potentially moving update to robot periodic
+    // Subsystem periodic methods are called before command executions, so there is a 20 ms lag
     m_swerve.update();
   }
 
-  public void turnInPlace(double rotation) {
-    m_drive.drive(new WheelSpeeds(rotation, rotation));
+  /**
+   * Drive based on field relative velocities.
+   *
+   * @param forward forward speed (UNIT: meters/s)
+   * @param left left speed (UNIT: meters/s)
+   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   */
+  public void driveFieldRelativeVelocity(double forward, double left, double ccw) {
+    m_swerve.setDesiredVelocityFieldRelative(forward, left, ccw);
   }
 
-  public void moveStraight(double speed) {
-    m_drive.drive(new WheelSpeeds(speed, -speed));
+  /**
+   * Drive to a position, relative to the robot's starting position.
+   *
+   * @param forward forward distance (UNIT: meters)
+   * @param left left distance (UNIT: meters)
+   * @param ccw counter-clockwise angle (UNIT: degrees)
+   * @param FFspd desired linear velocity for feedforward calculation (UNIT: meters/s)
+   */
+  public void driveToLocation(double forward, double left, double ccw, double FFspd) {
+    m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)), FFspd);
   }
 
-  /** @return the speed of the left motors */
-  public double getLeft() {return m_drive.getLeft();}
-  /** @return the speed of the right motors */
-  public double getRight() {return m_drive.getRight();}
+  /** @return the estimated pose of the robot */
+  public Pose2d getPose() {return m_swerve.getPose();}
 
-  /** @return the average position of the drivetrain encoders */
-  public double getPosition() {
-    return (l_encoder.getPosition() - r_encoder.getPosition())/2;
-  }
+  /** @return {@code true} if location control is on and robot is near desired location */
+  public boolean atReference() {return m_swerve.atReference();}
 
-  public void resetEncoders() {
-    l_encoder.setPosition(0);
-    r_encoder.setPosition(0);
-  }
+  /** @return the drivetrain's desired velocities */
+  public ChassisSpeeds getDesiredSpeeds() {return m_swerve.getDesiredSpeeds();}
+  /** @return the drivetrain's actual velocities, as measured by encoders */
+  public ChassisSpeeds getActualSpeeds() {return m_swerve.getActualSpeeds();}
 
-  public static void stop() {
-    // m_drive.stopMotor();
-  }
+  public static void stop() {m_swerve.stop();}
 
   /** @return an auto-balance command */
   public Command getBalanceCommand() {
