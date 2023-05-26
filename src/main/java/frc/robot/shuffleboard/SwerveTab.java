@@ -37,7 +37,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       .withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
 
-    swerve_tab.add("Forward V [-15..15]", new Sendable() {
+    swerve_tab.add("Forward V [-14..14]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
@@ -48,7 +48,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "VERTICAL"));
 
-    swerve_tab.add("Strafe V [-15..15]", new Sendable() {
+    swerve_tab.add("Strafe V [-14.14]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
@@ -72,32 +72,32 @@ public class SwerveTab implements ShuffleboardTabBase {
 
 
     initModule(
-      swerve_tab.getLayout("Front left", BuiltInLayouts.kList)
-        .withPosition(0, 0)
+      swerve_tab.getLayout("Front Left", BuiltInLayouts.kList)
+        .withPosition(5, 0)
         .withSize(3, 4)
         .withProperties(Map.of("label position", "HIDDEN")),
       0
     );
 
     initModule(
-      swerve_tab.getLayout("Front right", BuiltInLayouts.kList)
-        .withPosition(3, 0)
+      swerve_tab.getLayout("Front Right", BuiltInLayouts.kList)
+        .withPosition(8, 0)
         .withSize(3, 4)
         .withProperties(Map.of("label position", "HIDDEN")),
       1
     );
 
     initModule(
-      swerve_tab.getLayout("Back left", BuiltInLayouts.kList)
-        .withPosition(6, 0)
+      swerve_tab.getLayout("Back Left", BuiltInLayouts.kList)
+        .withPosition(5, 4)
         .withSize(3, 4)
         .withProperties(Map.of("label position", "HIDDEN")),
       2
     );
 
     initModule(
-      swerve_tab.getLayout("Back right", BuiltInLayouts.kList)
-        .withPosition(9, 0)
+      swerve_tab.getLayout("Back Right", BuiltInLayouts.kList)
+        .withPosition(8, 4)
         .withSize(3, 4)
         .withProperties(Map.of("label position", "HIDDEN")),
       3

@@ -45,7 +45,7 @@ public class TestTab implements ShuffleboardTabBase {
       .withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
 
-    test_tab.add("Forward V [-15..15]", new Sendable() {
+    test_tab.add("Forward V [-14..14]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
@@ -56,7 +56,7 @@ public class TestTab implements ShuffleboardTabBase {
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "VERTICAL"));
 
-    test_tab.add("Strafe V [-15..15]", new Sendable() {
+    test_tab.add("Strafe V [-14..14]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
