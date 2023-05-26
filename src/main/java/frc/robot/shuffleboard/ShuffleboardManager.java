@@ -11,6 +11,9 @@ import frc.robot.autos.AutoSelector;
 
 /** Controls and initializes Shuffleboard tabs. */
 public class ShuffleboardManager {
+  /** If used, initializes test tabs. */
+  public static final boolean m_testing = true;
+
   /** For testing while manipulating the robot's sensors. If used, automatically simulates {@link frc.robot.OI OI.pigeon}.getYaw(), setYaw(), and getPitch() through Shuffleboard. */
   public static final boolean m_simulation = false;
 
@@ -60,14 +63,17 @@ public class ShuffleboardManager {
 
   private ShuffleboardManager() {
     m_tabs.add(new DriveTab());
-    if (m_simulation) {
-      m_tabs.add(new SimulationTab());
-    } else {
-      m_tabs.add(new TestTab());
+    if (m_testing) {
+      if (m_simulation) {
+        m_tabs.add(new SimulationTab());
+      } else {
+        m_tabs.add(new TestTab());
+        m_tabs.add(new SwerveTab());
+      }
     }
 
-    m_checklists.add(new MatchChecklist());
-    m_checklists.add(new PitChecklist());
+    // m_checklists.add(new MatchChecklist());
+    // m_checklists.add(new PitChecklist());
     m_tabs.addAll(m_checklists);
 
     m_tabs.forEach(e -> e.initialize());
