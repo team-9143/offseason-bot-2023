@@ -2,9 +2,6 @@ package frc.robot.shuffleboard;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-
 import edu.wpi.first.networktables.GenericEntry;
 
 import frc.robot.autos.AutoSelector;
@@ -38,28 +35,7 @@ public class ShuffleboardManager {
     public void initialize();
   }
 
-  public interface ShuffleboardChecklistBase extends ShuffleboardTabBase {
-    /** Resets all checklist objects to false. */
-    public void reset();
-
-    /**
-     * Adds a checklist to a layout with toggle switches.
-     *
-     * @param checklist array of items to add
-     * @param layout layout to add items to
-     * @return an {@link ArrayList} of {@link GenericEntry} corresponding to the checklist
-     */
-    default ArrayList<GenericEntry> addChecklist(String[] checklist, ShuffleboardLayout layout) {
-      ArrayList<GenericEntry> entries = new ArrayList<GenericEntry>();
-      for (String e : checklist) {
-        entries.add(layout.add(e, false).withWidget(BuiltInWidgets.kToggleSwitch).getEntry());
-      }
-      return entries;
-    }
-  }
-
   private static final ArrayList<ShuffleboardTabBase> m_tabs = new ArrayList<ShuffleboardTabBase>();
-  private static final ArrayList<ShuffleboardChecklistBase> m_checklists = new ArrayList<ShuffleboardChecklistBase>();
 
   private ShuffleboardManager() {
     m_tabs.add(new DriveTab());
@@ -68,19 +44,11 @@ public class ShuffleboardManager {
         m_tabs.add(new SimulationTab());
       } else {
         m_tabs.add(new TestTab());
-        m_tabs.add(new SwerveTab());
       }
+      m_tabs.add(new SwerveTab());
     }
 
-    // m_checklists.add(new MatchChecklist());
-    // m_checklists.add(new PitChecklist());
-    m_tabs.addAll(m_checklists);
-
     m_tabs.forEach(e -> e.initialize());
-  }
-
-  public void reset() {
-    m_checklists.forEach(e -> e.reset());
   }
 
   /** Shuffleboard entry. Should be true if a cube is preloaded. */

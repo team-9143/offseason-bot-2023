@@ -45,7 +45,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     RobotContainer.stop();
     TurnToAngle.m_enabled = false;
-    ShuffleboardManager.getInstance().reset();
   }
 
   @Override
