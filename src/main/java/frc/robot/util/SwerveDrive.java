@@ -142,6 +142,9 @@ public class SwerveDrive {
   /** @return the robot's current location */
   public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
+  /** @return the drivetrain's desired velocities */
+  public ChassisSpeeds getChassisSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}
+
   /** Stop the modules and reset the desired states. */
   public void stop() {
     for (SwerveModule module : modules) {module.stopMotor();}
