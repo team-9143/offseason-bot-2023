@@ -1,6 +1,5 @@
 package frc.robot.util;
 
-import edu.wpi.first.wpilibj.MotorSafety;
 import frc.robot.Constants.PhysConstants;
 import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -16,8 +15,8 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
-/** Controls a single swerve module. Protected by {@link MotorSafety}. */
-public class SwerveModule extends MotorSafety {
+/** Controls a single swerve module. */
+public class SwerveModule {
   public static class SwerveModuleConstants {
     public final byte drive_ID;
     public final byte angle_ID;
@@ -78,7 +77,6 @@ public class SwerveModule extends MotorSafety {
   protected void drive(double speed, double rotation) {
     drive_motor.set(speed);
     angle_motor.set(rotation);
-    feed();
   }
 
   /**
@@ -110,14 +108,9 @@ public class SwerveModule extends MotorSafety {
     return drive_encoder.getVelocity();
   }
 
-  @Override
   public void stopMotor() {
     drive_motor.stopMotor();
     angle_motor.stopMotor();
-    feed();
     // TODO: implement PID disabling on stop
   }
-
-  @Override
-  public String getDescription() {return "Swerve Module";}
 }

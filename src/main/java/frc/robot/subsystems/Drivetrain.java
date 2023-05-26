@@ -94,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
   /** @return the drivetrain's actual velocities, as measured by encoders */
   public ChassisSpeeds getActualSpeeds() {return m_swerve.getActualSpeeds();}
 
-  public static void stop() {m_swerve.stop();}
+  public static void stop() {m_swerve.stopMotor();}
 
   /** @return an auto-balance command */
   public Command getBalanceCommand() {

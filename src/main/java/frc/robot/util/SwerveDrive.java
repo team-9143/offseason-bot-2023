@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.MotorSafety;
 import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -16,8 +17,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
-/** Controls a set of four {@link SwerveModule SwerveModules}. */
-public class SwerveDrive {
+/** Controls a set of four {@link SwerveModule SwerveModules}. Protected by {@link MotorSafety}. */
+public class SwerveDrive extends MotorSafety {
   public final SwerveModule[] modules;
   private Pose2d desiredPose;
   private double desiredLinearVelocity; // UNIT: meters/s
@@ -116,6 +117,8 @@ public class SwerveDrive {
     desiredStates[3] = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
 
     locationControl = false;
+
+    feed();
   }
 
   /**
@@ -159,6 +162,8 @@ public class SwerveDrive {
       theta_controller.reset(odometry.getEstimatedPosition().getRotation().getRadians());
     }
     locationControl = true;
+
+    feed();
   }
 
   /** @return the robot's current location */
@@ -181,9 +186,15 @@ public class SwerveDrive {
   }
 
   /** Stop the modules and reset the desired states. */
-  public void stop() {
+  @Override
+  public void stopMotor() {
     for (SwerveModule module : modules) {module.stopMotor();}
 
     setDesiredStates(new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState());
+  }
+
+  @Override
+  public String getDescription() {
+    return "Swerve Drive";
   }
 }
