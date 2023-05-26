@@ -12,6 +12,7 @@ import frc.robot.autos.AutoSelector;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeTilt;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.shuffleboard.ShuffleboardManager;
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    Drivetrain.getInstance().updateSwerve();
   }
 
   @Override

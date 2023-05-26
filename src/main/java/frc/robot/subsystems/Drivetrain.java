@@ -42,12 +42,8 @@ public class Drivetrain extends SubsystemBase {
     }));
   }
 
-  @Override
-  public void periodic() {
-    // TODO: Fix lag by potentially moving update to robot periodic
-    // Subsystem periodic methods are called before command executions, so there is a 20 ms lag
-    m_swerve.update();
-  }
+  /** Updates the swerve speeds. Should be called every period. */
+  public void updateSwerve() {m_swerve.update();}
 
   /**
    * Drive based on field relative velocities.
