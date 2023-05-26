@@ -12,8 +12,6 @@ import java.util.Map;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeTilt;
 import frc.robot.subsystems.IntakeWheels;
-import frc.robot.commands.TurnToAngle;
-import frc.robot.commands.DriveDistance;
 
 import frc.robot.OI;
 
@@ -34,27 +32,26 @@ public class TestTab implements ShuffleboardTabBase {
   public void initialize() {
     initLayout1();
     initLayout2();
-    initLayout3();
-    initLayout4();
 
     test_tab.add("Direction", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(Drivetrain.m_swerve.getChassisSpeeds().vyMetersPerSecond, Drivetrain.m_swerve.getChassisSpeeds().vxMetersPerSecond)), null);
+        builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, sDrivetrain.getDesiredSpeeds().vxMetersPerSecond)), null);
       }
     })
-      .withPosition(13, 0)
+      .withPosition(9, 0)
       .withSize(3, 3)
-      .withWidget(BuiltInWidgets.kGyro);
+      .withWidget(BuiltInWidgets.kGyro)
+      .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
 
     test_tab.add("Forward V", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> Drivetrain.m_swerve.getChassisSpeeds().vxMetersPerSecond, null);
+        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond, null);
       }
-    }).withPosition(11, 0)
+    }).withPosition(7, 0)
       .withSize(2, 3)
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "VERTICAL"));
@@ -63,9 +60,9 @@ public class TestTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> -Drivetrain.m_swerve.getChassisSpeeds().vyMetersPerSecond, null);
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, null);
       }
-    }).withPosition(11, 3)
+    }).withPosition(7, 3)
       .withSize(3, 1)
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));
@@ -74,10 +71,10 @@ public class TestTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> -Math.toDegrees(Drivetrain.m_swerve.getChassisSpeeds().omegaRadiansPerSecond), null);
+        builder.addDoubleProperty("Value", () -> -Math.toDegrees(sDrivetrain.getDesiredSpeeds().omegaRadiansPerSecond), null);
       }
-    }).withPosition(14, 3)
-      .withSize(2, 1)
+    }).withPosition(7, 4)
+      .withSize(3, 1)
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));
 
@@ -87,8 +84,8 @@ public class TestTab implements ShuffleboardTabBase {
         builder.setSmartDashboardType("Gyro");
         builder.addDoubleProperty("Value", () -> -OI.pigeon.getYaw() % 360, null);
       }
-    }).withPosition(11, 4)
-      .withSize(5, 4)
+    }).withPosition(12, 0)
+      .withSize(4, 4)
       .withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 180, "show tick mark ring", true));
   }
@@ -121,30 +118,10 @@ public class TestTab implements ShuffleboardTabBase {
       .withProperties(Map.of("orientation", "HORIZONTAL"));
   }
 
-  // Turn to angle
-  private void initLayout2() {
-    ShuffleboardLayout layout_2 = test_tab.getLayout("Turn to Angle", BuiltInLayouts.kList)
-      .withPosition(4, 0)
-      .withSize(3, 4);
-
-    layout_2.addDouble("Error", TurnToAngle.m_controller::getPositionError)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", -180, "max", 180, "center", 0));
-
-    layout_2.add("Speed", new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> (TurnToAngle.isRunning()) ? sDrivetrain.getLeft() : 0, null);
-      }
-    }).withWidget(BuiltInWidgets.kMotorController)
-      .withProperties(Map.of("orientation", "HORIZONTAL"));
-  }
-
   // Intake wheels
-  private void initLayout3() {
+  private void initLayout2() {
     ShuffleboardLayout layout_3 = test_tab.getLayout("Intake Wheels", BuiltInLayouts.kList)
-      .withPosition(4, 4)
+      .withPosition(4, 0)
       .withSize(3, 4);
 
     layout_3.addBoolean("Inverted", IntakeWheels::isInverted)
@@ -158,29 +135,5 @@ public class TestTab implements ShuffleboardTabBase {
       }
     }).withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));
-  }
-
-  // Drive distance
-  private void initLayout4() {
-    ShuffleboardLayout layout_4 = test_tab.getLayout("Drive Distance", BuiltInLayouts.kList)
-      .withPosition(7, 0)
-      .withSize(3, 6);
-
-    layout_4.addDouble("Error", DriveDistance.m_controller::getPositionError)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", -180, "max", 180, "center", 0));
-
-    layout_4.add("Speed", new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> (TurnToAngle.isRunning()) ? sDrivetrain.getLeft() : 0, null);
-      }
-    }).withWidget(BuiltInWidgets.kMotorController)
-      .withProperties(Map.of("orientation", "HORIZONTAL"));
-
-    layout_4.addDouble("Position", sDrivetrain::getPosition)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", -225, "max", 225, "center", 0));
   }
 }
