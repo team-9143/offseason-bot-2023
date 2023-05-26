@@ -19,6 +19,8 @@ import frc.robot.util.RobotDrive.WheelSpeeds;
 import frc.robot.shuffleboard.ShuffleboardManager;
 import frc.robot.shuffleboard.SimulationTab;
 
+import frc.robot.util.SwerveDrive;
+
 /** Controls the robot drivetrain. */
 public class Drivetrain extends SubsystemBase {
   private static Drivetrain m_instance;
@@ -73,6 +75,14 @@ public class Drivetrain extends SubsystemBase {
     m_drive = new RobotDrive(fl_motor, fr_motor);
   }
 
+  // WIP: Swerve
+  public static final SwerveDrive m_swerve = new SwerveDrive(
+    DeviceConstants.kSwerve_fl,
+    DeviceConstants.kSwerve_fr,
+    DeviceConstants.kSwerve_bl,
+    DeviceConstants.kSwerve_br
+  );
+
   private Drivetrain() {
     l_encoder.setPositionConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox); // UNIT: inches
     l_encoder.setVelocityConversionFactor(PhysConstants.kWheelCircumference * PhysConstants.kDrivetrainGearbox / 60); // UNIT: inches/s
@@ -85,18 +95,26 @@ public class Drivetrain extends SubsystemBase {
     r_encoder.setPosition(0);
 
     // Teleop drive: single joystick or turn in place with triggers
+    // setDefaultCommand(run(() -> {
+    //   double triggers = OI.driver_cntlr.getTriggers();
+    //   if (triggers == 0.0) {
+    //     // Arcade drive, input from left stick (higher priority)
+    //     m_drive.arcadeDrive(
+    //       -DrivetrainConstants.kSpeedMult * OI.driver_cntlr.getLeftY(),
+    //       DrivetrainConstants.kTurnMult * OI.driver_cntlr.getLeftX()
+    //     );
+    //   } else {
+    //     // Turn in place, input from triggers (lower priority)
+    //     turnInPlace(DrivetrainConstants.kTurnMult * Math.copySign(triggers * triggers, triggers));
+    //   }
+    // }));
+
     setDefaultCommand(run(() -> {
-      double triggers = OI.driver_cntlr.getTriggers();
-      if (triggers == 0.0) {
-        // Arcade drive, input from left stick (higher priority)
-        m_drive.arcadeDrive(
-          -DrivetrainConstants.kSpeedMult * OI.driver_cntlr.getLeftY(),
-          DrivetrainConstants.kTurnMult * OI.driver_cntlr.getLeftX()
-        );
-      } else {
-        // Turn in place, input from triggers (lower priority)
-        turnInPlace(DrivetrainConstants.kTurnMult * Math.copySign(triggers * triggers, triggers));
-      }
+      m_swerve.setDesiredVelocity(
+        -OI.driver_cntlr.getLeftY() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
+        -OI.driver_cntlr.getLeftX() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
+        -OI.driver_cntlr.getTriggers() * Math.PI
+      );
     }));
   }
 
