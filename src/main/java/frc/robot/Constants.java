@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.controller.PIDController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -24,6 +25,7 @@ public final class Constants {
     public static final double kWheelCircumference = 6 * Math.PI; // UNIT: inches
 
     // WIP: Swerve
+    public static final double kSwerveTurnGearbox = 7/150.0;
     public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
@@ -43,10 +45,10 @@ public final class Constants {
 
     // WIP: Swerve
     public static final SwerveModuleConstants
-      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(1, 1)),
-      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(1, -1)),
-      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-1, 1)),
-      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-1, -1));
+      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(1, 1), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(1, -1), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-1, 1), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-1, -1), new PIDController(0.637, 0.2, 0.3));
   }
 
   public static class DrivetrainConstants {
@@ -77,7 +79,8 @@ public final class Constants {
     public static final double kBalanceSpeed = 0.08;
 
     // WIP: Swerve
-    public static final double kModuleTurnMaxVel = 5676 * 2 * Math.PI * 0.4; // 40% of free speed (UNIT: radians/s)
+    public static final double kModuleWheelMaxVel = 14; // UNIT: meters/s
+    public static final double kModuleTurnMaxVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
     public static final double kModuleTurnMaxAccel = kModuleTurnMaxVel * 3; // UNIT: radians/s/s
 
     public static final double
