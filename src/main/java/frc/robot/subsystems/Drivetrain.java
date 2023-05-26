@@ -62,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
 
   /**
    * Drive based on robot relative velocities.
-   * 
+   *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
    * @param ccw counter-clockwise speed (UNIT: radians/s)
@@ -107,7 +107,7 @@ public class Drivetrain extends SubsystemBase {
           double pitch = -OI.pigeon.getPitch();
 
           if (Math.abs(pitch) > DrivetrainConstants.kBalanceTolerance && Math.abs(pitch - previousPitch) < 3) {
-            moveStraight(Math.copySign(DrivetrainConstants.kBalanceSpeed, pitch));
+            driveRobotRelativeVelocity(Math.copySign(DrivetrainConstants.kBalanceSpeed, pitch), 0, 0);
           } else {
             // Stop movement on a large pitch change (usually denoting a fall) or when stabilized
             stop();
