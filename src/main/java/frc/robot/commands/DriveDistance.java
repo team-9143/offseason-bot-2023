@@ -31,16 +31,16 @@ public class DriveDistance extends CommandBase {
   @Override
   public void initialize() {
     m_controller.reset();
-    sDrivetrain.resetEncoders();
+    // sDrivetrain.resetEncoders();
     isRunning = true;
   }
 
   /** Calculate and clamp controller output to max speed. */
   @Override
   public void execute() {
-    sDrivetrain.moveStraight(Math.max(-DrivetrainConstants.kDistMaxSpeed, Math.min(
-      m_controller.calculate(sDrivetrain.getPosition(), distance),
-    DrivetrainConstants.kDistMaxSpeed)));
+    // sDrivetrain.moveStraight(Math.max(-DrivetrainConstants.kDistMaxSpeed, Math.min(
+    //   m_controller.calculate(sDrivetrain.getPosition(), distance),
+    // DrivetrainConstants.kDistMaxSpeed)));
   }
 
   @Override

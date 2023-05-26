@@ -48,26 +48,26 @@ public class Secondaries {
 
     return new SequentialCommandGroup(
       // Move back until pitch is less than -10
-      new FunctionalCommand(
-        () -> {},
-        () -> sDrivetrain.moveStraight(-0.3),
-        interrupted -> {},
-        () -> OI.pigeon.getPitch() < -10,
-        sDrivetrain
-      ),
+      // new FunctionalCommand(
+      //   () -> {},
+      //   () -> sDrivetrain.moveStraight(-0.3),
+      //   interrupted -> {},
+      //   () -> OI.pigeon.getPitch() < -10,
+      //   sDrivetrain
+      // ),
 
-      // Move back until pitch is close to flat
-      new FunctionalCommand(
-        () -> {},
-        () -> sDrivetrain.moveStraight(-0.3),
-        interrupted -> {},
-        () -> Math.abs(OI.pigeon.getPitch()) < 2,
-        sDrivetrain
-      ),
+      // // Move back until pitch is close to flat
+      // new FunctionalCommand(
+      //   () -> {},
+      //   () -> sDrivetrain.moveStraight(-0.3),
+      //   interrupted -> {},
+      //   () -> Math.abs(OI.pigeon.getPitch()) < 2,
+      //   sDrivetrain
+      // ),
 
-      new RunCommand(() -> sDrivetrain.moveStraight(-0.45), sDrivetrain).withTimeout(0.1),
+      // new RunCommand(() -> sDrivetrain.moveStraight(-0.45), sDrivetrain).withTimeout(0.1),
 
-      new RunCommand(() -> sDrivetrain.moveStraight(0.45), sDrivetrain).withTimeout(1.5)
+      // new RunCommand(() -> sDrivetrain.moveStraight(0.45), sDrivetrain).withTimeout(1.5)
     );
   }
 }

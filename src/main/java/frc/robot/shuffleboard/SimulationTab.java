@@ -47,8 +47,8 @@ public class SimulationTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("DifferentialDrive");
-        builder.addDoubleProperty("Left Motor Speed", sDrivetrain::getLeft, null);
-        builder.addDoubleProperty("Right Motor Speed", () -> -sDrivetrain.getRight(), null);
+        // builder.addDoubleProperty("Left Motor Speed", sDrivetrain::getLeft, null);
+        // builder.addDoubleProperty("Right Motor Speed", () -> -sDrivetrain.getRight(), null);
       }
     }).withPosition(11, 0)
       .withSize(5, 4)
@@ -82,7 +82,7 @@ public class SimulationTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> (TurnToAngle.isRunning()) ? sDrivetrain.getLeft() : 0, null);
+        // builder.addDoubleProperty("Value", () -> (TurnToAngle.isRunning()) ? sDrivetrain.getLeft() : 0, null);
       }
     }).withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));
@@ -107,16 +107,16 @@ public class SimulationTab implements ShuffleboardTabBase {
         .withProperties(Map.of("min", -225, "max", 225, "block increment", 3))
         .getEntry();
     } else {
-      layout_2.addDouble("Position", sDrivetrain::getPosition)
-        .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", -225, "max", 225, "center", 0));
+      // layout_2.addDouble("Position", sDrivetrain::getPosition)
+      //   .withWidget(BuiltInWidgets.kNumberBar)
+      //   .withProperties(Map.of("min", -225, "max", 225, "center", 0));
     }
 
     layout_2.add("Speed", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> (DriveDistance.isRunning()) ? sDrivetrain.getLeft() : 0, null);
+        // builder.addDoubleProperty("Value", () -> (DriveDistance.isRunning()) ? sDrivetrain.getLeft() : 0, null);
       }
     }).withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));

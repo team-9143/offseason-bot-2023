@@ -40,9 +40,9 @@ public class TurnToAngle extends CommandBase {
   /** Calculate and clamp controller output to max speed. */
   @Override
   public void execute() {
-    sDrivetrain.turnInPlace(Math.max(-DrivetrainConstants.kTurnMaxSpeed, Math.min(
-      m_controller.calculate(-OI.pigeon.getYaw(), heading),
-    DrivetrainConstants.kTurnMaxSpeed)));
+    // sDrivetrain.turnInPlace(Math.max(-DrivetrainConstants.kTurnMaxSpeed, Math.min(
+    //   m_controller.calculate(-OI.pigeon.getYaw(), heading),
+    // DrivetrainConstants.kTurnMaxSpeed)));
   }
 
   @Override
