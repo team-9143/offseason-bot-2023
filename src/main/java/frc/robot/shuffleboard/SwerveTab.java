@@ -25,6 +25,52 @@ public class SwerveTab implements ShuffleboardTabBase {
   }
 
   public void initialize() {
+    swerve_tab.add("Direction", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Gyro");
+        builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, -sDrivetrain.getDesiredSpeeds().vxMetersPerSecond)), null);
+      }
+    })
+      .withPosition(2, 0)
+      .withSize(3, 3)
+      .withWidget(BuiltInWidgets.kGyro)
+      .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
+
+    swerve_tab.add("Forward V [-15..15]", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond / DrivetrainConstants.kModuleWheelMaxVel, null);
+      }
+    }).withPosition(0, 0)
+      .withSize(2, 3)
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "VERTICAL"));
+
+    swerve_tab.add("Strafe V [-15..15]", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond / DrivetrainConstants.kModuleWheelMaxVel, null);
+      }
+    }).withPosition(0, 3)
+      .withSize(3, 1)
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "HORIZONTAL"));
+
+    swerve_tab.add("Omega V [-2PI..2PI]", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().omegaRadiansPerSecond / (2*Math.PI), null);
+      }
+    }).withPosition(0, 4)
+      .withSize(3, 1)
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "HORIZONTAL"));
+
+
     initModule(
       swerve_tab.getLayout("Front left", BuiltInLayouts.kList)
         .withPosition(0, 0)
@@ -67,7 +113,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       }
     })
       .withWidget(BuiltInWidgets.kGyro)
-      .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
+      .withProperties(Map.of("major tick spacing", 45, "starting angle", 180, "show tick mark ring", true));
 
     layout.addDouble("Speed", () -> Math.abs(sDrivetrain.getDesiredStates()[moduleNum].speedMetersPerSecond))
       .withWidget(BuiltInWidgets.kNumberBar)
