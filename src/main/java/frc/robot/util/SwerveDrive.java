@@ -77,6 +77,7 @@ public class SwerveDrive {
     }
 
     // Calculate and set speeds for swerve modules
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DrivetrainConstants.kModuleWheelMaxVel);
     modules[0].desiredStateDrive(desiredStates[0]);
     modules[1].desiredStateDrive(desiredStates[1]);
     modules[2].desiredStateDrive(desiredStates[2]);
