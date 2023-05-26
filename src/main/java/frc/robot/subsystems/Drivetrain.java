@@ -118,6 +118,11 @@ public class Drivetrain extends SubsystemBase {
     }));
   }
 
+  @Override
+  public void periodic() {
+    m_swerve.update();
+  }
+
   public void turnInPlace(double rotation) {
     m_drive.drive(new WheelSpeeds(rotation, rotation));
   }
