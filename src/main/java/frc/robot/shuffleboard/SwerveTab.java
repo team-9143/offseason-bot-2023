@@ -116,7 +116,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 180, "show tick mark ring", true));
 
     layout.addDouble("Speed", () -> Math.abs(sDrivetrain.getDesiredStates()[moduleNum].speedMetersPerSecond))
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", 0, "max", DrivetrainConstants.kModuleWheelMaxVel, "center", DrivetrainConstants.kModuleWheelMaxVel/2));
+      .withWidget(BuiltInWidgets.kNumberSlider)
+      .withProperties(Map.of("min", 0, "max", DrivetrainConstants.kModuleWheelMaxVel));
   }
 }
