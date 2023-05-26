@@ -131,6 +131,18 @@ public class SwerveDrive {
   }
 
   /**
+   * Drive based on robot relative velocities.
+   *
+   * @param forward forward speed (UNIT: meters/s)
+   * @param left left speed (UNIT: meters/s)
+   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   */
+  public void setDesiredVelocity(double forward, double left, double ccw) {
+    var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, ccw));
+    setDesiredStates(states[0], states[1], states[2], states[3]);
+  }
+
+  /**
    * Sets desired pose and linear velocity, to be controlled with a {@link HolonomicDriveController}
    *
    * @param desiredPose robot pose with the same origin as the odometry

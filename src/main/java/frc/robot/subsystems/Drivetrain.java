@@ -61,6 +61,17 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * Drive based on robot relative velocities.
+   * 
+   * @param forward forward speed (UNIT: meters/s)
+   * @param left left speed (UNIT: meters/s)
+   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   */
+  public void driveRobotRelativeVelocity(double forward, double left, double ccw) {
+    m_swerve.setDesiredVelocity(forward, left, ccw);
+  }
+
+  /**
    * Drive to a position, relative to the robot's starting position.
    *
    * @param forward forward distance (UNIT: meters)
