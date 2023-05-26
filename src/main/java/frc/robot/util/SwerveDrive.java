@@ -37,6 +37,12 @@ public class SwerveDrive {
   private static final PIDController x_controller = new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD);
   private static final PIDController y_controller = new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD);
   private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel));
+  static {
+    x_controller.setIntegratorRange(-DrivetrainConstants.kModuleWheelMaxVel, DrivetrainConstants.kModuleWheelMaxVel);
+    y_controller.setIntegratorRange(-DrivetrainConstants.kModuleWheelMaxVel, DrivetrainConstants.kModuleWheelMaxVel);
+    theta_controller.setIntegratorRange(-DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxVel);
+  }
+
   private static final HolonomicDriveController m_controller = new HolonomicDriveController(x_controller, y_controller, theta_controller);
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
@@ -54,7 +60,7 @@ public class SwerveDrive {
       consts_br.location
     );
 
-    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(-OI.pigeon.getYaw()),
+    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(OI.pigeon.getYaw()),
       new SwerveModulePosition[] {
         new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
         new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
@@ -84,7 +90,7 @@ public class SwerveDrive {
     modules[3].desiredStateDrive(desiredStates[3]);
 
     // Update odometry
-    odometry.update(Rotation2d.fromDegrees(-OI.pigeon.getYaw()), new SwerveModulePosition[] {
+    odometry.update(Rotation2d.fromDegrees(OI.pigeon.getYaw()), new SwerveModulePosition[] {
       new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
       new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
       new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
@@ -110,14 +116,14 @@ public class SwerveDrive {
   }
 
   /**
-   * Sets desired module states based on desired velocity.
+   * Sets desired module states based on field relative velocity.
    *
-   * @param forward forward speed (UNIT: meters/s)
-   * @param left left speed (UNIT: meters/s)
+   * @param forward forward speed from alliance wall (UNIT: meters/s)
+   * @param left left speed from alliance wall (UNIT: meters/s)
    * @param ccw counter-clockwise speed (UNIT: radians/s)
    */
-  public void setDesiredVelocity(double forward, double left, double ccw) {
-    var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, ccw));
+  public void setDesiredVelocityFieldRelative(double forward, double left, double ccw) {
+    var states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, ccw, Rotation2d.fromDegrees(OI.pigeon.getYaw())));
     setDesiredStates(states[0], states[1], states[2], states[3]);
   }
 
