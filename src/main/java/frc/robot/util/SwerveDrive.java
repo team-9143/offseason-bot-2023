@@ -185,6 +185,9 @@ public class SwerveDrive extends MotorSafety {
     );
   }
 
+  /** @return desired module states */
+  public SwerveModuleState[] getDesiredStates() {return desiredStates;}
+
   /** Stop the modules and reset the desired states. */
   @Override
   public void stopMotor() {

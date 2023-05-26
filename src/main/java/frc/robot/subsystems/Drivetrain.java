@@ -5,6 +5,7 @@ import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.DeviceConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -89,6 +90,9 @@ public class Drivetrain extends SubsystemBase {
   public ChassisSpeeds getDesiredSpeeds() {return m_swerve.getDesiredSpeeds();}
   /** @return the drivetrain's actual velocities, as measured by encoders */
   public ChassisSpeeds getActualSpeeds() {return m_swerve.getActualSpeeds();}
+
+  /** @return desired module states */
+  public SwerveModuleState[] getDesiredStates() {return m_swerve.getDesiredStates();}
 
   public static void stop() {m_swerve.stopMotor();}
 
