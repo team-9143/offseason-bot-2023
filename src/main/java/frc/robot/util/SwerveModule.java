@@ -95,7 +95,7 @@ public class SwerveModule extends MotorSafety {
     );
   }
 
-  /** @return the angle of the module */
+  /** @return the angle of the module (UNIT: degrees) */
   public double getAngle() {
     return cancoder.getPosition();
   }

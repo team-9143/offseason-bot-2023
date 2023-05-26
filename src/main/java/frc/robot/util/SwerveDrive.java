@@ -118,8 +118,8 @@ public class SwerveDrive {
   /**
    * Sets desired module states based on field relative velocity.
    *
-   * @param forward forward speed from alliance wall (UNIT: meters/s)
-   * @param left left speed from alliance wall (UNIT: meters/s)
+   * @param forward forward speed (UNIT: meters/s)
+   * @param left left speed (UNIT: meters/s)
    * @param ccw counter-clockwise speed (UNIT: radians/s)
    */
   public void setDesiredVelocityFieldRelative(double forward, double left, double ccw) {
@@ -150,7 +150,17 @@ public class SwerveDrive {
   public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
   /** @return the drivetrain's desired velocities */
-  public ChassisSpeeds getChassisSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}
+  public ChassisSpeeds getDesiredSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}
+
+  /** @return the drivetrains actual velocities, as measured by encoders */
+  public ChassisSpeeds getActualSpeeds() {
+    return kinematics.toChassisSpeeds(
+      new SwerveModuleState(modules[0].getVelocity(), Rotation2d.fromDegrees(modules[0].getAngle())),
+      new SwerveModuleState(modules[1].getVelocity(), Rotation2d.fromDegrees(modules[1].getAngle())),
+      new SwerveModuleState(modules[2].getVelocity(), Rotation2d.fromDegrees(modules[2].getAngle())),
+      new SwerveModuleState(modules[3].getVelocity(), Rotation2d.fromDegrees(modules[3].getAngle()))
+    );
+  }
 
   /** Stop the modules and reset the desired states. */
   public void stop() {
