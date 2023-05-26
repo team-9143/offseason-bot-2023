@@ -33,7 +33,7 @@ public class SwerveDrive {
 
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
-  
+
   private static final PIDController x_controller = new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD);
   private static final PIDController y_controller = new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD);
   private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel));
@@ -68,7 +68,12 @@ public class SwerveDrive {
   public void update() {
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
-      desiredStates = kinematics.toSwerveModuleStates(m_controller.calculate(odometry.getEstimatedPosition(), desiredPose, desiredLinearVelocity, desiredPose.getRotation()));
+      // Rotation aspect of desired pose should be an angle pointing from origin to pose
+      desiredStates = kinematics.toSwerveModuleStates(m_controller.calculate(
+        odometry.getEstimatedPosition(),
+        new Pose2d(desiredPose.getTranslation(), new Rotation2d(desiredPose.getX(), desiredPose.getY())),
+        desiredLinearVelocity, desiredPose.getRotation()
+      ));
     }
 
     // Calculate and set speeds for swerve modules
@@ -115,11 +120,22 @@ public class SwerveDrive {
     setDesiredStates(states[0], states[1], states[2], states[3]);
   }
 
-  // Distance-based driving
-  // Turning somehow??? how does one turn while moving??????? holonomic drive controller ftw????
-  public void setDesiredPose() {
-    // TODO: do
+  /**
+   * Sets desired pose and linear velocity, to be controlled with a {@link HolonomicDriveController}
+   *
+   * @param desiredPose robot pose with the same origin as the odometry
+   * @param desiredLinearVelocity desired linear velocity for feedforward calculation
+   */
+  public void setDesiredPose(Pose2d desiredPose, double desiredLinearVelocity) {
+    this.desiredPose = desiredPose;
+    this.desiredLinearVelocity = desiredLinearVelocity;
 
+    if (!locationControl) {
+      // Reset controllers if swapping into location control
+      x_controller.reset();
+      y_controller.reset();
+      theta_controller.reset(odometry.getEstimatedPosition().getRotation().getRadians());
+    }
     locationControl = true;
   }
 
