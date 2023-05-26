@@ -19,12 +19,17 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 /** Controls a set of four {@link SwerveModule SwerveModules}. */
 public class SwerveDrive {
   public final SwerveModule[] modules;
-  private final SwerveModuleState[] desiredStates = new SwerveModuleState[] {
+  private Pose2d desiredPose;
+  private double desiredLinearVelocity; // UNIT: meters/s
+  private SwerveModuleState[] desiredStates = new SwerveModuleState[] {
     new SwerveModuleState(),
     new SwerveModuleState(),
     new SwerveModuleState(),
     new SwerveModuleState()
   };
+
+  /** {@code true} if being controlled by a desired location through a {@link HolonomicDriveController}. */
+  private boolean locationControl = false;
 
   private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
@@ -61,13 +66,20 @@ public class SwerveDrive {
     new Pose2d());
   }
 
-  /** Updates the drivetrain with current desired states, and recalculates odometry. Should be called every robot loop. */
+  /** Updates the drivetrain with desired speeds, and recalculates odometry. Should be called every robot loop. */
   public void update() {
+    // If controlled by a desired location, calculates desired states through holonomic drive controller
+    if (locationControl) {
+      desiredStates = kinematics.toSwerveModuleStates(controller.calculate(odometry.getEstimatedPosition(), desiredPose, desiredLinearVelocity, desiredPose.getRotation()));
+    }
+
+    // Calculate and set speeds for swerve modules
     modules[0].desiredStateDrive(desiredStates[0]);
     modules[1].desiredStateDrive(desiredStates[1]);
     modules[2].desiredStateDrive(desiredStates[2]);
     modules[3].desiredStateDrive(desiredStates[3]);
 
+    // Update odometry
     odometry.update(Rotation2d.fromDegrees(-OI.pigeon.getYaw()), new SwerveModulePosition[] {
       new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
       new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
@@ -89,6 +101,8 @@ public class SwerveDrive {
     state_fr = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
     state_bl = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
     state_br = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
+
+    locationControl = false;
   }
 
   /**
@@ -105,15 +119,19 @@ public class SwerveDrive {
 
   // Distance-based driving
   // Turning somehow??? how does one turn while moving??????? holonomic drive controller ftw????
+  public void setDesiredPose() {
+    // TODO: do
+
+    locationControl = true;
+  }
 
   /** @return the robot's current location */
   public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
+  /** Stop the modules and reset the desired states. */
   public void stop() {
     for (SwerveModule module : modules) {module.stopMotor();}
-    desiredStates[0] = new SwerveModuleState();
-    desiredStates[1] = new SwerveModuleState();
-    desiredStates[2] = new SwerveModuleState();
-    desiredStates[3] = new SwerveModuleState();
+
+    setDesiredStates(new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState());
   }
 }
