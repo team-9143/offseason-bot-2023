@@ -85,6 +85,9 @@ public class SwerveModule {
    * @param desired desired state
    */
   protected void desiredStateDrive(SwerveModuleState desired) {
+    // Do not rotate if speed is less than 1%. Prevents jittering.
+    if (desired.speedMetersPerSecond <= DrivetrainConstants.kModuleWheelMaxVel * 0.01) {return;}
+
     desired = SwerveModuleState.optimize(desired, Rotation2d.fromDegrees(getAngle()));
     // TODO: Use feedback controller for desired velocity
     drive(
