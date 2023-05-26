@@ -101,10 +101,10 @@ public class SwerveDrive {
    * @param state_br back right module state
    */
   public void setDesiredStates(SwerveModuleState state_fl, SwerveModuleState state_fr, SwerveModuleState state_bl, SwerveModuleState state_br) {
-    state_fl = SwerveModuleState.optimize(state_fl, Rotation2d.fromDegrees(modules[0].getAngle()));
-    state_fr = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
-    state_bl = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
-    state_br = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
+    desiredStates[0] = SwerveModuleState.optimize(state_fl, Rotation2d.fromDegrees(modules[0].getAngle()));
+    desiredStates[1] = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
+    desiredStates[2] = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
+    desiredStates[3] = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
 
     locationControl = false;
   }
