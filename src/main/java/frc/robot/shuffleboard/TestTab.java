@@ -37,17 +37,6 @@ public class TestTab implements ShuffleboardTabBase {
     initLayout3();
     initLayout4();
 
-    // test_tab.add("Drivetrain", new Sendable() {
-    //   @Override
-    //   public void initSendable(SendableBuilder builder) {
-    //     builder.setSmartDashboardType("DifferentialDrive");
-    //     builder.addDoubleProperty("Left Motor Speed", sDrivetrain::getLeft, null);
-    //     builder.addDoubleProperty("Right Motor Speed", () -> -sDrivetrain.getRight(), null);
-    //   }
-    // }).withPosition(11, 0)
-    //   .withSize(5, 4)
-    //   .withWidget(BuiltInWidgets.kDifferentialDrive)
-    //   .withProperties(Map.of("number of wheels", 6, "wheel diameter", 60, "show velocity vectors", true));
     test_tab.add("Direction", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
@@ -55,15 +44,42 @@ public class TestTab implements ShuffleboardTabBase {
         builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(Drivetrain.m_swerve.getChassisSpeeds().vyMetersPerSecond, Drivetrain.m_swerve.getChassisSpeeds().vxMetersPerSecond)), null);
       }
     })
-      .withPosition(11, 0)
+      .withPosition(13, 0)
       .withSize(3, 3)
       .withWidget(BuiltInWidgets.kGyro);
-    test_tab.addDouble("Omega V", () -> Math.toDegrees(Drivetrain.m_swerve.getChassisSpeeds().omegaRadiansPerSecond))
-      .withPosition(11, 3)
+
+    test_tab.add("Forward V", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> Drivetrain.m_swerve.getChassisSpeeds().vxMetersPerSecond, null);
+      }
+    }).withPosition(11, 0)
+      .withSize(2, 3)
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "VERTICAL"));
+
+    test_tab.add("Strafe V", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> -Drivetrain.m_swerve.getChassisSpeeds().vyMetersPerSecond, null);
+      }
+    }).withPosition(11, 3)
       .withSize(3, 1)
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", -180, "max", 180))
-      .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "HORIZONTAL"));
+
+    test_tab.add("Omega V", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.addDoubleProperty("Value", () -> -Math.toDegrees(Drivetrain.m_swerve.getChassisSpeeds().omegaRadiansPerSecond), null);
+      }
+    }).withPosition(14, 3)
+      .withSize(2, 1)
+      .withWidget(BuiltInWidgets.kMotorController)
+      .withProperties(Map.of("orientation", "HORIZONTAL"));
 
     test_tab.add("Gyro", new Sendable() {
       @Override

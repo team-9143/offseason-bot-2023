@@ -72,7 +72,8 @@ public class Drivetrain extends SubsystemBase {
     // IMPORTANT: Ensures motors have consistent output
     bl_motor.follow(fl_motor, false);
     br_motor.follow(fr_motor, false);
-    m_drive = new RobotDrive(fl_motor, fr_motor);
+    // m_drive = new RobotDrive(fl_motor, fr_motor);
+    m_drive = null;
   }
 
   // WIP: Swerve
@@ -147,7 +148,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public static void stop() {
-    m_drive.stopMotor();
+    // m_drive.stopMotor();
   }
 
   /** @return an auto-balance command */
