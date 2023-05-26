@@ -19,6 +19,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 /** Controls a set of four {@link SwerveModule SwerveModules}. */
 public class SwerveDrive {
   public final SwerveModule[] modules;
+  private final SwerveModuleState[] desiredStates = new SwerveModuleState[] {
+    new SwerveModuleState(),
+    new SwerveModuleState(),
+    new SwerveModuleState(),
+    new SwerveModuleState()
+  };
   private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
@@ -44,7 +50,7 @@ public class SwerveDrive {
       consts_br.location
     );
 
-    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(OI.pigeon.getYaw()),
+    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(-OI.pigeon.getYaw()),
       new SwerveModulePosition[] {
         new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
         new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
@@ -54,9 +60,19 @@ public class SwerveDrive {
     new Pose2d());
   }
 
-  /** Updates the drivetrain with current desired states. */
+  /** Updates the drivetrain with current desired states, and recalculates odometry. Should be called every robot loop. */
   public void update() {
-    // TODO: update odometry and calculate motor speeds
+    modules[0].desiredStateDrive(desiredStates[0]);
+    modules[1].desiredStateDrive(desiredStates[1]);
+    modules[2].desiredStateDrive(desiredStates[2]);
+    modules[3].desiredStateDrive(desiredStates[3]);
+
+    odometry.update(Rotation2d.fromDegrees(-OI.pigeon.getYaw()), new SwerveModulePosition[] {
+      new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
+      new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
+      new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
+      new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
+    });
   }
 
   /**
@@ -72,7 +88,6 @@ public class SwerveDrive {
     state_fr = SwerveModuleState.optimize(state_fr, Rotation2d.fromDegrees(modules[1].getAngle()));
     state_bl = SwerveModuleState.optimize(state_bl, Rotation2d.fromDegrees(modules[2].getAngle()));
     state_br = SwerveModuleState.optimize(state_br, Rotation2d.fromDegrees(modules[3].getAngle()));
-    // TODO: Set desired states in swerve modules and optimize there, then run with PID controllers on frc.robot.util.SwerveDrive#update
   }
 
   /**
@@ -93,5 +108,9 @@ public class SwerveDrive {
 
   public void stop() {
     for (SwerveModule module : modules) {module.stopMotor();}
+    desiredStates[0] = new SwerveModuleState();
+    desiredStates[1] = new SwerveModuleState();
+    desiredStates[2] = new SwerveModuleState();
+    desiredStates[3] = new SwerveModuleState();
   }
 }
