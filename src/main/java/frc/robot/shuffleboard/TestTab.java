@@ -14,7 +14,7 @@ import frc.robot.subsystems.IntakeTilt;
 import frc.robot.subsystems.IntakeWheels;
 
 import frc.robot.OI;
-
+import frc.robot.Constants.DrivetrainConstants;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
@@ -45,33 +45,33 @@ public class TestTab implements ShuffleboardTabBase {
       .withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 0, "show tick mark ring", true));
 
-    test_tab.add("Forward V", new Sendable() {
+    test_tab.add("Forward V [-15..15]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond, null);
+        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond / DrivetrainConstants.kModuleWheelMaxVel, null);
       }
     }).withPosition(7, 0)
       .withSize(2, 3)
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "VERTICAL"));
 
-    test_tab.add("Strafe V", new Sendable() {
+    test_tab.add("Strafe V [-15..15]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, null);
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond / DrivetrainConstants.kModuleWheelMaxVel, null);
       }
     }).withPosition(7, 3)
       .withSize(3, 1)
       .withWidget(BuiltInWidgets.kMotorController)
       .withProperties(Map.of("orientation", "HORIZONTAL"));
 
-    test_tab.add("Omega V", new Sendable() {
+    test_tab.add("Omega V [-2PI..2PI]", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> -Math.toDegrees(sDrivetrain.getDesiredSpeeds().omegaRadiansPerSecond), null);
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().omegaRadiansPerSecond / (2*Math.PI), null);
       }
     }).withPosition(7, 4)
       .withSize(3, 1)
