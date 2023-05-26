@@ -25,6 +25,7 @@ public class SwerveDrive {
     new SwerveModuleState(),
     new SwerveModuleState()
   };
+
   private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
@@ -103,8 +104,10 @@ public class SwerveDrive {
   }
 
   // Distance-based driving
-
   // Turning somehow??? how does one turn while moving??????? holonomic drive controller ftw????
+
+  /** @return the robot's current location */
+  public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
   public void stop() {
     for (SwerveModule module : modules) {module.stopMotor();}
