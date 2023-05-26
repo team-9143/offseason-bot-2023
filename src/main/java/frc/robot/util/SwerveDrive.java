@@ -31,9 +31,13 @@ public class SwerveDrive {
   /** {@code true} if being controlled by a desired location through a {@link HolonomicDriveController}. */
   private boolean locationControl = false;
 
-  private final HolonomicDriveController controller;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
+  
+  private static final PIDController x_controller = new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD);
+  private static final PIDController y_controller = new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD);
+  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel));
+  private static final HolonomicDriveController m_controller = new HolonomicDriveController(x_controller, y_controller, theta_controller);
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
     modules = new SwerveModule[] {
@@ -42,12 +46,6 @@ public class SwerveDrive {
       new SwerveModule(consts_bl),
       new SwerveModule(consts_br)
     };
-
-    controller = new HolonomicDriveController(
-      new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD),
-      new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD),
-      new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel))
-    );
 
     kinematics = new SwerveDriveKinematics(
       consts_fl.location,
@@ -70,7 +68,7 @@ public class SwerveDrive {
   public void update() {
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
-      desiredStates = kinematics.toSwerveModuleStates(controller.calculate(odometry.getEstimatedPosition(), desiredPose, desiredLinearVelocity, desiredPose.getRotation()));
+      desiredStates = kinematics.toSwerveModuleStates(m_controller.calculate(odometry.getEstimatedPosition(), desiredPose, desiredLinearVelocity, desiredPose.getRotation()));
     }
 
     // Calculate and set speeds for swerve modules
