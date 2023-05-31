@@ -13,37 +13,14 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
-import frc.robot.shuffleboard.ShuffleboardManager;
-import frc.robot.shuffleboard.SimulationTab;
-
 /** Controls intake tilt motors. */
 public class IntakeTilt extends SubsystemBase {
   private static IntakeTilt m_instance;
 
   /** @return the singleton instance */
-  @SuppressWarnings("unused")
   public static synchronized IntakeTilt getInstance() {
     if (m_instance == null) {
-      if (!(ShuffleboardManager.m_simulation && ShuffleboardManager.m_simulatedTilt)) {
-        m_instance = new IntakeTilt();
-      } else {
-        m_instance = new IntakeTilt() {
-          @Override
-          public double getPosition() {
-            if (SimulationTab.intakeAngle_sim != null) {
-              return SimulationTab.intakeAngle_sim.getDouble(IntakeConstants.kUpPos);
-            }
-            return IntakeConstants.kUpPos;
-          }
-
-          @Override
-          public void resetEncoders() {
-            if (SimulationTab.intakeAngle_sim != null) {
-              SimulationTab.intakeAngle_sim.setDouble(IntakeConstants.kUpPos);
-            }
-          }
-        };
-      }
+      m_instance = new IntakeTilt();
     }
     return m_instance;
   }

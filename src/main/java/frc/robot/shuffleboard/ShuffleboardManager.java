@@ -11,15 +11,6 @@ public class ShuffleboardManager {
   /** If used, initializes test tabs. */
   public static final boolean m_testing = true;
 
-  /** For testing while manipulating the robot's sensors. If used, automatically simulates {@link frc.robot.OI OI.pigeon}.getYaw(), setYaw(), and getPitch() through Shuffleboard. */
-  public static final boolean m_simulation = false;
-
-  /** If {@code true} while in simulation, simulates {@link frc.robot.subsystems.Drivetrain Drivetrain}.getPosition() and resetEncoders() through Shuffleboard. */
-  public static final boolean m_simulatedDrive = false;
-
-  /** If {@code true} while in simulation, simulates {@link frc.robot.subsystems.IntakeTilt IntakeTilt}.getPosition() and resetEncoders() through Shuffleboard. */
-  public static final boolean m_simulatedTilt = false;
-
   private static ShuffleboardManager m_instance;
 
   /** @return the singleton instance */
@@ -40,11 +31,7 @@ public class ShuffleboardManager {
   private ShuffleboardManager() {
     m_tabs.add(new DriveTab());
     if (m_testing) {
-      if (m_simulation) {
-        m_tabs.add(new SimulationTab());
-      } else {
-        m_tabs.add(new TestTab());
-      }
+      m_tabs.add(new TestTab());
       m_tabs.add(new SwerveTab());
     }
 
