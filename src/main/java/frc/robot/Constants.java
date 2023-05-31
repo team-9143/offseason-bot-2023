@@ -8,6 +8,7 @@ import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.controller.PIDController;
 
+// TODO: Tune/measure and fix all swerve constants
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -18,11 +19,8 @@ import edu.wpi.first.math.controller.PIDController;
  */
 public final class Constants {
   public static class PhysConstants {
-    public static final double kDrivetrainGearbox = 1/8.45;
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
-
-    public static final double kWheelCircumference = 6 * Math.PI; // UNIT: inches
 
     // WIP: Swerve
     public static final double kSwerveTurnGearbox = 7/150.0;
@@ -34,10 +32,6 @@ public final class Constants {
     public static final byte kDriverCntlrPort = 0;
     public static final byte kOperatorCntlrPort = 1;
     public static final byte
-      kFrontLeftID = 3,
-      kBackLeftID = 4,
-      kFrontRightID = 2,
-      kBackRightID = 1,
       kPigeonID = 5,
       kIntakeWheelsID = 6,
       kIntakeTiltRightID = 7,
@@ -56,33 +50,16 @@ public final class Constants {
     public static final double kSpeedMult = 1;
     public static final double kTurnMult = 0.7;
 
-    // TurnToAngle
-    public static final double kTurnPosTolerance = 0.75; // UNIT: degrees
-    public static final double kTurnVelTolerance = kTurnPosTolerance; // UNIT: degrees/s
-    public static final double kTurnMaxSpeed = 0.3;
-    public static final double
-      kTurnP = 0.018,
-      kTurnI = 0.0006,
-      kTurnD = 0.0045;
-
-    // DriveDistance
-    public static final double kDistPosTolerance = 2; // UNIT: inches
-    public static final double kDistVelTolerance = kDistPosTolerance; // UNIT: inches/s
-    public static final double kDistMaxSpeed = 0.4; // Traction is priority
-    public static final double
-      kDistP = 0.04,
-      kDistI = 0.00003,
-      kDistD = 0.007;
-
     // Charge station balancing
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceSpeed = 0.08;
 
     // WIP: Swerve
-    public static final double kModuleWheelMaxVel = 14; // UNIT: meters/s
-    public static final double kModuleTurnMaxVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
-    public static final double kModuleTurnMaxAccel = kModuleTurnMaxVel * 3; // UNIT: radians/s/s
+    public static final double kSwerveMaxVel = 14; // UNIT: meters/s
+    public static final double kSwerveMaxTurnVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
+    public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 3; // UNIT: radians/s/s
 
+    // Controllers for drivetrain position change -> velocity
     public static final double
       kXerrP = 0.7,
       kXerrI = 0.4,
@@ -92,7 +69,7 @@ public final class Constants {
       kYerrI = 0.4,
       kYerrD = 0.5;
     public static final double
-      kTerrP = 0.637, // 90 degrees (maximum optimized rotation) is full power
+      kTerrP = 0.637,
       kTerrI = 0.2,
       kTerrD = 0.3;
 

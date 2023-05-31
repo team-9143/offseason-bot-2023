@@ -36,9 +36,9 @@ public class Drivetrain extends SubsystemBase {
   private Drivetrain() {
     setDefaultCommand(run(() -> {
       m_swerve.setDesiredVelocityFieldRelative(
-        -OI.driver_cntlr.getLeftY() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
-        -OI.driver_cntlr.getLeftX() * DrivetrainConstants.kModuleWheelMaxVel * DrivetrainConstants.kSpeedMult,
-        -OI.driver_cntlr.getRightX() * Math.PI
+        -OI.driver_cntlr.getLeftY() * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
+        -OI.driver_cntlr.getLeftX() * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
+        -OI.driver_cntlr.getRightX() * 2*Math.PI * DrivetrainConstants.kTurnMult
       );
     }));
   }

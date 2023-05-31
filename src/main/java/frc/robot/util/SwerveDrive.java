@@ -35,15 +35,17 @@ public class SwerveDrive extends MotorSafety {
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
 
+  // Initialize PID controllers for position change -> velocity calculations
   private static final PIDController x_controller = new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD);
   private static final PIDController y_controller = new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD);
-  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxAccel));
+  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnAccel));
   static {
-    x_controller.setIntegratorRange(-DrivetrainConstants.kModuleWheelMaxVel, DrivetrainConstants.kModuleWheelMaxVel);
-    y_controller.setIntegratorRange(-DrivetrainConstants.kModuleWheelMaxVel, DrivetrainConstants.kModuleWheelMaxVel);
-    theta_controller.setIntegratorRange(-DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxVel);
+    x_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
+    y_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
+    theta_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
   }
 
+  // Initiliaze holonomic controller for trajectory following
   private static final HolonomicDriveController m_controller = new HolonomicDriveController(x_controller, y_controller, theta_controller);
   static {
     m_controller.setTolerance(new Pose2d(DrivetrainConstants.kLinearPosTolerance, DrivetrainConstants.kLinearPosTolerance, Rotation2d.fromDegrees(DrivetrainConstants.kAngularPosTolerance)));
@@ -87,7 +89,7 @@ public class SwerveDrive extends MotorSafety {
     }
 
     // Calculate and set speeds for swerve modules
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DrivetrainConstants.kModuleWheelMaxVel);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DrivetrainConstants.kSwerveMaxVel);
     modules[0].desiredStateDrive(desiredStates[0]);
     modules[1].desiredStateDrive(desiredStates[1]);
     modules[2].desiredStateDrive(desiredStates[2]);

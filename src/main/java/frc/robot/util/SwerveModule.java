@@ -63,7 +63,7 @@ public class SwerveModule {
     drive_encoder.setMeasurementPeriod(20);
     drive_encoder.setPosition(0);
 
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kModuleTurnMaxVel, DrivetrainConstants.kModuleTurnMaxVel);
+    angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
     angle_controller.enableContinuousInput(-90, 90);
     angle_controller.setSetpoint(0);
   }
@@ -86,12 +86,12 @@ public class SwerveModule {
    */
   protected void desiredStateDrive(SwerveModuleState desired) {
     // Do not rotate if speed is less than 1%. Prevents jittering.
-    if (desired.speedMetersPerSecond <= DrivetrainConstants.kModuleWheelMaxVel * 0.01) {return;}
+    if (desired.speedMetersPerSecond <= DrivetrainConstants.kSwerveMaxVel * 0.01) {return;}
 
     desired = SwerveModuleState.optimize(desired, Rotation2d.fromDegrees(getAngle()));
     // TODO: Use feedback controller for desired velocity
     drive(
-      Math.max(-1, Math.min(desired.speedMetersPerSecond / DrivetrainConstants.kModuleWheelMaxVel, 1)),
+      Math.max(-1, Math.min(desired.speedMetersPerSecond / DrivetrainConstants.kSwerveMaxVel, 1)),
       angle_controller.calculate(getAngle(), desired.angle.getDegrees())
     );
   }

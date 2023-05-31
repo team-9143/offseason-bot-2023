@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeTilt;
-import frc.robot.commands.TurnToAngle;
+// import frc.robot.commands.TurnToAngle;
 import frc.robot.shuffleboard.ShuffleboardManager;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.stop();
-    TurnToAngle.m_enabled = false;
+    // TurnToAngle.m_enabled = false;
   }
 
   @Override

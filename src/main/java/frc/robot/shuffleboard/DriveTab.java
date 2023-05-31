@@ -12,7 +12,7 @@ import java.util.Map;
 import frc.robot.subsystems.IntakeTilt;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.autos.AutoSelector;
-import frc.robot.commands.TurnToAngle;
+// import frc.robot.commands.TurnToAngle;
 
 import frc.robot.OI;
 
@@ -88,7 +88,7 @@ public class DriveTab implements ShuffleboardTabBase {
     }).withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 180, "show tick mark ring", true));
 
-    layout_1.addBoolean("TurnToAngle Enabled", () -> TurnToAngle.m_enabled)
+    layout_1.addBoolean("TurnToAngle Enabled", () -> false)
       .withWidget(BuiltInWidgets.kBooleanBox);
   }
 
