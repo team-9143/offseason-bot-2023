@@ -80,11 +80,15 @@ public class SwerveDrive extends MotorSafety {
   public void update() {
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
-      // Rotation aspect of desired pose should be an angle pointing from origin to pose
+      // As far as I can guess, rotation aspect of desired pose should be an angle pointing from robot to pose
       desiredStates = kinematics.toSwerveModuleStates(m_controller.calculate(
         odometry.getEstimatedPosition(),
-        new Pose2d(desiredPose.getTranslation(), new Rotation2d(desiredPose.getX(), desiredPose.getY())),
-        desiredLinearVelocity, desiredPose.getRotation()
+        new Pose2d(desiredPose.getTranslation(), new Rotation2d(
+          desiredPose.getX()-odometry.getEstimatedPosition().getX(),
+          desiredPose.getY()-odometry.getEstimatedPosition().getY()
+        )),
+        desiredLinearVelocity,
+        desiredPose.getRotation()
       ));
     }
 
