@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 import frc.robot.subsystems.Drivetrain;
 
@@ -112,6 +113,27 @@ public final class AutoSelector {
       Tertiaries.getTertiary(tertiary)
         .raceWith(new RunCommand(Drivetrain::stop, Drivetrain.getInstance())),
       Endings.getEnding(ending, body)
+    );
+  }
+
+  /**
+   * Utility command to drive to a position, relative to the robot's starting position.
+   *
+   * @param forward forward distance (UNIT: meters)
+   * @param left left distance (UNIT: meters)
+   * @param ccw ccw-positive angle (UNIT: degrees)
+   * @param FFspd desired linear velocity for feedforward calculation
+   * @return a command that ends when the robot is at the given position
+   */
+  public static Command getMoveCommand(double forward, double left, double ccw, double FFspd) {
+    var sDrivetrain = Drivetrain.getInstance();
+
+    return new FunctionalCommand(
+      () -> {},
+      () -> sDrivetrain.driveToLocation(forward, left, ccw, FFspd),
+      interrupted -> Drivetrain.stop(),
+      () -> sDrivetrain.atReference(),
+      sDrivetrain
     );
   }
 }
