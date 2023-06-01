@@ -114,6 +114,7 @@ public class SwerveModule {
   public void stopMotor() {
     drive_motor.stopMotor();
     angle_motor.stopMotor();
-    // TODO: implement PID disabling on stop
+
+    angle_controller.reset();
   }
 }
