@@ -119,7 +119,7 @@ public class Drivetrain extends SubsystemBase {
           if (angle > DrivetrainConstants.kBalanceTolerance && Math.abs(angle - prevAngle) < 3) {
             driveFieldRelativeVelocity(angle % 360 < 180 ? -DrivetrainConstants.kBalanceSpeed : DrivetrainConstants.kBalanceSpeed, 0, 0);
           } else {
-            Drivetrain.stop();
+            stop();
           }
         }
       }
