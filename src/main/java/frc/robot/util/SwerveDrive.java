@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
+// TODO: Add x-configuration
 /** Controls a set of four {@link SwerveModule SwerveModules}. Protected by {@link MotorSafety}. */
 public class SwerveDrive extends MotorSafety {
   public final SwerveModule[] modules;

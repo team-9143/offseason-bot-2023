@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.IntegerPublisher;
 
+// TODO: Limelight vision adjustments
 /** Contains limelight getters and setters. */
 public class Limelight {
   private Limelight() {}
