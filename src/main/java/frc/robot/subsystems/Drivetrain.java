@@ -117,7 +117,7 @@ public class Drivetrain extends SubsystemBase {
           double angle = ((Math.abs(OI.pigeon.getYaw() % 180) - 90) <= 45) ? OI.pigeon.getRoll() : OI.pigeon.getPitch();
 
           if (angle > DrivetrainConstants.kBalanceTolerance && Math.abs(angle - prevAngle) < 3) {
-            driveFieldRelativeVelocity(angle % 360 < 180 ? -DrivetrainConstants.kBalanceSpeed : DrivetrainConstants.kBalanceSpeed, 0, 0);
+            driveFieldRelativeVelocity(angle % 360 < 180 ? -DrivetrainConstants.kBalanceVel : DrivetrainConstants.kBalanceVel, 0, 0);
           } else {
             stop();
           }
