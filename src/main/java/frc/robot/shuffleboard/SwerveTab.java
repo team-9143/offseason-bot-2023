@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
-/** Contains data about each desired swerve module state. Requires a decent amount of processing power. */
+/** Contains data about each desired swerve module state. Requires a decent amount of processing. */
 public class SwerveTab implements ShuffleboardTabBase {
   private final ShuffleboardTab swerve_tab;
   private final Drivetrain sDrivetrain = Drivetrain.getInstance();

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeTilt;
-// import frc.robot.commands.TurnToAngle;
 import frc.robot.shuffleboard.ShuffleboardManager;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
@@ -44,7 +43,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.stop();
-    // TurnToAngle.m_enabled = false;
   }
 
   @Override
@@ -54,8 +52,10 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // Reset yaw for autons
     m_autonomousCommand = AutoSelector.getAuto()
-      .beforeStarting(() -> OI.pigeon.setYaw(0))
-      .andThen(() -> OI.pigeon.setYaw(OI.pigeon.getYaw() + 180));
+      .beforeStarting(() -> {
+        OI.pigeon.setYaw(180);
+        Drivetrain.getInstance().resetPosition(0, 0, 180);
+      });
 
     m_autonomousCommand.schedule();
   }

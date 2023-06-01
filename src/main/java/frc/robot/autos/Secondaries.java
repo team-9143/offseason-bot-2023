@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-// import frc.robot.commands.DriveDistance;
-// import frc.robot.commands.TurnToAngle;
-
 import frc.robot.subsystems.Drivetrain;
 
 /** Contains auton secondaries. */
@@ -26,10 +23,7 @@ public class Secondaries {
       case RETURN_FROM_CONE:
         // If picking up a cone, turn and return to the grid
         if (body == AutoSelector.Body.PICKUP_CONE) {
-          return new SequentialCommandGroup(
-            // new TurnToAngle(0),
-            // new DriveDistance(205)
-          );
+          return AutoSelector.getMoveCommand(0, 0, 180);
         };
 
       case CENTER_ESCAPE:
@@ -48,26 +42,26 @@ public class Secondaries {
 
     return new SequentialCommandGroup(
       // Move back until pitch is less than -10
-      // new FunctionalCommand(
-      //   () -> {},
-      //   () -> sDrivetrain.moveStraight(-0.3),
-      //   interrupted -> {},
-      //   () -> OI.pigeon.getPitch() < -10,
-      //   sDrivetrain
-      // ),
+      new FunctionalCommand(
+        () -> {},
+        () -> sDrivetrain.driveFieldRelativeVelocity(3, 0, 0),
+        interrupted -> {},
+        () -> OI.pigeon.getPitch() < -10,
+        sDrivetrain
+      ),
 
-      // // Move back until pitch is close to flat
-      // new FunctionalCommand(
-      //   () -> {},
-      //   () -> sDrivetrain.moveStraight(-0.3),
-      //   interrupted -> {},
-      //   () -> Math.abs(OI.pigeon.getPitch()) < 2,
-      //   sDrivetrain
-      // ),
+      // Move back until pitch is close to flat
+      new FunctionalCommand(
+        () -> {},
+        () -> sDrivetrain.driveFieldRelativeVelocity(3, 0, 0),
+        interrupted -> {},
+        () -> Math.abs(OI.pigeon.getPitch()) < 2,
+        sDrivetrain
+      ),
 
-      // new RunCommand(() -> sDrivetrain.moveStraight(-0.45), sDrivetrain).withTimeout(0.1),
+      new RunCommand(() -> sDrivetrain.driveFieldRelativeVelocity(4.5, 0, 0), sDrivetrain).withTimeout(0.1),
 
-      // new RunCommand(() -> sDrivetrain.moveStraight(0.45), sDrivetrain).withTimeout(1.5)
+      new RunCommand(() -> sDrivetrain.driveFieldRelativeVelocity(-4.5, 0, 0), sDrivetrain).withTimeout(1.5)
     );
   }
 }

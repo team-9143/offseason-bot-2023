@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-// import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Drivetrain;
 
 /** Contains auton endings. */
@@ -24,10 +23,10 @@ public class Endings {
     switch (end) {
       case TURN_AWAY:
         // Turn to face away from the drive station
-        // return new TurnToAngle(180);
+        return AutoSelector.getMoveCommand(0, 0, 0, 0);
       case TURN_CLOSE:
         // Turn to face the drive station
-        // return new TurnToAngle(0);
+        return AutoSelector.getMoveCommand(0, 0, 180, 0);
       default:
         return new InstantCommand();
     }

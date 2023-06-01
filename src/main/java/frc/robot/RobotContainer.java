@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.devices.CustomController.btn;
 
@@ -64,15 +63,15 @@ public class RobotContainer {
   }
 
   private void configureDriver() {
-    // final TurnToAngle cTurnToAngle = new TurnToAngle(0);
-
-    // D-pad will turn to the specified angle
-    CommandScheduler.getInstance().getDefaultButtonLoop().bind(() -> {
-      // if (TurnToAngle.m_enabled && OI.driver_cntlr.getPOV(0) != -1) {
-      //   cTurnToAngle.setHeading(OI.driver_cntlr.getPOV(0));
-      //   cTurnToAngle.schedule();
-      // }
-    });
+    // D-pad (hold) will turn to the specified angle
+    new Trigger(() -> OI.driver_cntlr.getPOV(0) != 0)
+      .whileTrue(new FunctionalCommand(
+        () -> {},
+        () -> Drivetrain.getInstance().driveToLocation(0, 0, -OI.driver_cntlr.getPOV(0), 0),
+        interrupted -> Drivetrain.stop(),
+        Drivetrain.getInstance()::atReference,
+        Drivetrain.getInstance()
+      ));
 
     // Button 'A' (hold) will auto-balance
     final Command cBalance = Drivetrain.getInstance().getBalanceCommand();
@@ -87,12 +86,6 @@ public class RobotContainer {
         OI.pigeon.setYaw(0);
         cRumble.schedule();
       }));
-
-    // Button 'Y' will toggle TurnToAngle
-    OI.driver_cntlr.onTrue(btn.Y, () -> {
-      // cTurnToAngle.cancel();
-      // TurnToAngle.m_enabled ^= true;
-    });
   }
 
   private void configureOperator() {

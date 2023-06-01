@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DrivetrainConstants;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -117,7 +118,7 @@ public final class AutoSelector {
   }
 
   /**
-   * Utility command to drive to a position, relative to the robot's starting position.
+   * Utility method that returns a command to drive to a position, relative to the robot's starting position.
    *
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
@@ -126,14 +127,22 @@ public final class AutoSelector {
    * @return a command that ends when the robot is at the given position
    */
   public static Command getMoveCommand(double forward, double left, double ccw, double FFspd) {
-    var sDrivetrain = Drivetrain.getInstance();
-
     return new FunctionalCommand(
       () -> {},
-      () -> sDrivetrain.driveToLocation(forward, left, ccw, FFspd),
+      () -> Drivetrain.getInstance().driveToLocation(forward, left, ccw, FFspd),
       interrupted -> Drivetrain.stop(),
-      () -> sDrivetrain.atReference(),
-      sDrivetrain
+      Drivetrain.getInstance()::atReference,
+      Drivetrain.getInstance()
     );
+  }
+
+  /**
+   * Utility method that returns a command to drive to a position, relative to the robot's starting position.
+   * Uses full speed.
+   *
+   * @see AutoSelector#getMoveCommand
+   */
+  public static Command getMoveCommand(double forward, double left, double ccw) {
+    return getMoveCommand(forward, left, ccw, DrivetrainConstants.kSwerveMaxVel);
   }
 }
