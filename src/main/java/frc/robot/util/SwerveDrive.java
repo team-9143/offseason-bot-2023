@@ -175,6 +175,24 @@ public class SwerveDrive extends MotorSafety {
   /** @return the robot's current location */
   public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
+  /**
+   * Reset the odometry to a given position.
+   *
+   * @param position robot position (UNIT: meters)
+   */
+  public void resetPosition(Pose2d position) {
+    odometry.resetPosition(
+      Rotation2d.fromDegrees(OI.pigeon.getYaw()),
+      new SwerveModulePosition[] {
+        new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
+        new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
+        new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
+        new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
+      },
+      position
+    );
+  }
+
   /** @return {@code true} if location control is on and robot is near desired location */
   public boolean atReference() {return locationControl && m_controller.atReference();}
 

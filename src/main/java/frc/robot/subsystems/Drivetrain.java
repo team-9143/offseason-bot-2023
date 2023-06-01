@@ -80,6 +80,17 @@ public class Drivetrain extends SubsystemBase {
     m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)), FFspd);
   }
 
+  /**
+   * Reset the odometry to a given position.
+   *
+   * @param forward forward distance (UNIT: meters)
+   * @param left left distance (UNIT: meters)
+   * @param ccw counter-clockwise angle (UNIT: degrees)
+   */
+  public void resetPosition(double forward, double left, double ccw) {
+    m_swerve.resetPosition(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)));
+  }
+
   /** @return the estimated pose of the robot */
   public Pose2d getPose() {return m_swerve.getPose();}
 
