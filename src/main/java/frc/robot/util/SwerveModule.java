@@ -72,11 +72,11 @@ public class SwerveModule {
    * Set speed of the swerve module.
    *
    * @param speed module speed [-1.0..1.0]
-   * @param rotation rotation speed [-1.0..1.0]
+   * @param rotation ccw angle (UNIT: degrees)
    */
-  protected void drive(double speed, double rotation) {
+  protected void drive(double speed, double angle) {
     drive_motor.set(speed);
-    angle_motor.set(rotation);
+    angle_motor.set(angle_controller.calculate(getAngle(), angle));
   }
 
   /**
@@ -86,13 +86,16 @@ public class SwerveModule {
    */
   protected void desiredStateDrive(SwerveModuleState desired) {
     // Do not rotate if speed is less than 1%. Prevents jittering.
-    if (desired.speedMetersPerSecond <= DrivetrainConstants.kSwerveMaxVel * 0.01) {return;}
+    if (desired.speedMetersPerSecond <= DrivetrainConstants.kSwerveMaxVel * 0.01) {
+      stopMotor();
+      return;
+    }
 
     desired = SwerveModuleState.optimize(desired, Rotation2d.fromDegrees(getAngle()));
     // TODO: Use feedback controller for desired velocity
     drive(
       Math.max(-1, Math.min(desired.speedMetersPerSecond / DrivetrainConstants.kSwerveMaxVel, 1)),
-      angle_controller.calculate(getAngle(), desired.angle.getDegrees())
+      desired.angle.getDegrees()
     );
   }
 
