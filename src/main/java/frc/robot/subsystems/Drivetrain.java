@@ -96,27 +96,22 @@ public class Drivetrain extends SubsystemBase {
 
   public static void stop() {m_swerve.stopMotor();}
 
-  /** @return an auto-balance command */
+  /** @return an auto-balance command. The robot must be facing in a cardinal direction for this to properly work */
   public Command getBalanceCommand() {
-    return runEnd(
+    return run(
       new Runnable() {
-        private double previousPitch = -OI.pigeon.getPitch();
+        private double prevAngle = ((Math.abs(OI.pigeon.getYaw() % 180) - 90) <= 45) ? OI.pigeon.getRoll() : OI.pigeon.getPitch();
 
         public void run() {
-          // Pitch should increase to the back
-          double pitch = -OI.pigeon.getPitch();
+          double angle = ((Math.abs(OI.pigeon.getYaw() % 180) - 90) <= 45) ? OI.pigeon.getRoll() : OI.pigeon.getPitch();
 
-          if (Math.abs(pitch) > DrivetrainConstants.kBalanceTolerance && Math.abs(pitch - previousPitch) < 3) {
-            driveRobotRelativeVelocity(Math.copySign(DrivetrainConstants.kBalanceSpeed, pitch), 0, 0);
+          if (angle > DrivetrainConstants.kBalanceTolerance && Math.abs(angle - prevAngle) < 3) {
+            driveFieldRelativeVelocity(angle % 360 < 180 ? -DrivetrainConstants.kBalanceSpeed : DrivetrainConstants.kBalanceSpeed, 0, 0);
           } else {
-            // Stop movement on a large pitch change (usually denoting a fall) or when stabilized
-            stop();
+            Drivetrain.stop();
           }
-
-          previousPitch = pitch;
         }
-      },
-      Drivetrain::stop
+      }
     );
   }
 }
