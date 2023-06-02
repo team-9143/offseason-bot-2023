@@ -2,6 +2,7 @@ package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
@@ -23,10 +24,22 @@ public class Endings {
     switch (end) {
       case TURN_AWAY:
         // Turn to face away from the drive station
-        return AutoSelector.getMoveCommand(0, 0, 0, 0);
+        return new FunctionalCommand(
+          () -> {},
+          () -> Drivetrain.getInstance().driveToLocation(Drivetrain.getInstance().getPose().getX(), Drivetrain.getInstance().getPose().getY(), 0, 0),
+          interrupted -> Drivetrain.stop(),
+          Drivetrain.getInstance()::atReference,
+          Drivetrain.getInstance()
+        );
       case TURN_CLOSE:
         // Turn to face the drive station
-        return AutoSelector.getMoveCommand(0, 0, 180, 0);
+        return new FunctionalCommand(
+          () -> {},
+          () -> Drivetrain.getInstance().driveToLocation(Drivetrain.getInstance().getPose().getX(), Drivetrain.getInstance().getPose().getY(), 180, 0),
+          interrupted -> Drivetrain.stop(),
+          Drivetrain.getInstance()::atReference,
+          Drivetrain.getInstance()
+        );
       default:
         return new InstantCommand();
     }

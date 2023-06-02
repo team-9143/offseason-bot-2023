@@ -29,10 +29,10 @@ public class Bodies {
     switch (body) {
       case LONG_ESCAPE:
         // Drive backwards out of the community's longer side
-        return AutoSelector.getMoveCommand(150, 0, 0);
+        return AutoSelector.getMoveCommand(3.81, 0, 0);
       case SHORT_ESCAPE:
         // Drive backwards out of the community's shorter side
-        return AutoSelector.getMoveCommand(90, 0, 0);
+        return AutoSelector.getMoveCommand(2.286, 0, 0);
       case PICKUP_CONE:
         return PickupCone();
       case CENTER_CLIMB:
@@ -47,7 +47,7 @@ public class Bodies {
     Drivetrain sDrivetrain = Drivetrain.getInstance();
 
     return new SequentialCommandGroup(
-      AutoSelector.getMoveCommand(165, 0, 0), // Move near cone
+      AutoSelector.getMoveCommand(4.191, 0, 0), // Move near cone
       new InstantCommand(IntakeWheels::toCone),
 
       new ParallelCommandGroup(
