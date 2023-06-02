@@ -80,9 +80,9 @@ public class Drivetrain extends SubsystemBase {
     m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)), FFspd);
   }
 
-  /** Set the drivetrain to x-configuration. Must be continuously called. */
-  public void toXConfig() {
-    m_swerve.toXConfig();
+  /** Set the drivetrain to x-stance. Must be continuously called. */
+  public void toXStance() {
+    m_swerve.toXStance();
   }
 
   /**

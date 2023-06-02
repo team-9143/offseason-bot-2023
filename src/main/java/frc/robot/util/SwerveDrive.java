@@ -32,10 +32,10 @@ public class SwerveDrive extends MotorSafety {
 
   /** {@code true} if being controlled by a desired location through a {@link HolonomicDriveController}. */
   private boolean locationControl = false;
-  /** {@code true} if being controlled by x-configuration. */
-  private boolean configControl = false;
+  /** {@code true} if being controlled by x-stance. */
+  private boolean stanceControl = false;
 
-  private final SwerveModuleState[] xConfigStates = new SwerveModuleState[] {
+  private final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
     new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
     new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
     new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
@@ -97,14 +97,14 @@ public class SwerveDrive extends MotorSafety {
     });
 
     // If controlled by x-configuration, bypass preventative measures
-    if (configControl) {
-      modules[0].drive(0, SwerveModuleState.optimize(xConfigStates[0], Rotation2d.fromDegrees(modules[0].getAngle())).angle.getDegrees());
-      modules[1].drive(0, SwerveModuleState.optimize(xConfigStates[1], Rotation2d.fromDegrees(modules[1].getAngle())).angle.getDegrees());
-      modules[2].drive(0, SwerveModuleState.optimize(xConfigStates[2], Rotation2d.fromDegrees(modules[2].getAngle())).angle.getDegrees());
-      modules[3].drive(0, SwerveModuleState.optimize(xConfigStates[3], Rotation2d.fromDegrees(modules[3].getAngle())).angle.getDegrees());
+    if (stanceControl) {
+      modules[0].drive(0, SwerveModuleState.optimize(xStanceStates[0], Rotation2d.fromDegrees(modules[0].getAngle())).angle.getDegrees());
+      modules[1].drive(0, SwerveModuleState.optimize(xStanceStates[1], Rotation2d.fromDegrees(modules[1].getAngle())).angle.getDegrees());
+      modules[2].drive(0, SwerveModuleState.optimize(xStanceStates[2], Rotation2d.fromDegrees(modules[2].getAngle())).angle.getDegrees());
+      modules[3].drive(0, SwerveModuleState.optimize(xStanceStates[3], Rotation2d.fromDegrees(modules[3].getAngle())).angle.getDegrees());
 
       // Reset configControl to require continuous calls to toXConfig()
-      configControl = false;
+      stanceControl = false;
       return;
     }
 
@@ -194,9 +194,9 @@ public class SwerveDrive extends MotorSafety {
     feed();
   }
 
-  /** Sets the module to an x-configuration to maximize friction. */
-  public void toXConfig() {
-    configControl = true;
+  /** Sets the module to an x-stance to maximize brake force. */
+  public void toXStance() {
+    stanceControl = true;
     locationControl = false;
 
     feed();

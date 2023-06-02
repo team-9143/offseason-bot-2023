@@ -88,9 +88,9 @@ public class RobotContainer {
       }));
 
     // Button 'Y' (hold) will set drivetrain to x-configuration
-    final Command cXConfig = new RunCommand(Drivetrain.getInstance()::toXConfig, Drivetrain.getInstance());
-    OI.driver_cntlr.onTrue(btn.Y, cXConfig::schedule);
-    OI.driver_cntlr.onFalse(btn.Y, cXConfig::cancel);
+    final Command cXStance = new RunCommand(Drivetrain.getInstance()::toXStance, Drivetrain.getInstance());
+    OI.driver_cntlr.onTrue(btn.Y, cXStance::schedule);
+    OI.driver_cntlr.onFalse(btn.Y, cXStance::cancel);
   }
 
   private void configureOperator() {
