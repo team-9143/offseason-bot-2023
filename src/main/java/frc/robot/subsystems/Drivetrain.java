@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.DeviceConstants;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import java.lang.Runnable;
 
 import frc.robot.util.SwerveDrive;
 
@@ -112,20 +112,32 @@ public class Drivetrain extends SubsystemBase {
 
   public static void stop() {m_swerve.stopMotor();}
 
-  /** @return an auto-balance command. The robot must be facing in a cardinal direction for this to properly work */
+  /** @return an auto-balance command. Works in any direction */
   public Command getBalanceCommand() {
-    return run(
-      new Runnable() {
-        private double prevAngle = ((Math.abs(OI.pigeon.getYaw() % 180) - 90) <= 45) ? OI.pigeon.getRoll() : OI.pigeon.getPitch();
+    return run(() -> {
+        double angle = Math.hypot(OI.pigeon.getPitch(), OI.pigeon.getRoll());
 
-        public void run() {
-          double angle = ((Math.abs(OI.pigeon.getYaw() % 180) - 90) <= 45) ? OI.pigeon.getRoll() : OI.pigeon.getPitch();
-
-          if (angle > DrivetrainConstants.kBalanceTolerance && Math.abs(angle - prevAngle) < 3) {
-            driveFieldRelativeVelocity(angle % 360 < 180 ? -DrivetrainConstants.kBalanceVel : DrivetrainConstants.kBalanceVel, 0, 0);
+        if (angle > DrivetrainConstants.kBalanceTolerance) {
+          // Calculate field-relative direction of movement based on yaw
+          double sign;
+          double yaw = MathUtil.inputModulus(OI.pigeon.getYaw(), 0, 360);
+          if (yaw <= 90) {
+            // 0-90: negative pitch, negative roll
+            sign = (OI.pigeon.getPitch() > DrivetrainConstants.kBalanceTolerance) ? -OI.pigeon.getPitch() : -OI.pigeon.getRoll();
+          } else if (yaw <= 180) {
+            // 90-180: positive pitch, negative roll
+            sign = (OI.pigeon.getPitch() > DrivetrainConstants.kBalanceTolerance) ? OI.pigeon.getPitch() : -OI.pigeon.getRoll();
+          } else if (yaw <= 270) {
+            // 180-270: positive pitch, positive roll
+            sign = (OI.pigeon.getPitch() > DrivetrainConstants.kBalanceTolerance) ? OI.pigeon.getPitch() : OI.pigeon.getRoll();
           } else {
-            stop();
+            // 270-360: negative pitch, positive roll
+            sign = (OI.pigeon.getPitch() > DrivetrainConstants.kBalanceTolerance) ? -OI.pigeon.getPitch() : OI.pigeon.getRoll();
           }
+
+          driveFieldRelativeVelocity(Math.copySign(DrivetrainConstants.kBalanceVel, sign), 0, 0);
+        } else {
+          stop();
         }
       }
     );

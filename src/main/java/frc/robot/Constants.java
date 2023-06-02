@@ -52,7 +52,7 @@ public final class Constants {
 
     // Charge station balancing
     public static final double kBalanceTolerance = 2; // UNIT: degrees
-    public static final double kBalanceVel = 0.1; // UNIT: meters/s
+    public static final double kBalanceVel = 1; // UNIT: meters/s
 
     // WIP: Swerve
     public static final double kSwerveMaxVel = 14; // UNIT: meters/s
