@@ -46,9 +46,9 @@ public class SwerveDrive extends MotorSafety {
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
 
   // Initialize PID controllers for position change -> velocity calculations
-  private static final PIDController x_controller = new PIDController(DrivetrainConstants.kXerrP, DrivetrainConstants.kXerrI, DrivetrainConstants.kXerrD);
-  private static final PIDController y_controller = new PIDController(DrivetrainConstants.kYerrP, DrivetrainConstants.kYerrI, DrivetrainConstants.kYerrD);
-  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kTerrP, DrivetrainConstants.kTerrI, DrivetrainConstants.kTerrD, new Constraints(DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnAccel));
+  private static final PIDController x_controller = new PIDController(DrivetrainConstants.kLinearP, DrivetrainConstants.kLinearI, DrivetrainConstants.kLinearD);
+  private static final PIDController y_controller = new PIDController(DrivetrainConstants.kLinearP, DrivetrainConstants.kLinearI, DrivetrainConstants.kLinearD);
+  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kAngularP, DrivetrainConstants.kAngularI, DrivetrainConstants.kAngularD, new Constraints(DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnAccel));
   static {
     x_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
     y_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);

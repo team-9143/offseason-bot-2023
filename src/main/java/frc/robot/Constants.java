@@ -61,17 +61,13 @@ public final class Constants {
 
     // Controllers for drivetrain position change -> velocity
     public static final double
-      kXerrP = 0.7,
-      kXerrI = 0.4,
-      kXerrD = 0.5;
+      kLinearP = 0.7,
+      kLinearI = 0.4,
+      kLinearD = 0.5;
     public static final double
-      kYerrP = 0.7,
-      kYerrI = 0.4,
-      kYerrD = 0.5;
-    public static final double
-      kTerrP = 0.637,
-      kTerrI = 0.2,
-      kTerrD = 0.3;
+      kAngularP = 0.637,
+      kAngularI = 0.2,
+      kAngularD = 0.3;
 
     // Drivetrain location control tolerance
     public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
