@@ -17,7 +17,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
-// TODO: Add x-configuration
 /** Controls a set of four {@link SwerveModule SwerveModules}. Protected by {@link MotorSafety}. */
 public class SwerveDrive extends MotorSafety {
   public final SwerveModule[] modules;
@@ -96,14 +95,14 @@ public class SwerveDrive extends MotorSafety {
       new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
     });
 
-    // If controlled by x-configuration, bypass preventative measures
+    // If controlled by x-stance, bypass preventative measures
     if (stanceControl) {
       modules[0].drive(0, SwerveModuleState.optimize(xStanceStates[0], Rotation2d.fromDegrees(modules[0].getAngle())).angle.getDegrees());
       modules[1].drive(0, SwerveModuleState.optimize(xStanceStates[1], Rotation2d.fromDegrees(modules[1].getAngle())).angle.getDegrees());
       modules[2].drive(0, SwerveModuleState.optimize(xStanceStates[2], Rotation2d.fromDegrees(modules[2].getAngle())).angle.getDegrees());
       modules[3].drive(0, SwerveModuleState.optimize(xStanceStates[3], Rotation2d.fromDegrees(modules[3].getAngle())).angle.getDegrees());
 
-      // Reset configControl to require continuous calls to toXConfig()
+      // Reset stanceControl to require continuous calls to toXStance()
       stanceControl = false;
       return;
     }
