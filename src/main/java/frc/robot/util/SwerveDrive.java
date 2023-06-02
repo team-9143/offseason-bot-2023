@@ -32,6 +32,15 @@ public class SwerveDrive extends MotorSafety {
 
   /** {@code true} if being controlled by a desired location through a {@link HolonomicDriveController}. */
   private boolean locationControl = false;
+  /** {@code true} if being controlled by x-configuration. */
+  private boolean configControl = false;
+
+  private final SwerveModuleState[] xConfigStates = new SwerveModuleState[] {
+    new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(135))
+  };
 
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
@@ -79,6 +88,26 @@ public class SwerveDrive extends MotorSafety {
 
   /** Updates the drivetrain with desired speeds, and recalculates odometry. Should be called every robot loop. */
   public void update() {
+    // Update odometry
+    odometry.update(Rotation2d.fromDegrees(OI.pigeon.getYaw()), new SwerveModulePosition[] {
+      new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
+      new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
+      new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
+      new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
+    });
+
+    // If controlled by x-configuration, bypass preventative measures
+    if (configControl) {
+      modules[0].drive(0, SwerveModuleState.optimize(xConfigStates[0], Rotation2d.fromDegrees(modules[0].getAngle())).angle.getDegrees());
+      modules[1].drive(0, SwerveModuleState.optimize(xConfigStates[1], Rotation2d.fromDegrees(modules[1].getAngle())).angle.getDegrees());
+      modules[2].drive(0, SwerveModuleState.optimize(xConfigStates[2], Rotation2d.fromDegrees(modules[2].getAngle())).angle.getDegrees());
+      modules[3].drive(0, SwerveModuleState.optimize(xConfigStates[3], Rotation2d.fromDegrees(modules[3].getAngle())).angle.getDegrees());
+
+      // Reset configControl to require continuous calls to toXConfig()
+      configControl = false;
+      return;
+    }
+
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
       // As far as I can guess, rotation aspect of desired pose should be an angle pointing from robot to pose
@@ -99,14 +128,6 @@ public class SwerveDrive extends MotorSafety {
     modules[1].desiredStateDrive(desiredStates[1]);
     modules[2].desiredStateDrive(desiredStates[2]);
     modules[3].desiredStateDrive(desiredStates[3]);
-
-    // Update odometry
-    odometry.update(Rotation2d.fromDegrees(OI.pigeon.getYaw()), new SwerveModulePosition[] {
-      new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
-      new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
-      new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
-      new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
-    });
   }
 
   /**
@@ -173,8 +194,13 @@ public class SwerveDrive extends MotorSafety {
     feed();
   }
 
-  /** @return the robot's current location */
-  public Pose2d getPose() {return odometry.getEstimatedPosition();}
+  /** Sets the module to an x-configuration to maximize friction. */
+  public void toXConfig() {
+    configControl = true;
+    locationControl = false;
+
+    feed();
+  }
 
   /**
    * Reset the odometry to a given position.
@@ -193,6 +219,9 @@ public class SwerveDrive extends MotorSafety {
       position
     );
   }
+
+  /** @return the robot's current location */
+  public Pose2d getPose() {return odometry.getEstimatedPosition();}
 
   /** @return {@code true} if location control is on and robot is near desired location */
   public boolean atReference() {return locationControl && m_controller.atReference();}

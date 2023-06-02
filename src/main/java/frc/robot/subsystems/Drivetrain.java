@@ -47,7 +47,7 @@ public class Drivetrain extends SubsystemBase {
   public void updateSwerve() {m_swerve.update();}
 
   /**
-   * Drive based on field relative velocities.
+   * Drive based on field relative velocities. Must be continuously called.
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
@@ -58,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Drive based on robot relative velocities.
+   * Drive based on robot relative velocities. Must be continuously called.
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
@@ -69,7 +69,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Drive to a position, relative to the robot's starting position.
+   * Drive to a position, relative to the robot's starting position. Must be continuously called.
    *
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
@@ -78,6 +78,11 @@ public class Drivetrain extends SubsystemBase {
    */
   public void driveToLocation(double forward, double left, double ccw, double FFspd) {
     m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)), FFspd);
+  }
+
+  /** Set the drivetrain to x-configuration. Must be continuously called. */
+  public void toXConfig() {
+    m_swerve.toXConfig();
   }
 
   /**

@@ -86,6 +86,11 @@ public class RobotContainer {
         OI.pigeon.setYaw(0);
         cRumble.schedule();
       }));
+
+    // Button 'Y' (hold) will set drivetrain to x-configuration
+    final Command cXConfig = new RunCommand(Drivetrain.getInstance()::toXConfig, Drivetrain.getInstance());
+    OI.driver_cntlr.onTrue(btn.Y, cXConfig::schedule);
+    OI.driver_cntlr.onFalse(btn.Y, cXConfig::cancel);
   }
 
   private void configureOperator() {
