@@ -64,7 +64,7 @@ public class SwerveModule {
     drive_encoder.setPosition(0);
 
     angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
-    angle_controller.enableContinuousInput(-90, 90);
+    angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
   }
 
