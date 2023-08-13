@@ -31,15 +31,6 @@ public class SwerveDrive extends MotorSafety {
 
   /** {@code true} if being controlled by a desired location through a {@link HolonomicDriveController}. */
   private boolean locationControl = false;
-  /** {@code true} if being controlled by x-stance. */
-  private boolean stanceControl = false;
-
-  private final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
-    new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-    new SwerveModuleState(0, Rotation2d.fromDegrees(135))
-  };
 
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
@@ -94,18 +85,6 @@ public class SwerveDrive extends MotorSafety {
       new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
       new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
     });
-
-    // If controlled by x-stance, bypass preventative measures
-    if (stanceControl) {
-      modules[0].drive(0, SwerveModuleState.optimize(xStanceStates[0], Rotation2d.fromDegrees(modules[0].getAngle())).angle.getDegrees());
-      modules[1].drive(0, SwerveModuleState.optimize(xStanceStates[1], Rotation2d.fromDegrees(modules[1].getAngle())).angle.getDegrees());
-      modules[2].drive(0, SwerveModuleState.optimize(xStanceStates[2], Rotation2d.fromDegrees(modules[2].getAngle())).angle.getDegrees());
-      modules[3].drive(0, SwerveModuleState.optimize(xStanceStates[3], Rotation2d.fromDegrees(modules[3].getAngle())).angle.getDegrees());
-
-      // Reset stanceControl to require continuous calls to toXStance()
-      stanceControl = false;
-      return;
-    }
 
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
@@ -189,14 +168,6 @@ public class SwerveDrive extends MotorSafety {
       theta_controller.reset(odometry.getEstimatedPosition().getRotation().getRadians());
     }
     locationControl = true;
-
-    feed();
-  }
-
-  /** Sets the module to an x-stance to maximize brake force. */
-  public void toXStance() {
-    stanceControl = true;
-    locationControl = false;
 
     feed();
   }

@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 // TODO: Tune/measure and fix all swerve constants
 /**
@@ -73,6 +75,14 @@ public final class Constants {
       kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3)),
       kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
       kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3));
+
+    public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
+      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(135))
+    };
+  }
 
   public static class IntakeConstants {
     public static final double kTiltMaxSpeed = 0.45;

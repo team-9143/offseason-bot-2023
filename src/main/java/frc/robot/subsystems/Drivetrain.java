@@ -82,7 +82,12 @@ public class Drivetrain extends SubsystemBase {
 
   /** Set the drivetrain to x-stance. Must be continuously called. */
   public void toXStance() {
-    m_swerve.toXStance();
+    m_swerve.setDesiredStates(
+      SwerveConstants.xStanceStates[0],
+      SwerveConstants.xStanceStates[1],
+      SwerveConstants.xStanceStates[2],
+      SwerveConstants.xStanceStates[3]
+    );
   }
 
   /**
