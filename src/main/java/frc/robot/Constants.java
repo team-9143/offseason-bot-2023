@@ -36,13 +36,6 @@ public final class Constants {
       kIntakeWheelsID = 6,
       kIntakeTiltRightID = 7,
       kIntakeTiltLeftID = 8;
-
-    // WIP: Swerve
-    public static final SwerveModuleConstants
-      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3));
   }
 
   public static class DrivetrainConstants {
@@ -73,6 +66,13 @@ public final class Constants {
     public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
     public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
   }
+
+  public static class SwerveConstants {
+    public static final SwerveModuleConstants
+      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
+      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3));
 
   public static class IntakeConstants {
     public static final double kTiltMaxSpeed = 0.45;

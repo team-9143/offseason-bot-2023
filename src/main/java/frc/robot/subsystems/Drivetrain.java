@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
-import frc.robot.Constants.DeviceConstants;
+import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -27,10 +27,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public static final SwerveDrive m_swerve = new SwerveDrive(
-    DeviceConstants.kSwerve_fl,
-    DeviceConstants.kSwerve_fr,
-    DeviceConstants.kSwerve_bl,
-    DeviceConstants.kSwerve_br
+    SwerveConstants.kSwerve_fl,
+    SwerveConstants.kSwerve_fr,
+    SwerveConstants.kSwerve_bl,
+    SwerveConstants.kSwerve_br
   );
 
   private Drivetrain() {
