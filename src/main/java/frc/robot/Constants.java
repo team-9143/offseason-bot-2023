@@ -24,7 +24,6 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
-    // WIP: Swerve
     public static final double kSwerveTurnGearbox = 7/150.0;
     public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
@@ -49,7 +48,6 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
-    // WIP: Swerve
     public static final double kSwerveMaxVel = 14; // UNIT: meters/s
     public static final double kSwerveMaxTurnVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
     public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 3; // UNIT: radians/s/s
@@ -71,10 +69,10 @@ public final class Constants {
 
   public static class SwerveConstants {
     public static final SwerveModuleConstants
-      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3)),
-      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3));
+      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
+      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
+      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
+      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3));
 
     public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
       new SwerveModuleState(0, Rotation2d.fromDegrees(135)),

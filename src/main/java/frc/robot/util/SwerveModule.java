@@ -24,6 +24,7 @@ public class SwerveModule {
     public final Translation2d location;
 
     public final PIDController angle_controller;
+    public final PIDController speed_controller;
 
     /**
      * @param drive_ID driving motor ID (brushless NEO)
@@ -31,13 +32,15 @@ public class SwerveModule {
      * @param cancoder_ID cancoder ID
      * @param location location of the wheel relative to the physical center of the robot (UNIT: meters)
      * @param angle_controller PID controller for the the module angle
+     * @param speed_controller PID controller for the the wheel speed
      */
-    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, Translation2d location, PIDController angle_controller) {
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, Translation2d location, PIDController angle_controller, PIDController speed_controller) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
       this.location = location;
       this.angle_controller = angle_controller;
+      this.speed_controller = speed_controller;
     }
   }
 
@@ -47,6 +50,7 @@ public class SwerveModule {
   private final RelativeEncoder drive_encoder;
 
   private final PIDController angle_controller;
+  private final PIDController speed_controller;
 
   protected SwerveModule(SwerveModuleConstants constants) {
     drive_motor = new CANSparkMax(constants.drive_ID, CANSparkMax.MotorType.kBrushless);
@@ -54,6 +58,7 @@ public class SwerveModule {
     cancoder = new CANCoder(constants.cancoder_ID);
     drive_encoder = drive_motor.getEncoder();
     angle_controller = constants.angle_controller;
+    speed_controller = constants.speed_controller;
 
     cancoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     cancoder.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_20Ms);
@@ -66,6 +71,9 @@ public class SwerveModule {
     angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
+
+    speed_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
+    speed_controller.setSetpoint(0);
   }
 
   /**
@@ -86,11 +94,15 @@ public class SwerveModule {
    */
   protected void desiredStateDrive(SwerveModuleState desired) {
     desired = SwerveModuleState.optimize(desired, Rotation2d.fromDegrees(getAngle()));
-    // TODO: Use feedback controller for desired velocity
-    drive(
-      Math.max(-1, Math.min(desired.speedMetersPerSecond / DrivetrainConstants.kSwerveMaxVel, 1)),
-      desired.angle.getDegrees()
-    );
+    if (desired.speedMetersPerSecond == 0) {
+      speed_controller.reset();
+      drive(0, desired.angle.getDegrees());
+    } else {
+      drive(
+        speed_controller.calculate(getVelocity(), desired.speedMetersPerSecond),
+        desired.angle.getDegrees()
+      );
+    }
   }
 
   /** @return the angle of the module (UNIT: degrees) */
@@ -113,5 +125,6 @@ public class SwerveModule {
     angle_motor.stopMotor();
 
     angle_controller.reset();
+    speed_controller.reset();
   }
 }
