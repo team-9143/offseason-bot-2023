@@ -84,13 +84,13 @@ public class SwerveModule {
   }
 
   /**
-   * Set speed of the swerve module.
+   * Calculate and set swerve module speed.
    *
-   * @param speed module speed [-1.0..1.0]
+   * @param speed module speed (UNIT: meters/s)
    * @param rotation ccw angle (UNIT: degrees)
    */
   protected void drive(double speed, double angle) {
-    drive_motor.set(speed);
+    drive_motor.set(speed_controller.calculate(getVelocity(), speed));
     angle_motor.set(angle_controller.calculate(getAngle(), angle));
   }
 
@@ -101,15 +101,10 @@ public class SwerveModule {
    */
   protected void desiredStateDrive(SwerveModuleState desired) {
     desired = SwerveModuleState.optimize(desired, Rotation2d.fromDegrees(getAngle()));
-    if (desired.speedMetersPerSecond == 0) {
-      speed_controller.reset();
-      drive(0, desired.angle.getDegrees());
-    } else {
-      drive(
-        speed_controller.calculate(getVelocity(), desired.speedMetersPerSecond),
-        desired.angle.getDegrees()
-      );
-    }
+    drive(
+      desired.speedMetersPerSecond,
+      desired.angle.getDegrees()
+    );
   }
 
   /** @return the angle of the module (UNIT: degrees) */
