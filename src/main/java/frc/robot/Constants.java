@@ -52,7 +52,7 @@ public final class Constants {
     public static final double kSwerveMaxTurnVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
     public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 3; // UNIT: radians/s/s
 
-    // Controllers for drivetrain position change -> velocity
+    // Controllers for drivetrain position error -> velocity
     public static final double
       kLinearP = 0.7,
       kLinearI = 0.4,

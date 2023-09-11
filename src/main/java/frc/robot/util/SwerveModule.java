@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
@@ -60,18 +61,24 @@ public class SwerveModule {
     angle_controller = constants.angle_controller;
     speed_controller = constants.speed_controller;
 
-    cancoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+    // Set up cancoder
+    cancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360); // Set range [0..360]
+    cancoder.configSensorDirection(true); // Set counterclockwise
+    cancoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition); // Set absolute
     cancoder.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_20Ms);
 
+    // Set up drive encoder units
     drive_encoder.setPositionConversionFactor(PhysConstants.kSwerveWheelGearbox * PhysConstants.kSwerveWheelCircumference); // UNIT: meters
     drive_encoder.setVelocityConversionFactor(PhysConstants.kSwerveWheelGearbox * PhysConstants.kSwerveWheelCircumference / 60); // UNIT: meters/s
     drive_encoder.setMeasurementPeriod(20);
     drive_encoder.setPosition(0);
 
+    // Set up rotational PID controller
     angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
 
+    // Set up speed PID controller
     speed_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
     speed_controller.setSetpoint(0);
   }
@@ -88,7 +95,7 @@ public class SwerveModule {
   }
 
   /**
-   * Drive the swerve module based on a desired state.
+   * Drive the swerve module based on a desired angle and speed.
    *
    * @param desired desired state
    */

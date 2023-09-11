@@ -117,13 +117,13 @@ public class Drivetrain extends SubsystemBase {
 
   public static void stop() {m_swerve.stopMotor();}
 
-  /** @return an auto-balance command. Works in any direction */
+  /** @return an auto-balance command. Works in any robot orientation */
   public Command getBalanceCommand() {
     return run(() -> {
         double angle = Math.hypot(OI.pigeon.getPitch(), OI.pigeon.getRoll());
 
         if (angle > DrivetrainConstants.kBalanceTolerance) {
-          // Calculate field-relative direction of movement based on yaw
+          // Calculate field-relative direction of movement based on robot orientation
           double sign;
           double yaw = MathUtil.inputModulus(OI.pigeon.getYaw(), 0, 360);
           if (yaw <= 90) {
