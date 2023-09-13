@@ -49,6 +49,7 @@ public final class Constants {
 
     // TODO: Measure these
     public static final double kSwerveMaxVel = 14; // UNIT: meters/s
+    public static final double kSwerveMaxTurnSpeed = 0.25; // Maximum rotational motor speed
     public static final double kSwerveMaxTurnVel = 100; // UNIT: radians/s
     public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 4; // UNIT: radians/s/s
 

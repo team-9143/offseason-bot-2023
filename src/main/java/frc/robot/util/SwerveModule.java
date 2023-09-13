@@ -97,7 +97,7 @@ public class SwerveModule {
     drive_motor.set(Math.max(-1, Math.min(1,
       speed_controller.calculate(getVelocity(), speed)
     )));
-    angle_motor.set(Math.max(-1, Math.min(1,
+    angle_motor.set(Math.max(-DrivetrainConstants.kSwerveMaxTurnSpeed, Math.min(DrivetrainConstants.kSwerveMaxTurnSpeed,
       angle_controller.calculate(getAngle(), angle)
     )));
   }
