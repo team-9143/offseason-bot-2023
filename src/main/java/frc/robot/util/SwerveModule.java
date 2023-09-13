@@ -88,7 +88,7 @@ public class SwerveModule {
   }
 
   /**
-   * Calculate and set swerve module speed.
+   * Calculate, clamp, and set swerve module speed.
    *
    * @param speed module speed (UNIT: meters/s)
    * @param rotation ccw angle (UNIT: degrees)
