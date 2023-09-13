@@ -29,7 +29,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, -sDrivetrain.getDesiredSpeeds().vxMetersPerSecond)), null);
+        builder.addDoubleProperty("Value", () -> Math.toDegrees(Math.atan2(-sDrivetrain.getDesiredSpeeds().vyMetersPerSecond, sDrivetrain.getDesiredSpeeds().vxMetersPerSecond)), null);
       }
     })
       .withPosition(2, 0)
