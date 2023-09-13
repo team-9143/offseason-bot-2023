@@ -35,10 +35,14 @@ public class Drivetrain extends SubsystemBase {
 
   private Drivetrain() {
     setDefaultCommand(run(() -> {
+      // Field relative control, squaring inputs to increase sensitivity
+      double forward = -OI.driver_cntlr.getLeftY();
+      double left = -OI.driver_cntlr.getLeftX();
+      double ccw = -OI.driver_cntlr.getRightX();
       m_swerve.setDesiredVelocityFieldRelative(
-        -OI.driver_cntlr.getLeftY() * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
-        -OI.driver_cntlr.getLeftX() * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
-        -OI.driver_cntlr.getRightX() * 2*Math.PI * DrivetrainConstants.kTurnMult
+        Math.copySign(forward, forward*forward) * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
+        Math.copySign(left, left*left) * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
+        Math.copySign(ccw, ccw*ccw) * 2*Math.PI * DrivetrainConstants.kTurnMult
       );
     }));
   }
