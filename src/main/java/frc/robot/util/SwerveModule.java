@@ -22,6 +22,7 @@ public class SwerveModule {
     public final byte drive_ID;
     public final byte angle_ID;
     public final byte cancoder_ID;
+    public final double cancoderOffset;
     public final Translation2d location;
 
     public final PIDController angle_controller;
@@ -35,10 +36,11 @@ public class SwerveModule {
      * @param angle_controller PID controller for the the module angle
      * @param speed_controller PID controller for the the wheel speed
      */
-    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, Translation2d location, PIDController angle_controller, PIDController speed_controller) {
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, Translation2d location, PIDController angle_controller, PIDController speed_controller) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
+      this.cancoderOffset = cancoderOffset;
       this.location = location;
       this.angle_controller = angle_controller;
       this.speed_controller = speed_controller;
@@ -48,6 +50,7 @@ public class SwerveModule {
   private final CANSparkMax drive_motor;
   private final CANSparkMax angle_motor;
   private final CANCoder cancoder;
+  private final double cancoderOffset;
   private final RelativeEncoder drive_encoder;
 
   private final PIDController angle_controller;
@@ -57,6 +60,7 @@ public class SwerveModule {
     drive_motor = new CANSparkMax(constants.drive_ID, CANSparkMax.MotorType.kBrushless);
     angle_motor = new CANSparkMax(constants.angle_ID, CANSparkMax.MotorType.kBrushless);
     cancoder = new CANCoder(constants.cancoder_ID);
+    cancoderOffset = constants.cancoderOffset;
     drive_encoder = drive_motor.getEncoder();
     angle_controller = constants.angle_controller;
     speed_controller = constants.speed_controller;
@@ -109,7 +113,7 @@ public class SwerveModule {
 
   /** @return the angle of the module (UNIT: degrees) */
   public double getAngle() {
-    return cancoder.getPosition();
+    return cancoder.getPosition() + cancoderOffset;
   }
 
   /** @return the distance traveled by the module (UNIT: meters) */
