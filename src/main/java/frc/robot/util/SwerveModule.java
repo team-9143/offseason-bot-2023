@@ -33,8 +33,8 @@ public class SwerveModule {
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
      * @param location location of the wheel relative to the physical center of the robot (UNIT: meters)
-     * @param speed_controller PID controller for the the wheel speed
-     * @param angle_controller PID controller for the the module angle
+     * @param speed_controller PID controller to calculate motor speed from velocity error
+     * @param angle_controller PID controller to calculate motor speed from degree error
      */
     public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, Translation2d location, PIDController speed_controller, PIDController angle_controller) {
       this.drive_ID = (byte) drive_ID;
@@ -95,10 +95,10 @@ public class SwerveModule {
    */
   protected void drive(double speed, double angle) {
     drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed) / DrivetrainConstants.kSwerveMaxVel
+      speed_controller.calculate(getVelocity(), speed)
     )));
     angle_motor.set(Math.max(-1, Math.min(1,
-      angle_controller.calculate(getAngle(), angle) / DrivetrainConstants.kSwerveMaxTurnVel
+      angle_controller.calculate(getAngle(), angle)
     )));
   }
 
