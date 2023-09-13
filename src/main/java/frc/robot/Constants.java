@@ -73,26 +73,26 @@ public final class Constants {
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, 0.325,
         new Translation2d(-0.22225, 0.22225),
-        new PIDController(0.9, 0, 0),
-        new PIDController(0.0237, 0, 0)
+        new PIDController(0.07, 0, 0),
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -2.285,
         new Translation2d(0.22225, 0.22225),
         new PIDController(0.9, 0, 0),
-        new PIDController(0.0237, 0, 0)
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, -5.713,
         new Translation2d(-0.22225, -0.22225),
         new PIDController(0.9, 0, 0),
-        new PIDController(0.0237, 0, 0)
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.076,
         new Translation2d(0.22225, -0.22225),
         new PIDController(0.9, 0, 0),
-        new PIDController(0.0237, 0, 0)
+        new PIDController(0.001, 0, 0)
       );
 
     public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
