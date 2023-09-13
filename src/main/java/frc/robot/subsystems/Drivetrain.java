@@ -40,9 +40,9 @@ public class Drivetrain extends SubsystemBase {
       double left = -OI.driver_cntlr.getLeftX();
       double ccw = -OI.driver_cntlr.getRightX();
       m_swerve.setDesiredVelocityFieldRelative(
-        Math.copySign(forward, forward*forward) * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
-        Math.copySign(left, left*left) * DrivetrainConstants.kSwerveMaxVel * DrivetrainConstants.kSpeedMult,
-        Math.copySign(ccw, ccw*ccw) * 2*Math.PI * DrivetrainConstants.kTurnMult
+        Math.copySign(forward*forward, forward) * DrivetrainConstants.kMaxLinearVel * DrivetrainConstants.kSpeedMult,
+        Math.copySign(left*left, left) * DrivetrainConstants.kMaxLinearVel * DrivetrainConstants.kSpeedMult,
+        Math.copySign(ccw*ccw, ccw) * 2*Math.PI * DrivetrainConstants.kTurnMult
       );
     }));
   }
