@@ -48,10 +48,10 @@ public final class Constants {
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
     // TODO: Measure these
-    public static final double kSwerveMaxVel = 14; // UNIT: meters/s
-    public static final double kSwerveMaxTurnSpeed = 0.25; // Maximum rotational motor speed
-    public static final double kSwerveMaxTurnVel = 100; // UNIT: radians/s
-    public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 4; // UNIT: radians/s/s
+    public static final double kMaxSwerveRotate = 0.25; // Maximum rotational motor speed
+    public static final double kMaxLinearVel = 14; // UNIT: meters/s
+    public static final double kMaxTurnVel = 10; // UNIT: radians/s
+    public static final double kMaxTurnAccel = kMaxTurnVel * 4; // UNIT: radians/s/s
 
     // Controllers for drivetrain position error -> velocity
     public static final double

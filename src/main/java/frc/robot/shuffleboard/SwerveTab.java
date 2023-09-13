@@ -41,7 +41,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond / DrivetrainConstants.kSwerveMaxVel, null);
+        builder.addDoubleProperty("Value", () -> sDrivetrain.getDesiredSpeeds().vxMetersPerSecond / DrivetrainConstants.kMaxLinearVel, null);
       }
     }).withPosition(0, 0)
       .withSize(2, 3)
@@ -52,7 +52,7 @@ public class SwerveTab implements ShuffleboardTabBase {
       @Override
       public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond / DrivetrainConstants.kSwerveMaxVel, null);
+        builder.addDoubleProperty("Value", () -> -sDrivetrain.getDesiredSpeeds().vyMetersPerSecond / DrivetrainConstants.kMaxLinearVel, null);
       }
     }).withPosition(0, 3)
       .withSize(3, 1)
@@ -117,6 +117,6 @@ public class SwerveTab implements ShuffleboardTabBase {
 
     layout.addDouble("Speed", () -> Math.abs(sDrivetrain.getDesiredStates()[moduleNum].speedMetersPerSecond))
       .withWidget(BuiltInWidgets.kNumberSlider)
-      .withProperties(Map.of("min", 0, "max", DrivetrainConstants.kSwerveMaxVel));
+      .withProperties(Map.of("min", 0, "max", DrivetrainConstants.kMaxLinearVel));
   }
 }

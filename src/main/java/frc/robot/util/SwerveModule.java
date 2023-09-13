@@ -78,11 +78,11 @@ public class SwerveModule {
     drive_encoder.setPosition(0);
 
     // Set up speed PID controller
-    speed_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
+    speed_controller.setIntegratorRange(-DrivetrainConstants.kMaxLinearVel, DrivetrainConstants.kMaxLinearVel);
     speed_controller.setSetpoint(0);
 
     // Set up rotational PID controller
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel * 180/Math.PI, DrivetrainConstants.kSwerveMaxTurnVel * 180/Math.PI);
+    angle_controller.setIntegratorRange(-DrivetrainConstants.kMaxTurnVel * 180/Math.PI, DrivetrainConstants.kMaxTurnVel * 180/Math.PI);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
   }
@@ -97,7 +97,7 @@ public class SwerveModule {
     drive_motor.set(Math.max(-1, Math.min(1,
       speed_controller.calculate(getVelocity(), speed)
     )));
-    angle_motor.set(Math.max(-DrivetrainConstants.kSwerveMaxTurnSpeed, Math.min(DrivetrainConstants.kSwerveMaxTurnSpeed,
+    angle_motor.set(Math.max(-DrivetrainConstants.kMaxSwerveRotate, Math.min(DrivetrainConstants.kMaxSwerveRotate,
       angle_controller.calculate(getAngle(), angle)
     )));
   }
