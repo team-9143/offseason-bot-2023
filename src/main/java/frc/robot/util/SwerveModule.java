@@ -94,8 +94,12 @@ public class SwerveModule {
    * @param rotation ccw angle (UNIT: degrees)
    */
   protected void drive(double speed, double angle) {
-    drive_motor.set(speed_controller.calculate(getVelocity(), speed));
-    angle_motor.set(angle_controller.calculate(getAngle(), angle));
+    drive_motor.set(Math.max(-1, Math.min(1,
+      speed_controller.calculate(getVelocity(), speed) / DrivetrainConstants.kSwerveMaxVel
+    )));
+    angle_motor.set(Math.max(-1, Math.min(1,
+      angle_controller.calculate(getAngle(), angle) / DrivetrainConstants.kSwerveMaxTurnVel
+    )));
   }
 
   /**
