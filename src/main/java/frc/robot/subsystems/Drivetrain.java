@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     }));
   }
 
-  /** Updates the swerve speeds. Should be called every period. */
+  /** Updates the swerve speeds and odometry. Should be called every period. */
   public void updateSwerve() {m_swerve.update();}
 
   /**

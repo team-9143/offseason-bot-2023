@@ -24,7 +24,6 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
-    public static final double kSwerveTurnGearbox = 7/150.0;
     public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
@@ -48,9 +47,10 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
+    // TODO: Measure these
     public static final double kSwerveMaxVel = 14; // UNIT: meters/s
-    public static final double kSwerveMaxTurnVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
-    public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 3; // UNIT: radians/s/s
+    public static final double kSwerveMaxTurnVel = 100; // UNIT: radians/s
+    public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 4; // UNIT: radians/s/s
 
     // Controllers for drivetrain position error -> velocity
     public static final double
