@@ -69,10 +69,30 @@ public final class Constants {
 
   public static class SwerveConstants {
     public static final SwerveModuleConstants
-      kSwerve_fl = new SwerveModuleConstants(31, 32, 33, new Translation2d(0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
-      kSwerve_fr = new SwerveModuleConstants(41, 42, 43, new Translation2d(0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
-      kSwerve_bl = new SwerveModuleConstants(51, 52, 53, new Translation2d(-0.31115, 0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3)),
-      kSwerve_br = new SwerveModuleConstants(61, 62, 63, new Translation2d(-0.31115, -0.31115), new PIDController(0.637, 0.2, 0.3), new PIDController(0.9, 0.2, 0.3));
+      kSwerve_fl = new SwerveModuleConstants(
+        41, 42, 43,
+        new Translation2d(-0.22225, 0.22225),
+        new PIDController(0.637, 0.2, 0.3),
+        new PIDController(0.9, 0.2, 0.3)
+      ),
+      kSwerve_fr = new SwerveModuleConstants(
+        11, 12, 13,
+        new Translation2d(0.22225, 0.22225),
+        new PIDController(0.637, 0.2, 0.3),
+        new PIDController(0.9, 0.2, 0.3)
+      ),
+      kSwerve_bl = new SwerveModuleConstants(
+        31, 32, 33,
+        new Translation2d(-0.22225, -0.22225),
+        new PIDController(0.637, 0.2, 0.3),
+        new PIDController(0.9, 0.2, 0.3)
+      ),
+      kSwerve_br = new SwerveModuleConstants(
+        21, 22, 23,
+        new Translation2d(0.22225, -0.22225),
+        new PIDController(0.637, 0.2, 0.3),
+        new PIDController(0.9, 0.2, 0.3)
+      );
 
     public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
       new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
