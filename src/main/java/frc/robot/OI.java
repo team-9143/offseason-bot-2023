@@ -14,7 +14,7 @@ public class OI {
   public final static Pigeon2 pigeon = new Pigeon2(DeviceConstants.kPigeonID) {
     @Override
     public double getPitch() {
-      return -getPitch();
+      return -super.getPitch();
     };
   };
 }

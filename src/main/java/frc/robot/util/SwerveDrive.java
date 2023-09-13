@@ -199,7 +199,7 @@ public class SwerveDrive extends MotorSafety {
   /** @return the drivetrain's desired velocities */
   public ChassisSpeeds getDesiredSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}
 
-  /** @return the drivetrains actual velocities, as measured by encoders */
+  /** @return the drivetrain's actual velocities, as measured by encoders */
   public ChassisSpeeds getActualSpeeds() {
     return kinematics.toChassisSpeeds(
       new SwerveModuleState(modules[0].getVelocity(), Rotation2d.fromDegrees(modules[0].getAngle())),
