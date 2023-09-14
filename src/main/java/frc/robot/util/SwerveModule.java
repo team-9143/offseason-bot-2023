@@ -32,7 +32,7 @@ public class SwerveModule {
      * @param drive_ID driving motor ID (brushless NEO)
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
-     * @param location location of the wheel relative to the physical center of the robot (UNIT: meters)
+     * @param location location of the wheel relative to the physical center of the robot (forward, left) (UNIT: meters)
      * @param speed_controller PID controller to calculate motor speed from velocity error
      * @param angle_controller PID controller to calculate motor speed from degree error
      */

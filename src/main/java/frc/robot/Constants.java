@@ -47,7 +47,7 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
-    // TODO: Measure these
+    // TODO: Measure maximum drivetrain velocities
     public static final double kMaxSwerveRotate = 0.25; // Maximum rotational motor speed
     public static final double kMaxLinearVel = 14; // UNIT: meters/s
     public static final double kMaxTurnVel = 10; // UNIT: radians/s
@@ -72,25 +72,25 @@ public final class Constants {
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, 0.325,
-        new Translation2d(-0.22225, 0.22225),
+        new Translation2d(0.22225, 0.22225),
         new PIDController(0.07, 0, 0),
         new PIDController(0.001, 0, 0)
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -2.285,
-        new Translation2d(0.22225, 0.22225),
+        new Translation2d(0.22225, -0.22225),
         new PIDController(0.07, 0, 0),
         new PIDController(0.001, 0, 0)
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, -5.713,
-        new Translation2d(-0.22225, -0.22225),
+        new Translation2d(-0.22225, 0.22225),
         new PIDController(0.07, 0, 0),
         new PIDController(0.001, 0, 0)
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.076,
-        new Translation2d(0.22225, -0.22225),
+        new Translation2d(-0.22225, -0.22225),
         new PIDController(0.07, 0, 0),
         new PIDController(0.001, 0, 0)
       );
