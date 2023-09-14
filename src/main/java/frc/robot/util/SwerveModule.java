@@ -82,7 +82,7 @@ public class SwerveModule {
     speed_controller.setSetpoint(0);
 
     // Set up rotational PID controller
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kMaxTurnVel * 180/Math.PI, DrivetrainConstants.kMaxTurnVel * 180/Math.PI);
+    angle_controller.setIntegratorRange(-DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI, DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
   }
