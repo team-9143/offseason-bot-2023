@@ -10,7 +10,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-// TODO: Tune/measure and fix all swerve constants
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -53,6 +52,7 @@ public final class Constants {
     public static final double kMaxTurnVel = 10; // UNIT: radians/s
     public static final double kMaxTurnAccel = kMaxTurnVel * 4; // UNIT: radians/s/s
 
+    // TODO: Tune drivetrain position PID gains
     // Controllers for drivetrain position error -> velocity
     public static final double
       kLinearP = 0.7,
@@ -63,7 +63,8 @@ public final class Constants {
       kAngularI = 0.2,
       kAngularD = 0.3;
 
-    // Drivetrain location control tolerance
+    // TODO: Decide on drivetrain pose tolerance
+    // Drivetrain location control tolerances
     public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
     public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
   }
