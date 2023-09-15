@@ -46,8 +46,13 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
+    // TODO: Adjust rotational speed and tolerance
+    // Module wheel rotation
+    public static final double kSwerveRotateMaxSpd = 0.25; // Maximum rotational motor speed
+    public static final double kSwerveRotateTol = 5; // Tolerance to prevent jittering (UNIT: degrees)
+
     // TODO: Measure maximum drivetrain velocities
-    public static final double kMaxSwerveRotate = 0.25; // Maximum rotational motor speed
+    // Upper bound drivetrain velocities
     public static final double kMaxLinearVel = 14; // UNIT: meters/s
     public static final double kMaxTurnVel = 10; // UNIT: radians/s
     public static final double kMaxTurnAccel = kMaxTurnVel * 4; // UNIT: radians/s/s
