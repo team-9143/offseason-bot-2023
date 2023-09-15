@@ -79,7 +79,9 @@ public class IntakeTilt extends SubsystemBase {
 
   /** Clamps input to max speed. */
   public void set(double speed) {
-    m_motor.set(Math.max(-IntakeConstants.kTiltMaxSpeed, Math.min(speed, IntakeConstants.kTiltMaxSpeed)));
+    m_motor.set(Math.max(-IntakeConstants.kTiltMaxSpeed, Math.min(IntakeConstants.kTiltMaxSpeed,
+      speed
+    )));
   }
   public double getSpeed() {return m_motor.get();}
 
