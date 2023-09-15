@@ -25,25 +25,25 @@ public class SwerveModule {
     public final double cancoderOffset;
     public final Translation2d location;
 
-    public final PIDController angle_controller;
     public final PIDController speed_controller;
+    public final PIDController angle_controller;
 
     /**
      * @param drive_ID driving motor ID (brushless NEO)
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
-     * @param location location of the wheel relative to the physical center of the robot (UNIT: meters)
-     * @param angle_controller PID controller for the the module angle
-     * @param speed_controller PID controller for the the wheel speed
+     * @param location location of the wheel relative to the physical center of the robot (forward, left) (UNIT: meters)
+     * @param speed_controller PID controller to calculate motor speed from velocity error
+     * @param angle_controller PID controller to calculate motor speed from degree error
      */
-    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, Translation2d location, PIDController angle_controller, PIDController speed_controller) {
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, Translation2d location, PIDController speed_controller, PIDController angle_controller) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
       this.cancoderOffset = cancoderOffset;
       this.location = location;
-      this.angle_controller = angle_controller;
       this.speed_controller = speed_controller;
+      this.angle_controller = angle_controller;
     }
   }
 
@@ -53,8 +53,8 @@ public class SwerveModule {
   private final double cancoderOffset;
   private final RelativeEncoder drive_encoder;
 
-  private final PIDController angle_controller;
   private final PIDController speed_controller;
+  private final PIDController angle_controller;
 
   protected SwerveModule(SwerveModuleConstants constants) {
     drive_motor = new CANSparkMax(constants.drive_ID, CANSparkMax.MotorType.kBrushless);
@@ -62,8 +62,8 @@ public class SwerveModule {
     cancoder = new CANCoder(constants.cancoder_ID);
     cancoderOffset = constants.cancoderOffset;
     drive_encoder = drive_motor.getEncoder();
-    angle_controller = constants.angle_controller;
     speed_controller = constants.speed_controller;
+    angle_controller = constants.angle_controller;
 
     // Set up cancoder
     cancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360); // Set range [0..360]
@@ -77,14 +77,14 @@ public class SwerveModule {
     drive_encoder.setMeasurementPeriod(20);
     drive_encoder.setPosition(0);
 
+    // Set up speed PID controller
+    speed_controller.setIntegratorRange(-DrivetrainConstants.kMaxLinearVel, DrivetrainConstants.kMaxLinearVel);
+    speed_controller.setSetpoint(0);
+
     // Set up rotational PID controller
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxTurnVel, DrivetrainConstants.kSwerveMaxTurnVel);
+    angle_controller.setIntegratorRange(-DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI, DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
-
-    // Set up speed PID controller
-    speed_controller.setIntegratorRange(-DrivetrainConstants.kSwerveMaxVel, DrivetrainConstants.kSwerveMaxVel);
-    speed_controller.setSetpoint(0);
   }
 
   /**
@@ -95,10 +95,10 @@ public class SwerveModule {
    */
   protected void drive(double speed, double angle) {
     drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed) / DrivetrainConstants.kSwerveMaxVel
+      speed_controller.calculate(getVelocity(), speed)
     )));
-    angle_motor.set(Math.max(-1, Math.min(1,
-      angle_controller.calculate(getAngle(), angle) / DrivetrainConstants.kSwerveMaxTurnVel
+    angle_motor.set(Math.max(-DrivetrainConstants.kMaxSwerveRotate, Math.min(DrivetrainConstants.kMaxSwerveRotate,
+      angle_controller.calculate(getAngle(), angle)
     )));
   }
 

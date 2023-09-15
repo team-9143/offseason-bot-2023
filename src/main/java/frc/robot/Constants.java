@@ -10,7 +10,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-// TODO: Tune/measure and fix all swerve constants
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -24,8 +23,7 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
-    public static final double kSwerveTurnGearbox = 7/150.0;
-    public static final double kSwerveWheelGearbox = 1/6.12; // SDS L3 modules
+    public static final double kSwerveWheelGearbox = 1/5.14; // SDS L4 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
 
@@ -48,10 +46,13 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
-    public static final double kSwerveMaxVel = 14; // UNIT: meters/s
-    public static final double kSwerveMaxTurnVel = 5676 * 2 * Math.PI * PhysConstants.kSwerveTurnGearbox * 0.6; // 60% of free speed (UNIT: radians/s)
-    public static final double kSwerveMaxTurnAccel = kSwerveMaxTurnVel * 3; // UNIT: radians/s/s
+    // TODO: Measure maximum drivetrain velocities
+    public static final double kMaxSwerveRotate = 0.25; // Maximum rotational motor speed
+    public static final double kMaxLinearVel = 14; // UNIT: meters/s
+    public static final double kMaxTurnVel = 10; // UNIT: radians/s
+    public static final double kMaxTurnAccel = kMaxTurnVel * 4; // UNIT: radians/s/s
 
+    // TODO: Tune drivetrain position PID gains
     // Controllers for drivetrain position error -> velocity
     public static final double
       kLinearP = 0.7,
@@ -62,7 +63,8 @@ public final class Constants {
       kAngularI = 0.2,
       kAngularD = 0.3;
 
-    // Drivetrain location control tolerance
+    // TODO: Decide on drivetrain pose tolerance
+    // Drivetrain location control tolerances
     public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
     public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
   }
@@ -71,34 +73,34 @@ public final class Constants {
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, 0.325,
-        new Translation2d(-0.22225, 0.22225),
-        new PIDController(0.0237, 0, 0),
-        new PIDController(0.9, 0, 0)
+        new Translation2d(0.22225, 0.22225),
+        new PIDController(0.07, 0, 0),
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -2.285,
-        new Translation2d(0.22225, 0.22225),
-        new PIDController(0.0237, 0, 0),
-        new PIDController(0.9, 0, 0)
+        new Translation2d(0.22225, -0.22225),
+        new PIDController(0.07, 0, 0),
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, -5.713,
-        new Translation2d(-0.22225, -0.22225),
-        new PIDController(0.0237, 0, 0),
-        new PIDController(0.9, 0, 0)
+        new Translation2d(-0.22225, 0.22225),
+        new PIDController(0.07, 0, 0),
+        new PIDController(0.001, 0, 0)
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.076,
-        new Translation2d(0.22225, -0.22225),
-        new PIDController(0.0237, 0, 0),
-        new PIDController(0.9, 0, 0)
+        new Translation2d(-0.22225, -0.22225),
+        new PIDController(0.07, 0, 0),
+        new PIDController(0.001, 0, 0)
       );
 
     public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
       new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(135))
+      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(45))
     };
   }
 

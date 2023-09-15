@@ -143,6 +143,6 @@ public final class AutoSelector {
    * @see AutoSelector#getMoveCommand
    */
   public static Command getMoveCommand(double forward, double left, double ccw) {
-    return getMoveCommand(forward, left, ccw, DrivetrainConstants.kSwerveMaxVel);
+    return getMoveCommand(forward, left, ccw, DrivetrainConstants.kMaxLinearVel);
   }
 }
