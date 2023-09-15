@@ -99,12 +99,12 @@ public class SwerveModule {
       speed_controller.calculate(getVelocity(), speed)
     )));
 
-    var rotate_speed = angle_controller.calculate(getAngle(), angle);
+    var rotateSpeed = angle_controller.calculate(getAngle(), angle);
     if (angle_controller.atSetpoint()) {
       angle_motor.set(0);
     } else {
       angle_motor.set(Math.max(-DrivetrainConstants.kSwerveRotateMaxSpd, Math.min(DrivetrainConstants.kSwerveRotateMaxSpd,
-        rotate_speed
+        rotateSpeed
       )));
     }
   }
