@@ -88,17 +88,19 @@ public class SwerveModule {
   }
 
   /**
-   * Calculate, clamp, and set swerve module speed.
+   * Calculate and set swerve module speed.
    *
    * @param speed module speed (UNIT: meters/s)
    * @param angle module angle (UNIT: ccw degrees)
    */
   protected void drive(double speed, double angle) {
+    // Calculate, clamp, and set angle motor speed
     angle_motor.set(Math.max(-DrivetrainConstants.kSwerveRotateMaxSpeed, Math.min(DrivetrainConstants.kSwerveRotateMaxSpeed,
       angle_controller.calculate(getAngle(), angle)
     )));
 
-    // Calculate drive motor speed, scaling down if angle is inaccurate
+    // TODO: If stalling found, experiment with exponentially increasing scalar
+    // Calculate, clamp, and set drive motor speed, scaling down if angle is inaccurate
     drive_motor.set(Math.max(-1, Math.min(1,
       speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.sin(getAngleError() * Math.PI/180))
     )));
