@@ -4,11 +4,12 @@
 
 package frc.robot;
 
-import frc.robot.util.SwerveModule.SwerveModuleConstants;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.geometry.Rotation2d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -70,9 +71,11 @@ public final class Constants {
       kAngularD = 0.3;
 
     // TODO: Decide on drivetrain pose tolerance
-    // Drivetrain location control tolerances
-    public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
-    public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
+    // Drivetrain location control tolerance
+    public static final Pose2d kPosTolerance = new Pose2d(
+      new Translation2d(0.0127, 0.0127), // UNIT: meters
+      Rotation2d.fromDegrees(0.75)
+    );
   }
 
   public static class SwerveConstants {
