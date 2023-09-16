@@ -26,7 +26,7 @@ public class Drivetrain extends SubsystemBase {
     return m_instance;
   }
 
-  public static final SwerveDrive m_swerve = new SwerveDrive(
+  private static final SwerveDrive m_swerve = new SwerveDrive(
     SwerveConstants.kSwerve_fl,
     SwerveConstants.kSwerve_fr,
     SwerveConstants.kSwerve_bl,
@@ -114,10 +114,12 @@ public class Drivetrain extends SubsystemBase {
   /** @return the drivetrain's desired velocities */
   public ChassisSpeeds getDesiredSpeeds() {return m_swerve.getDesiredSpeeds();}
   /** @return the drivetrain's actual velocities, as measured by encoders */
-  public ChassisSpeeds getActualSpeeds() {return m_swerve.getActualSpeeds();}
+  public ChassisSpeeds getMeasuredSpeeds() {return m_swerve.getMeasuredSpeeds();}
 
   /** @return desired module states */
   public SwerveModuleState[] getDesiredStates() {return m_swerve.getDesiredStates();}
+  /** @return measured module states */
+  public SwerveModuleState[] getMeasuredStates() {return m_swerve.getMeasuredStates();}
 
   public static void stop() {m_swerve.stopMotor();}
 
