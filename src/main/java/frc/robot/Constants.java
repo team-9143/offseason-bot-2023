@@ -47,10 +47,8 @@ public final class Constants {
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
     // TODO: Adjust rotational speed and tolerance
-    // TODO: Test 0 tolerance to see if jittering problem remains
     // Module wheel rotation
     public static final double kSwerveRotateMaxSpd = 0.25; // Maximum rotational motor speed
-    public static final double kSwerveRotateTol = 5; // Tolerance to prevent jittering (UNIT: degrees)
 
     // TODO: Measure maximum drivetrain velocities
     // Upper bound drivetrain velocities
