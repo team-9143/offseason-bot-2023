@@ -132,7 +132,7 @@ public class SwerveDrive extends MotorSafety {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void setDesiredVelocityFieldRelative(double forward, double left, double ccw) {
     var states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, ccw, Rotation2d.fromDegrees(OI.pigeon.getYaw())));
@@ -144,7 +144,7 @@ public class SwerveDrive extends MotorSafety {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void setDesiredVelocity(double forward, double left, double ccw) {
     var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, ccw));

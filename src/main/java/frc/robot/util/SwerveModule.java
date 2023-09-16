@@ -92,7 +92,7 @@ public class SwerveModule {
    * Calculate, clamp, and set swerve module speed.
    *
    * @param speed module speed (UNIT: meters/s)
-   * @param rotation ccw angle (UNIT: degrees)
+   * @param angle module angle (UNIT: ccw degrees)
    */
   protected void drive(double speed, double angle) {
     drive_motor.set(Math.max(-1, Math.min(1,
@@ -122,7 +122,7 @@ public class SwerveModule {
     );
   }
 
-  /** @return the angle of the module (UNIT: degrees) */
+  /** @return the angle of the module (UNIT: ccw egrees) */
   public double getAngle() {
     return cancoder.getPosition() + cancoderOffset;
   }

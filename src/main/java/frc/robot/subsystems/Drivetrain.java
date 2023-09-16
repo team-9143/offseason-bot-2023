@@ -55,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void driveFieldRelativeVelocity(double forward, double left, double ccw) {
     m_swerve.setDesiredVelocityFieldRelative(forward, left, ccw);
@@ -66,7 +66,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void driveRobotRelativeVelocity(double forward, double left, double ccw) {
     m_swerve.setDesiredVelocity(forward, left, ccw);
@@ -77,7 +77,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
-   * @param ccw counter-clockwise angle (UNIT: degrees)
+   * @param ccw counter-clockwise angle (UNIT: ccw degrees)
    * @param FFspd desired linear velocity for feedforward calculation (UNIT: meters/s)
    */
   public void driveToLocation(double forward, double left, double ccw, double FFspd) {
@@ -99,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
-   * @param ccw counter-clockwise angle (UNIT: degrees)
+   * @param ccw counter-clockwise angle (UNIT: ccw degrees)
    */
   public void resetPosition(double forward, double left, double ccw) {
     m_swerve.resetPosition(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)));
