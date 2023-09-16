@@ -67,7 +67,7 @@ public class SwerveModule {
 
     // Set up cancoder
     cancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360); // Set range [0..360]
-    cancoder.configSensorDirection(true); // Set counterclockwise
+    cancoder.configSensorDirection(false); // Set counterclockwise
     cancoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition); // Set absolute
     cancoder.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_20Ms);
 
