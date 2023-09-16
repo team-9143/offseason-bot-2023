@@ -217,7 +217,12 @@ public class SwerveDrive extends MotorSafety {
   public void stopMotor() {
     for (SwerveModule module : modules) {module.stopMotor();}
 
-    setDesiredStates(new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState());
+    setDesiredStates(
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[0].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[1].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[2].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[3].getAngle()))
+    );
   }
 
   @Override
