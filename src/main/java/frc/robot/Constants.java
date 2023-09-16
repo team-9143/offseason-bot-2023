@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -104,13 +103,6 @@ public final class Constants {
         new PIDController(0.1, 0, 0),
         new PIDController(0.001, 0, 0)
       );
-
-    public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45))
-    };
   }
 
   public static class IntakeConstants {

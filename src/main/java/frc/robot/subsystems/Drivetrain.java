@@ -26,6 +26,13 @@ public class Drivetrain extends SubsystemBase {
     return m_instance;
   }
 
+  public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
+    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+    new SwerveModuleState(0, Rotation2d.fromDegrees(45))
+  };
+
   private static final SwerveDrive m_swerve = new SwerveDrive(
     SwerveConstants.kSwerve_fl,
     SwerveConstants.kSwerve_fr,
@@ -87,10 +94,10 @@ public class Drivetrain extends SubsystemBase {
   /** Set the drivetrain to x-stance. Must be continuously called. */
   public void toXStance() {
     m_swerve.setDesiredStates(
-      SwerveConstants.xStanceStates[0],
-      SwerveConstants.xStanceStates[1],
-      SwerveConstants.xStanceStates[2],
-      SwerveConstants.xStanceStates[3]
+      xStanceStates[0],
+      xStanceStates[1],
+      xStanceStates[2],
+      xStanceStates[3]
     );
   }
 
