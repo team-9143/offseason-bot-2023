@@ -127,14 +127,19 @@ public class SwerveModule {
     return cancoder.getPosition() + cancoderOffset;
   }
 
-  /** @return the distance traveled by the module (UNIT: meters) */
-  public double getDistance() {
-    return drive_encoder.getPosition();
-  }
-
   /** @return the velocity of the module (UNIT: meters/s) */
   public double getVelocity() {
     return drive_encoder.getVelocity();
+  }
+
+  /** @return the current error in the angle of the module (UNIT: ccw degrees) */
+  public double getAngleError() {
+    return angle_controller.getPositionError();
+  }
+
+  /** @return the distance traveled by the module (UNIT: meters) */
+  public double getDistance() {
+    return drive_encoder.getPosition();
   }
 
   public void stopMotor() {
