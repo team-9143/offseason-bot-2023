@@ -95,10 +95,6 @@ public class SwerveModule {
    * @param angle module angle (UNIT: ccw degrees)
    */
   protected void drive(double speed, double angle) {
-    drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed)
-    )));
-
     var rotateSpeed = angle_controller.calculate(getAngle(), angle);
     if (angle_controller.atSetpoint()) {
       angle_motor.set(0);
@@ -107,6 +103,11 @@ public class SwerveModule {
         rotateSpeed
       )));
     }
+
+    // Calculate drive motor speed, scaling down if angle is inaccurate
+    drive_motor.set(Math.max(-1, Math.min(1,
+      speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.sin(getAngleError() * Math.PI/180))
+    )));
   }
 
   /**
