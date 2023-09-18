@@ -23,6 +23,7 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
+    // TODO: Fix wheel gearbox and circumference values
     public static final double kSwerveWheelGearbox = 1/5.14; // SDS L4 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
@@ -76,6 +77,7 @@ public final class Constants {
   }
 
   public static class SwerveConstants {
+    // TODO: Tune PID gains for swerve module angle and velocity error
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, -261.229,
