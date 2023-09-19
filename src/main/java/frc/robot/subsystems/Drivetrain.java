@@ -171,7 +171,7 @@ public class Drivetrain extends SubsystemBase {
       new InstantCommand(() -> {
         // Reset odometry for the first path you run during auto
         if(isFirstPath){
-            m_swerve.resetPosition(getPose());
+            updateSwerve();
         }
       }),
         new PPSwerveControllerCommand(
