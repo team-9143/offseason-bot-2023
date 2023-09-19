@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.commands.AimMid;
 import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeUp;
+import frc.robot.subsystems.IntakeWheels;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import java.util.Map;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -148,9 +149,10 @@ public final class Constants {
 
   public static class AutoConstants{
     public static final Map<String, Command> eventMap = Map.of(
-      "IntakeDown", new IntakeDown(),
+      "IntakeDown", new IntakeDown().alongWith(IntakeWheels.getInstance().getIntakeCommand()),
       "IntakeUp", new IntakeUp(),
-      "AimMid", new AimMid()
+      "AimMid", new AimMid(),
+      "Shoot", IntakeWheels.getInstance().getShootCommand()
     );
   }
 }
