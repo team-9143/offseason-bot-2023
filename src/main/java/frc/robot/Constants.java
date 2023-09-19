@@ -4,10 +4,15 @@
 
 package frc.robot;
 
+import frc.robot.commands.AimMid;
+import frc.robot.commands.IntakeDown;
+import frc.robot.commands.IntakeUp;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
+import java.util.Map;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 /**
@@ -139,5 +144,13 @@ public final class Constants {
       kSteadyP = PhysConstants.kTiltGearbox * 0.0917,
       kSteadyI = PhysConstants.kTiltGearbox * 0.0639,
       kSteadyD = PhysConstants.kTiltGearbox * 0.0194;
+  }
+
+  public static class AutoConstants{
+    public static final Map<String, Command> eventMap = Map.of(
+      "IntakeDown", new IntakeDown(),
+      "IntakeUp", new IntakeUp(),
+      "AimMid", new AimMid()
+    );
   }
 }
