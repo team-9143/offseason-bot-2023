@@ -102,7 +102,7 @@ public class SwerveModule {
     // TODO: If stalling found, experiment with exponentially increasing scalar
     // Calculate, clamp, and set drive motor speed, scaling down if angle is inaccurate
     drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.sin(getAngleError() * Math.PI/180))
+      speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.cos(getAngleError() * Math.PI/180))
     )));
   }
 
