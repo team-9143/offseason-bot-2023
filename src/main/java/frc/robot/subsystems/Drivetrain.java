@@ -4,13 +4,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveConstants;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.util.SwerveDrive;
 
@@ -31,6 +37,13 @@ public class Drivetrain extends SubsystemBase {
     SwerveConstants.kSwerve_fr,
     SwerveConstants.kSwerve_bl,
     SwerveConstants.kSwerve_br
+  );
+
+  SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+    SwerveConstants.kSwerve_fl.location, 
+    SwerveConstants.kSwerve_fr.location, 
+    SwerveConstants.kSwerve_bl.location, 
+    SwerveConstants.kSwerve_br.location
   );
 
   private Drivetrain() {
@@ -149,6 +162,29 @@ public class Drivetrain extends SubsystemBase {
           stop();
         }
       }
+    );
+  }
+
+  /**@return a command that follows a PathPlanner Trajectory */
+  public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> {
+        // Reset odometry for the first path you run during auto
+        if(isFirstPath){
+            m_swerve.resetPosition(getPose());
+        }
+      }),
+        new PPSwerveControllerCommand(
+            traj, 
+            this::getPose, // Pose supplier
+            this.m_kinematics, // SwerveDriveKinematics
+            new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+            new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+            new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+            ModulesStateConsumer -> getDesiredStates(), // Module states consumer
+            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+            this // Requires this drive subsystem
+        )
     );
   }
 }
