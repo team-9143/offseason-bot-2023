@@ -125,7 +125,7 @@ public class SwerveModule {
     );
   }
 
-  /** @return the angle of the module (UNIT: ccw egrees) */
+  /** @return the angle of the module (UNIT: ccw degrees) */
   public double getAngle() {
     return cancoder.getPosition() + cancoderOffset;
   }
