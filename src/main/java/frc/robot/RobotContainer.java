@@ -78,10 +78,10 @@ public class RobotContainer {
     OI.driver_cntlr.onTrue(btn.A, cBalance::schedule);
     OI.driver_cntlr.onFalse(btn.A, cBalance::cancel);
 
-    // Button 'X' (debounced 1s) will reset gyro
+    // Button 'X' (debounced 0.5s) will reset gyro
     final Command cRumble = OI.driver_cntlr.getRumbleCommand(0.5, 0.5, 0.25);
     new Trigger(() -> OI.driver_cntlr.getButton(btn.X))
-    .debounce(1)
+    .debounce(0.5)
       .onTrue(new InstantCommand(() -> {
         OI.pigeon.setYaw(0);
         cRumble.schedule();
@@ -99,10 +99,10 @@ public class RobotContainer {
     // Button 'A' will invert intake wheels (for cones)
     OI.operator_cntlr.onTrue(btn.A, IntakeWheels::invert);
 
-    // Button 'X' (debounced 1s) will reset intake tilt encoders
+    // Button 'X' (debounced 0.5s) will reset intake tilt encoders
     final Command cRumble = OI.operator_cntlr.getRumbleCommand(0.5, 0.5, 0.25);
     new Trigger(() -> OI.operator_cntlr.getButton(btn.X))
-    .debounce(1)
+    .debounce(0.5)
       .onTrue(new InstantCommand(() -> {
         IntakeTilt.getInstance().resetEncoders();
         cRumble.schedule();
