@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.util.SwerveModule.SwerveModuleConstants;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.SwerveModule.SwerveModuleConstants;
+import edu.wpi.first.math.controller.PIDController;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,6 +23,7 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
+    // TODO: Fix wheel gearbox and circumference values
     public static final double kSwerveWheelGearbox = 1/5.14; // SDS L4 modules
     public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
   }
@@ -46,11 +47,15 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
+    // TODO: Adjust maximum swerve rotational speed
+    // Module wheel rotation
+    public static final double kSwerveRotateMaxSpeed = 0.25; // Maximum rotational motor speed
+
     // TODO: Measure maximum drivetrain velocities
-    public static final double kMaxSwerveRotate = 0.25; // Maximum rotational motor speed
-    public static final double kMaxLinearVel = 14; // UNIT: meters/s
-    public static final double kMaxTurnVel = 10; // UNIT: radians/s
-    public static final double kMaxTurnAccel = kMaxTurnVel * 4; // UNIT: radians/s/s
+    // Upper bound drivetrain velocities
+    public static final double kMaxLinearVel = 5; // UNIT: meters/s
+    public static final double kMaxTurnVel = 7.5; // UNIT: radians/s
+    public static final double kMaxTurnAccel = kMaxTurnVel * 2; // UNIT: radians/s/s
 
     // TODO: Tune drivetrain position PID gains
     // Controllers for drivetrain position error -> velocity
@@ -64,44 +69,40 @@ public final class Constants {
       kAngularD = 0.3;
 
     // TODO: Decide on drivetrain pose tolerance
-    // Drivetrain location control tolerances
-    public static final double kLinearPosTolerance = 0.0127; // UNIT: meters
-    public static final double kAngularPosTolerance = 0.75; // UNIT: degrees
+    // Drivetrain location control tolerance
+    public static final Pose2d kPosTolerance = new Pose2d(
+      new Translation2d(0.0127, 0.0127), // UNIT: meters
+      Rotation2d.fromDegrees(0.75)
+    );
   }
 
   public static class SwerveConstants {
+    // TODO: Tune PID gains for swerve module angle and velocity error
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
-        41, 42, 43, 0.325,
+        41, 42, 43, 261.229,
         new Translation2d(0.22225, 0.22225),
-        new PIDController(0.07, 0, 0),
-        new PIDController(0.001, 0, 0)
+        new PIDController(0.2, 0, 0),
+        new PIDController(0.0100, 0, 0)
       ),
       kSwerve_fr = new SwerveModuleConstants(
-        11, 12, 13, -2.285,
+        11, 12, 13, -150.029,
         new Translation2d(0.22225, -0.22225),
-        new PIDController(0.07, 0, 0),
-        new PIDController(0.001, 0, 0)
+        new PIDController(0.2, 0, 0),
+        new PIDController(0.0100, 0, 0)
       ),
       kSwerve_bl = new SwerveModuleConstants(
-        31, 32, 33, -5.713,
+        31, 32, 33, 301.465,
         new Translation2d(-0.22225, 0.22225),
-        new PIDController(0.07, 0, 0),
-        new PIDController(0.001, 0, 0)
+        new PIDController(0.2, 0, 0),
+        new PIDController(0.0100, 0, 0)
       ),
       kSwerve_br = new SwerveModuleConstants(
-        21, 22, 23, -3.076,
+        21, 22, 23, -3.428,
         new Translation2d(-0.22225, -0.22225),
-        new PIDController(0.07, 0, 0),
-        new PIDController(0.001, 0, 0)
+        new PIDController(0.2, 0, 0),
+        new PIDController(0.0100, 0, 0)
       );
-
-    public static final SwerveModuleState[] xStanceStates = new SwerveModuleState[] {
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45))
-    };
   }
 
   public static class IntakeConstants {

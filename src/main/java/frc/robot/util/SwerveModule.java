@@ -32,6 +32,7 @@ public class SwerveModule {
      * @param drive_ID driving motor ID (brushless NEO)
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
+     * @param cancoderOffset additive cancoder offset (UNIT: ccw degrees)
      * @param location location of the wheel relative to the physical center of the robot (forward, left) (UNIT: meters)
      * @param speed_controller PID controller to calculate motor speed from velocity error
      * @param angle_controller PID controller to calculate motor speed from degree error
@@ -67,7 +68,7 @@ public class SwerveModule {
 
     // Set up cancoder
     cancoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360); // Set range [0..360]
-    cancoder.configSensorDirection(true); // Set counterclockwise
+    cancoder.configSensorDirection(false); // Set counterclockwise
     cancoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition); // Set absolute
     cancoder.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_20Ms);
 
@@ -82,23 +83,27 @@ public class SwerveModule {
     speed_controller.setSetpoint(0);
 
     // Set up rotational PID controller
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI, DrivetrainConstants.kMaxSwerveRotate * 180/Math.PI);
+    angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveRotateMaxSpeed * 180/Math.PI, DrivetrainConstants.kSwerveRotateMaxSpeed * 180/Math.PI);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
   }
 
   /**
-   * Calculate, clamp, and set swerve module speed.
+   * Calculate and set swerve module speed.
    *
    * @param speed module speed (UNIT: meters/s)
-   * @param rotation ccw angle (UNIT: degrees)
+   * @param angle module angle (UNIT: ccw degrees)
    */
   protected void drive(double speed, double angle) {
-    drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed)
-    )));
-    angle_motor.set(Math.max(-DrivetrainConstants.kMaxSwerveRotate, Math.min(DrivetrainConstants.kMaxSwerveRotate,
+    // Calculate, clamp, and set angle motor speed
+    angle_motor.set(Math.max(-DrivetrainConstants.kSwerveRotateMaxSpeed, Math.min(DrivetrainConstants.kSwerveRotateMaxSpeed,
       angle_controller.calculate(getAngle(), angle)
+    )));
+
+    // TODO: If stalling found, experiment with exponentially increasing scalar
+    // Calculate, clamp, and set drive motor speed, scaling down if angle is inaccurate
+    drive_motor.set(Math.max(-1, Math.min(1,
+      speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.cos(getAngleError() * Math.PI/180))
     )));
   }
 
@@ -115,19 +120,24 @@ public class SwerveModule {
     );
   }
 
-  /** @return the angle of the module (UNIT: degrees) */
+  /** @return the angle of the module (UNIT: ccw degrees) */
   public double getAngle() {
     return cancoder.getPosition() + cancoderOffset;
-  }
-
-  /** @return the distance traveled by the module (UNIT: meters) */
-  public double getDistance() {
-    return drive_encoder.getPosition();
   }
 
   /** @return the velocity of the module (UNIT: meters/s) */
   public double getVelocity() {
     return drive_encoder.getVelocity();
+  }
+
+  /** @return the current error in the angle of the module (UNIT: ccw degrees) */
+  public double getAngleError() {
+    return angle_controller.getPositionError();
+  }
+
+  /** @return the distance traveled by the module (UNIT: meters) */
+  public double getDistance() {
+    return drive_encoder.getPosition();
   }
 
   public void stopMotor() {

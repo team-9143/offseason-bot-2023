@@ -48,7 +48,7 @@ public class SwerveDrive extends MotorSafety {
   // Initiliaze holonomic controller for trajectory following
   private static final HolonomicDriveController m_controller = new HolonomicDriveController(x_controller, y_controller, theta_controller);
   static {
-    m_controller.setTolerance(new Pose2d(DrivetrainConstants.kLinearPosTolerance, DrivetrainConstants.kLinearPosTolerance, Rotation2d.fromDegrees(DrivetrainConstants.kAngularPosTolerance)));
+    m_controller.setTolerance(DrivetrainConstants.kPosTolerance);
   }
 
   public SwerveDrive(SwerveModule.SwerveModuleConstants consts_fl, SwerveModule.SwerveModuleConstants consts_fr, SwerveModule.SwerveModuleConstants consts_bl, SwerveModule.SwerveModuleConstants consts_br) {
@@ -132,7 +132,7 @@ public class SwerveDrive extends MotorSafety {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void setDesiredVelocityFieldRelative(double forward, double left, double ccw) {
     var states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(forward, left, ccw, Rotation2d.fromDegrees(OI.pigeon.getYaw())));
@@ -144,7 +144,7 @@ public class SwerveDrive extends MotorSafety {
    *
    * @param forward forward speed (UNIT: meters/s)
    * @param left left speed (UNIT: meters/s)
-   * @param ccw counter-clockwise speed (UNIT: radians/s)
+   * @param ccw counter-clockwise speed (UNIT: ccw radians/s)
    */
   public void setDesiredVelocity(double forward, double left, double ccw) {
     var states = kinematics.toSwerveModuleStates(new ChassisSpeeds(forward, left, ccw));
@@ -200,24 +200,31 @@ public class SwerveDrive extends MotorSafety {
   public ChassisSpeeds getDesiredSpeeds() {return kinematics.toChassisSpeeds(desiredStates);}
 
   /** @return the drivetrain's actual velocities, as measured by encoders */
-  public ChassisSpeeds getActualSpeeds() {
-    return kinematics.toChassisSpeeds(
+  public ChassisSpeeds getMeasuredSpeeds() {return kinematics.toChassisSpeeds(getMeasuredStates());}
+
+  /** @return desired module states */
+  public SwerveModuleState[] getDesiredStates() {return desiredStates;}
+  /** @return measured module states */
+  public SwerveModuleState[] getMeasuredStates() {
+    return new SwerveModuleState[] {
       new SwerveModuleState(modules[0].getVelocity(), Rotation2d.fromDegrees(modules[0].getAngle())),
       new SwerveModuleState(modules[1].getVelocity(), Rotation2d.fromDegrees(modules[1].getAngle())),
       new SwerveModuleState(modules[2].getVelocity(), Rotation2d.fromDegrees(modules[2].getAngle())),
       new SwerveModuleState(modules[3].getVelocity(), Rotation2d.fromDegrees(modules[3].getAngle()))
-    );
+    };
   }
-
-  /** @return desired module states */
-  public SwerveModuleState[] getDesiredStates() {return desiredStates;}
 
   /** Stop the modules and reset the desired states. */
   @Override
   public void stopMotor() {
     for (SwerveModule module : modules) {module.stopMotor();}
 
-    setDesiredStates(new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState());
+    setDesiredStates(
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[0].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[1].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[2].getAngle())),
+      new SwerveModuleState(0, Rotation2d.fromDegrees(modules[3].getAngle()))
+    );
   }
 
   @Override
