@@ -23,9 +23,8 @@ public final class Constants {
     public static final double kTiltGearbox = 1/35.0;
     public static final double kWheelGearbox = 1/3.0;
 
-    // TODO: Fix wheel gearbox and circumference values
     public static final double kSwerveWheelGearbox = 1/5.14; // SDS L4 modules
-    public static final double kSwerveWheelCircumference = 0.1016 * Math.PI; // UNIT: meters
+    public static final double kSwerveWheelCircumference = 0.09779 * Math.PI; // UNIT: meters
   }
 
   public static class DeviceConstants {
