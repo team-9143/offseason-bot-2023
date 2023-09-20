@@ -81,26 +81,26 @@ public final class Constants {
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, 261.229,
         new Translation2d(0.22225, 0.22225),
-        new PIDController(0.2, 0, 0),
-        new PIDController(0.0100, 0, 0)
+        new PIDController(2e-1, 1e-2, 0),
+        new PIDController(9.00e-3, 0, 1.50e-4)
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -150.029,
         new Translation2d(0.22225, -0.22225),
-        new PIDController(0.2, 0, 0),
-        new PIDController(0.0100, 0, 0)
+        new PIDController(2e-1, 1e-2, 0),
+        new PIDController(9.00e-3, 0, 1.50e-4)
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, 301.465,
         new Translation2d(-0.22225, 0.22225),
-        new PIDController(0.2, 0, 0),
-        new PIDController(0.0100, 0, 0)
+        new PIDController(2e-1, 1e-2, 0),
+        new PIDController(9.00e-3, 0, 1.50e-4)
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.428,
         new Translation2d(-0.22225, -0.22225),
-        new PIDController(0.2, 0, 0),
-        new PIDController(0.0100, 0, 0)
+        new PIDController(2e-1, 1e-2, 0),
+        new PIDController(9.00e-3, 0, 1.50e-4)
       );
   }
 
