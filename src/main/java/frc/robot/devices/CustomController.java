@@ -53,10 +53,10 @@ public class CustomController {
     m_port = port;
   }
 
-  /** Applies a 0.02 to 1.00 deadband to the passed value. */
+  /** Applies a 0.1 to 1.00 deadband to the passed value. */
   public static double deadband(double value) {
     if (Math.abs(value) > 0.1) {
-      return (value - Math.copySign(0.02, value)) / 0.98;
+      return (value - Math.copySign(0.1, value)) / 0.9;
     }
     return 0;
   }
