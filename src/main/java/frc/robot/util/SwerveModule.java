@@ -23,6 +23,7 @@ public class SwerveModule {
     public final byte angle_ID;
     public final byte cancoder_ID;
     public final double cancoderOffset;
+    public final boolean wheelInverted;
     public final Translation2d location;
 
     public final PIDController speed_controller;
@@ -32,15 +33,18 @@ public class SwerveModule {
      * @param drive_ID driving motor ID (brushless NEO)
      * @param angle_ID angular motor ID (brushless NEO)
      * @param cancoder_ID cancoder ID
+     * @param cancoderOffset additive cancoder offset (UNIT: ccw degrees)
+     * @param wheelInverted {@code true} if wheel is inverted
      * @param location location of the wheel relative to the physical center of the robot (forward, left) (UNIT: meters)
      * @param speed_controller PID controller to calculate motor speed from velocity error
      * @param angle_controller PID controller to calculate motor speed from degree error
      */
-    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, Translation2d location, PIDController speed_controller, PIDController angle_controller) {
+    public SwerveModuleConstants(int drive_ID, int angle_ID, int cancoder_ID, double cancoderOffset, boolean wheelInverted, Translation2d location, PIDController speed_controller, PIDController angle_controller) {
       this.drive_ID = (byte) drive_ID;
       this.angle_ID = (byte) angle_ID;
       this.cancoder_ID = (byte) cancoder_ID;
       this.cancoderOffset = cancoderOffset;
+      this.wheelInverted = wheelInverted;
       this.location = location;
       this.speed_controller = speed_controller;
       this.angle_controller = angle_controller;
@@ -52,6 +56,7 @@ public class SwerveModule {
   private final CANCoder cancoder;
   private final double cancoderOffset;
   private final RelativeEncoder drive_encoder;
+  private final int wheelInverted;
 
   private final PIDController speed_controller;
   private final PIDController angle_controller;
@@ -62,6 +67,7 @@ public class SwerveModule {
     cancoder = new CANCoder(constants.cancoder_ID);
     cancoderOffset = constants.cancoderOffset;
     drive_encoder = drive_motor.getEncoder();
+    wheelInverted = constants.wheelInverted ? -1 : 1;
     speed_controller = constants.speed_controller;
     angle_controller = constants.angle_controller;
 
@@ -101,7 +107,7 @@ public class SwerveModule {
 
     // TODO: If stalling found, experiment with exponentially increasing scalar
     // Calculate, clamp, and set drive motor speed, scaling down if angle is inaccurate
-    drive_motor.set(Math.max(-1, Math.min(1,
+    drive_motor.set(wheelInverted * Math.max(-1, Math.min(1,
       speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.cos(getAngleError() * Math.PI/180))
     )));
   }
