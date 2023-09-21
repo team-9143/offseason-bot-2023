@@ -76,6 +76,7 @@ public final class Constants {
   }
 
   public static class SwerveConstants {
+    // TODO: Make sure cancoder magnetic range is within proper bounds (configMagnetOffset)
     // TODO: Tune PID gains for swerve module angle and velocity error
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
