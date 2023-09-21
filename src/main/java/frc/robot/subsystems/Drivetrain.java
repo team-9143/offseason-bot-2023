@@ -32,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
     return m_instance;
   }
 
-  public static final SwerveDrive m_swerve = new SwerveDrive(
+  private static final SwerveDrive m_swerve = new SwerveDrive(
     SwerveConstants.kSwerve_fl,
     SwerveConstants.kSwerve_fr,
     SwerveConstants.kSwerve_bl,
