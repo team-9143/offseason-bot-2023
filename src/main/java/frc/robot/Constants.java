@@ -60,12 +60,12 @@ public final class Constants {
     // Controllers for drivetrain position error -> velocity
     public static final double
       kLinearP = 0.7,
-      kLinearI = 0.4,
-      kLinearD = 0.5;
+      kLinearI = 0,
+      kLinearD = 0;
     public static final double
       kAngularP = 0.637,
-      kAngularI = 0.2,
-      kAngularD = 0.3;
+      kAngularI = 0,
+      kAngularD = 0;
 
     // TODO: Decide on drivetrain pose tolerance
     // Drivetrain location control tolerance
@@ -83,25 +83,25 @@ public final class Constants {
         41, 42, 43, 261.229,
         new Translation2d(0.22225, 0.22225),
         new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(1e-2, 0, 1.80e-4)
+        new PIDController(0.9e-2, 0, 1.80e-4)
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -150.029,
         new Translation2d(0.22225, -0.22225),
         new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(1e-2, 0, 1.80e-4)
+        new PIDController(0.9e-2, 0, 1.80e-4)
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, 301.465,
         new Translation2d(-0.22225, 0.22225),
         new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(1e-2, 0, 1.80e-4)
+        new PIDController(0.9e-2, 0, 1.80e-4)
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.428,
         new Translation2d(-0.22225, -0.22225),
-        new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(1e-2, 0, 1.80e-4)
+        new PIDController(1.8e-2, 0, 2.3e-3),
+        new PIDController(0.9e-2, 0, 1.80e-4)
       );
   }
 
