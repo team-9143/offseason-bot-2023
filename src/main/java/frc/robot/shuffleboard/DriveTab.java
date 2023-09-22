@@ -13,7 +13,7 @@ import frc.robot.subsystems.IntakeTilt;
 import frc.robot.subsystems.IntakeWheels;
 import frc.robot.autos.AutoSelector;
 // import frc.robot.commands.TurnToAngle;
-
+import frc.robot.autos.FollowPath;
 import frc.robot.OI;
 
 import edu.wpi.first.util.sendable.Sendable;
@@ -60,6 +60,10 @@ public class DriveTab implements ShuffleboardTabBase {
       .withPosition(14, 5)
       .withSize(2, 2)
       .withWidget(BuiltInWidgets.kComboBoxChooser);
+    drive_tab.add("PathPlanner", new FollowPath().getFollowCommand())
+      .withPosition(0, 0)
+      .withSize(2, 2)
+      .withWidget(BuiltInWidgets.kCommand);
 
     initLayout1();
 

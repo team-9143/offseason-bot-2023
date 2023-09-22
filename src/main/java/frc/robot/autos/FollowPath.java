@@ -19,4 +19,6 @@ public class FollowPath {
         examplePath.getMarkers(),
         (HashMap<String, Command>)AutoConstants.eventMap
     );
+
+    public Command getFollowCommand(){return command;}
 }
