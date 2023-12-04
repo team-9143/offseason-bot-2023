@@ -96,14 +96,17 @@ public class SwerveDrive extends MotorSafety {
       consts_br.location
     );
 
-    odometry = new SwerveDrivePoseEstimator(kinematics, Rotation2d.fromDegrees(OI.pigeon.getYaw()),
+    odometry = new SwerveDrivePoseEstimator(
+      kinematics,
+      Rotation2d.fromDegrees(OI.pigeon.getYaw()),
       new SwerveModulePosition[] {
         new SwerveModulePosition(modules[0].getDistance(), Rotation2d.fromDegrees(modules[0].getAngle())),
         new SwerveModulePosition(modules[1].getDistance(), Rotation2d.fromDegrees(modules[1].getAngle())),
         new SwerveModulePosition(modules[2].getDistance(), Rotation2d.fromDegrees(modules[2].getAngle())),
         new SwerveModulePosition(modules[3].getDistance(), Rotation2d.fromDegrees(modules[3].getAngle()))
       },
-    new Pose2d());
+      new Pose2d()
+    );
   }
 
   /** Updates the drivetrain with desired speeds, and recalculates odometry. Should be called every robot loop. */
