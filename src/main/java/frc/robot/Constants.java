@@ -47,7 +47,7 @@ public final class Constants {
 
     // TODO: Measure maximum drivetrain velocities
     // Upper bound drivetrain velocities
-    public static final double kMaxLinearVel = 5; // UNIT: meters/s
+    public static final double kMaxLinearVel = 6; // UNIT: meters/s
     public static final double kMaxTurnVel = 7.5; // UNIT: radians/s
     public static final double kMaxTurnAccel = kMaxTurnVel * 2; // UNIT: radians/s/s
 
