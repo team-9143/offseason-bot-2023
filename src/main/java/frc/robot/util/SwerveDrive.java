@@ -36,13 +36,43 @@ public class SwerveDrive extends MotorSafety {
   private final SwerveDrivePoseEstimator odometry; // If adding vision measurements, must initialize with relative pose instead of origin
 
   // Initialize PID controllers for position change -> velocity calculations
-  private static final PIDController x_controller = new PIDController(DrivetrainConstants.kLinearP, DrivetrainConstants.kLinearI, DrivetrainConstants.kLinearD);
-  private static final PIDController y_controller = new PIDController(DrivetrainConstants.kLinearP, DrivetrainConstants.kLinearI, DrivetrainConstants.kLinearD);
-  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(DrivetrainConstants.kAngularP, DrivetrainConstants.kAngularI, DrivetrainConstants.kAngularD, new Constraints(DrivetrainConstants.kMaxTurnVel, DrivetrainConstants.kMaxTurnAccel));
+  private static final PIDController x_controller = new PIDController(
+    DrivetrainConstants.kLinearP.getAsDouble(),
+    DrivetrainConstants.kLinearI.getAsDouble(),
+    DrivetrainConstants.kLinearD.getAsDouble()
+  );
+  private static final PIDController y_controller = new PIDController(
+    DrivetrainConstants.kLinearP.getAsDouble(),
+    DrivetrainConstants.kLinearI.getAsDouble(),
+    DrivetrainConstants.kLinearD.getAsDouble()
+  );
+  private static final ProfiledPIDController theta_controller = new ProfiledPIDController(
+    DrivetrainConstants.kAngularP.getAsDouble(),
+    DrivetrainConstants.kAngularI.getAsDouble(),
+    DrivetrainConstants.kAngularD.getAsDouble(),
+    new Constraints(DrivetrainConstants.kMaxTurnVel, DrivetrainConstants.kMaxTurnAccel)
+  );
   static {
     x_controller.setIntegratorRange(-DrivetrainConstants.kMaxLinearVel, DrivetrainConstants.kMaxLinearVel);
     y_controller.setIntegratorRange(-DrivetrainConstants.kMaxLinearVel, DrivetrainConstants.kMaxLinearVel);
     theta_controller.setIntegratorRange(-DrivetrainConstants.kMaxTurnVel, DrivetrainConstants.kMaxTurnVel);
+
+    DrivetrainConstants.kLinearP.bindTo(val -> {
+      x_controller.setP(val);
+      y_controller.setP(val);
+    });
+    DrivetrainConstants.kLinearI.bindTo(val -> {
+      x_controller.setI(val);
+      y_controller.setI(val);
+    });
+    DrivetrainConstants.kLinearI.bindTo(val -> {
+      x_controller.setI(val);
+      y_controller.setI(val);
+    });
+
+    DrivetrainConstants.kAngularP.bindTo(theta_controller::setP);
+    DrivetrainConstants.kAngularI.bindTo(theta_controller::setI);
+    DrivetrainConstants.kAngularD.bindTo(theta_controller::setD);
   }
 
   // Initiliaze holonomic controller for trajectory following

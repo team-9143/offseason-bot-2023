@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.TunableNumber;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.controller.PIDController;
 
@@ -57,15 +58,15 @@ public final class Constants {
     public static final double kMaxTurnAccel = kMaxTurnVel * 2; // UNIT: radians/s/s
 
     // TODO: Tune drivetrain position PID gains
-    // Controllers for drivetrain position error -> velocity
-    public static final double
-      kLinearP = 0.7,
-      kLinearI = 0,
-      kLinearD = 0;
-    public static final double
-      kAngularP = 0.637,
-      kAngularI = 0,
-      kAngularD = 0;
+    // Gains for drivetrain position error -> velocity
+    public static final TunableNumber
+      kLinearP = new TunableNumber("P", 0.7, "Linear Positioning"),
+      kLinearI = new TunableNumber("I", 0, "Linear Positioning"),
+      kLinearD = new TunableNumber("D", 0, "Linear Positioning");
+    public static final TunableNumber
+      kAngularP = new TunableNumber("P", 0.637, "Angular Positioning"),
+      kAngularI = new TunableNumber("I", 0, "Angular Positioning"),
+      kAngularD = new TunableNumber("D", 0, "Angular Positioning");
 
     // TODO: Decide on drivetrain pose tolerance
     // Drivetrain location control tolerance
@@ -76,33 +77,68 @@ public final class Constants {
   }
 
   public static class SwerveConstants {
-    // TODO: Make sure cancoder magnetic range is within proper bounds (configMagnetOffset)
+    // TODO: Make sure cancoder magnetic range is within proper bounds (CANCoder.configMagnetOffset())
     // TODO: Tune PID gains for swerve module angle and velocity error
+    public static final TunableNumber
+      kDriveP = new TunableNumber("P", 1.5e-2, "Module Drive"),
+      kDriveD = new TunableNumber("D", 2.3e-3, "Module Drive");
+    public static final TunableNumber
+      kAngleP = new TunableNumber("P", 0.9e-2, "Module Angle"),
+      kAngleD = new TunableNumber("D", 1.8e-4, "Module Angle");
+
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
         41, 42, 43, 261.229,
         new Translation2d(0.22225, 0.22225),
-        new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(0.9e-2, 0, 1.80e-4)
+        new PIDController(kDriveP.getAsDouble(), 0, kDriveD.getAsDouble()),
+        new PIDController(kAngleP.getAsDouble(), 0, kAngleD.getAsDouble())
       ),
       kSwerve_fr = new SwerveModuleConstants(
         11, 12, 13, -150.029,
         new Translation2d(0.22225, -0.22225),
-        new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(0.9e-2, 0, 1.80e-4)
+        new PIDController(kDriveP.getAsDouble(), 0, kDriveD.getAsDouble()),
+        new PIDController(kAngleP.getAsDouble(), 0, kAngleD.getAsDouble())
       ),
       kSwerve_bl = new SwerveModuleConstants(
         31, 32, 33, 301.465,
         new Translation2d(-0.22225, 0.22225),
-        new PIDController(1.5e-2, 0, 2.3e-3),
-        new PIDController(0.9e-2, 0, 1.80e-4)
+        new PIDController(kDriveP.getAsDouble(), 0, kDriveD.getAsDouble()),
+        new PIDController(kAngleP.getAsDouble(), 0, kAngleD.getAsDouble())
       ),
       kSwerve_br = new SwerveModuleConstants(
         21, 22, 23, -3.428,
         new Translation2d(-0.22225, -0.22225),
-        new PIDController(1.8e-2, 0, 2.3e-3),
-        new PIDController(0.9e-2, 0, 1.80e-4)
+        new PIDController(kDriveP.getAsDouble(), 0, kDriveD.getAsDouble()),
+        new PIDController(kAngleP.getAsDouble(), 0, kAngleD.getAsDouble())
       );
+
+      static {
+        kDriveP.bindTo(val -> {
+          kSwerve_fl.speed_controller.setP(val);
+          kSwerve_fr.speed_controller.setP(val);
+          kSwerve_bl.speed_controller.setP(val);
+          kSwerve_br.speed_controller.setP(val);
+        });
+        kDriveD.bindTo(val -> {
+          kSwerve_fl.speed_controller.setD(val);
+          kSwerve_fr.speed_controller.setD(val);
+          kSwerve_bl.speed_controller.setD(val);
+          kSwerve_br.speed_controller.setD(val);
+        });
+
+        kAngleP.bindTo(val -> {
+          kSwerve_fl.angle_controller.setP(val);
+          kSwerve_fr.angle_controller.setP(val);
+          kSwerve_bl.angle_controller.setP(val);
+          kSwerve_br.angle_controller.setP(val);
+        });
+        kAngleD.bindTo(val -> {
+          kSwerve_fl.angle_controller.setD(val);
+          kSwerve_fr.angle_controller.setD(val);
+          kSwerve_bl.angle_controller.setD(val);
+          kSwerve_br.angle_controller.setD(val);
+        });
+      }
   }
 
   public static class IntakeConstants {
