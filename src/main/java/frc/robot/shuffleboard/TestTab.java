@@ -4,14 +4,10 @@ import frc.robot.shuffleboard.ShuffleboardManager.ShuffleboardTabBase;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import java.util.Map;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IntakeTilt;
-import frc.robot.subsystems.IntakeWheels;
 
 import frc.robot.OI;
 import frc.robot.Constants.DrivetrainConstants;
@@ -22,17 +18,12 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 public class TestTab implements ShuffleboardTabBase {
   private final ShuffleboardTab test_tab;
   private final Drivetrain sDrivetrain = Drivetrain.getInstance();
-  private final IntakeTilt sIntakeTilt = IntakeTilt.getInstance();
-  private final IntakeWheels sIntakeWheels = IntakeWheels.getInstance();
 
   protected TestTab() {
     test_tab = Shuffleboard.getTab("Test");
   }
 
   public void initialize() {
-    initLayout1();
-    initLayout2();
-
     test_tab.add("Direction", new Sendable() {
       @Override
       public void initSendable(SendableBuilder builder) {
@@ -88,52 +79,5 @@ public class TestTab implements ShuffleboardTabBase {
       .withSize(4, 4)
       .withWidget(BuiltInWidgets.kGyro)
       .withProperties(Map.of("major tick spacing", 45, "starting angle", 180, "show tick mark ring", true));
-  }
-
-  // Intake angle
-  private void initLayout1() {
-    ShuffleboardLayout layout_1 = test_tab.getLayout("Intake Tilt", BuiltInLayouts.kList)
-      .withPosition(0, 0)
-      .withSize(4, 8);
-
-    layout_1.addDouble("Angle", sIntakeTilt::getPosition)
-      .withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("min", -110, "max", 110, "show value", true));
-
-    layout_1.addDouble("Setpoint", IntakeTilt::getSetpoint)
-      .withWidget(BuiltInWidgets.kDial)
-      .withProperties(Map.of("min", -110, "max", 110, "show value", true));
-
-    layout_1.addDouble("Error", () -> IntakeTilt.getSetpoint() - sIntakeTilt.getPosition())
-      .withWidget(BuiltInWidgets.kNumberBar)
-      .withProperties(Map.of("min", -110, "max", 110, "center", 0));
-
-    layout_1.add("Speed", new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", sIntakeTilt::getSpeed, null);
-      }
-    }).withWidget(BuiltInWidgets.kMotorController)
-      .withProperties(Map.of("orientation", "HORIZONTAL"));
-  }
-
-  // Intake wheels
-  private void initLayout2() {
-    ShuffleboardLayout layout_3 = test_tab.getLayout("Intake Wheels", BuiltInLayouts.kList)
-      .withPosition(4, 0)
-      .withSize(3, 4);
-
-    layout_3.addBoolean("Inverted", IntakeWheels::isInverted)
-      .withWidget(BuiltInWidgets.kBooleanBox);
-
-    layout_3.add("Speed", new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.addDoubleProperty("Value", sIntakeWheels::getSpeed, null);
-      }
-    }).withWidget(BuiltInWidgets.kMotorController)
-      .withProperties(Map.of("orientation", "HORIZONTAL"));
   }
 }

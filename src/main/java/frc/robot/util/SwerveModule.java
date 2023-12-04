@@ -79,11 +79,9 @@ public class SwerveModule {
     drive_encoder.setPosition(0);
 
     // Set up speed PID controller
-    speed_controller.setIntegratorRange(-DrivetrainConstants.kMaxLinearVel, DrivetrainConstants.kMaxLinearVel);
     speed_controller.setSetpoint(0);
 
     // Set up rotational PID controller
-    angle_controller.setIntegratorRange(-DrivetrainConstants.kSwerveRotateMaxSpeed * 180/Math.PI, DrivetrainConstants.kSwerveRotateMaxSpeed * 180/Math.PI);
     angle_controller.enableContinuousInput(-180, 180);
     angle_controller.setSetpoint(0);
   }
@@ -101,10 +99,13 @@ public class SwerveModule {
     )));
 
     // TODO: If stalling found, experiment with exponentially increasing scalar
-    // Calculate, clamp, and set drive motor speed, scaling down if angle is inaccurate
-    drive_motor.set(Math.max(-1, Math.min(1,
-      speed_controller.calculate(getVelocity(), speed) * Math.abs(Math.cos(getAngleError() * Math.PI/180))
-    )));
+    // Calculate and set drive motor speed
+    drive_motor.set(
+      Math.max(-1, Math.min(1, // Clamp to maximum speed
+        speed_controller.calculate(getVelocity(), speed) // Adjustment feedback controller
+        + (speed/DrivetrainConstants.kMaxLinearVel) // Simple feedforward
+      )) * Math.abs(Math.cos(getAngleError() * Math.PI/180)) // Scale down if not at proper angle
+    );
   }
 
   /**
