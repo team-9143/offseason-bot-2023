@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IntakeTilt;
 import frc.robot.shuffleboard.ShuffleboardManager;
 import frc.robot.util.TunableNumber;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -69,8 +68,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_autonomousCommand.cancel();
-
-    IntakeTilt.enableSteady();
   }
 
   @Override

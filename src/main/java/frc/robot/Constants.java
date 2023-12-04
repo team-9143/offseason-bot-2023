@@ -21,9 +21,6 @@ import edu.wpi.first.math.controller.PIDController;
  */
 public final class Constants {
   public static class PhysConstants {
-    public static final double kTiltGearbox = 1/35.0;
-    public static final double kWheelGearbox = 1/3.0;
-
     public static final double kSwerveWheelGearbox = 1/5.14; // SDS L4 modules
     public static final double kSwerveWheelCircumference = 0.09779 * Math.PI; // UNIT: meters
   }
@@ -32,10 +29,7 @@ public final class Constants {
     public static final byte kDriverCntlrPort = 0;
     public static final byte kOperatorCntlrPort = 1;
     public static final byte
-      kPigeonID = 5,
-      kIntakeWheelsID = 6,
-      kIntakeTiltRightID = 7,
-      kIntakeTiltLeftID = 8;
+      kPigeonID = 5;
   }
 
   public static class DrivetrainConstants {
@@ -139,42 +133,5 @@ public final class Constants {
           kSwerve_br.angle_controller.setD(val);
         });
       }
-  }
-
-  public static class IntakeConstants {
-    public static final double kTiltMaxSpeed = 0.45;
-
-    // Delay to shoot/spit a game piece
-    public static final double kShootTimer = 0.5;
-
-    // Non-PID intake movement
-    public static final double
-      kUpSpeed = PhysConstants.kTiltGearbox * -3.5,
-      kDownSpeed = PhysConstants.kTiltGearbox * 2.8,
-      kSteadySpeed = PhysConstants.kTiltGearbox * -0.35;
-
-    // Preset positions and tolerances (UNIT: degrees)
-    public static final double
-      kUpPos = 1.08,
-      kMidPos = 36,
-      kDownPos = 104.4;
-    public static final double
-      kUpPosTolerance = -9, // Check as error > tolerance
-      kMidPosTolerance = 1.5, // Check as abs(error) > tolerance
-      kDownPosTolerance = 2; // Check as error < tolerance
-
-    // Intake tilt PID gains
-    public static final double
-      kDownP = PhysConstants.kTiltGearbox * 0.0806,
-      kDownI = PhysConstants.kTiltGearbox * 0.0612,
-      kDownD = PhysConstants.kTiltGearbox * 0.0305;
-    public static final double
-      kUpP = PhysConstants.kTiltGearbox * 0.0862,
-      kUpI = PhysConstants.kTiltGearbox * 0.0584,
-      kUpD = PhysConstants.kTiltGearbox * 0.0277;
-    public static final double
-      kSteadyP = PhysConstants.kTiltGearbox * 0.0917,
-      kSteadyI = PhysConstants.kTiltGearbox * 0.0639,
-      kSteadyD = PhysConstants.kTiltGearbox * 0.0194;
   }
 }

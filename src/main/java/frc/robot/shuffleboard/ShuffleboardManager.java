@@ -54,10 +54,8 @@ public class ShuffleboardManager {
   public void updateChoosersSynced() {
     if (choosersSynced != null) {
       choosersSynced.setBoolean(
-        !(AutoSelector.m_starterChooser.isUpdateReq() ||
-        AutoSelector.m_bodyChooser.isUpdateReq() ||
+        !(AutoSelector.m_bodyChooser.isUpdateReq() ||
         AutoSelector.m_secondaryChooser.isUpdateReq() ||
-        AutoSelector.m_tertiaryChooser.isUpdateReq() ||
         AutoSelector.m_endingChooser.isUpdateReq())
       );
     }
