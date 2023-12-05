@@ -47,8 +47,9 @@ public final class Constants {
 
     // TODO: Measure maximum drivetrain velocities
     // Upper bound drivetrain velocities
-    public static final double kMaxLinearVel = 6; // UNIT: meters/s
-    public static final double kMaxTurnVel = 7.5; // UNIT: radians/s
+    public static final double kMaxLinearVel = 5.5; // 0.5 m/s decrease to account for friction (UNIT: meters/s)
+    /** At 5.5 ms/s, maximum rotational velocity is just under 3.95 rotations/s, decreased to 1.5 rotations/s to allow for lateral speed while turning */
+    public static final double kMaxTurnVel = 9.5; // UNIT: radians/s
     public static final double kMaxTurnAccel = kMaxTurnVel * 2; // UNIT: radians/s/s
 
     // TODO: Tune drivetrain position PID gains
