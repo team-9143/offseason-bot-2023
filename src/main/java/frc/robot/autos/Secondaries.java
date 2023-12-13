@@ -20,12 +20,6 @@ public class Secondaries {
    */
   public static Command getSecondary(AutoSelector.Secondary secondary, AutoSelector.Body body) {
     switch (secondary) {
-      case RETURN_FROM_CONE:
-        // If picking up a cone, turn and return to the grid
-        if (body == AutoSelector.Body.PICKUP_CONE) {
-          return AutoSelector.getMoveCommand(0, 0, 180);
-        };
-
       case CENTER_ESCAPE:
         // If climbing the charge station, escape the community and return
         if (body == AutoSelector.Body.CENTER_CLIMB) {

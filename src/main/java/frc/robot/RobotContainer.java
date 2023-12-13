@@ -5,12 +5,10 @@
 package frc.robot;
 
 import frc.robot.subsystems.*;
-import frc.robot.commands.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
@@ -37,9 +35,7 @@ public class RobotContainer {
   // Initialize commands
   private static final Command cStop = new RunCommand(() -> {
     Drivetrain.stop();
-    IntakeWheels.stop();
-    IntakeTilt.disableSteady();
-  }, Drivetrain.getInstance(), IntakeWheels.getInstance(), IntakeTilt.getInstance())
+  }, Drivetrain.getInstance())
     .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
 
   /** The container for the robot. Intializes subsystems, teleop command bindings, and OI devices. */
@@ -78,10 +74,10 @@ public class RobotContainer {
     OI.driver_cntlr.onTrue(btn.A, cBalance::schedule);
     OI.driver_cntlr.onFalse(btn.A, cBalance::cancel);
 
-    // Button 'X' (debounced 1s) will reset gyro
+    // Button 'X' (debounced 0.5s) will reset gyro
     final Command cRumble = OI.driver_cntlr.getRumbleCommand(0.5, 0.5, 0.25);
     new Trigger(() -> OI.driver_cntlr.getButton(btn.X))
-    .debounce(1)
+    .debounce(0.5)
       .onTrue(new InstantCommand(() -> {
         OI.pigeon.setYaw(0);
         cRumble.schedule();
@@ -93,72 +89,7 @@ public class RobotContainer {
     OI.driver_cntlr.onFalse(btn.Y, cXStance::cancel);
   }
 
-  private void configureOperator() {
-    final IntakeUp cIntakeUp = new IntakeUp();
-
-    // Button 'A' will invert intake wheels (for cones)
-    OI.operator_cntlr.onTrue(btn.A, IntakeWheels::invert);
-
-    // Button 'X' (debounced 1s) will reset intake tilt encoders
-    final Command cRumble = OI.operator_cntlr.getRumbleCommand(0.5, 0.5, 0.25);
-    new Trigger(() -> OI.operator_cntlr.getButton(btn.X))
-    .debounce(1)
-      .onTrue(new InstantCommand(() -> {
-        IntakeTilt.getInstance().resetEncoders();
-        cRumble.schedule();
-      }));
-
-    // Button 'Y' will toggle automatic intake control
-    OI.operator_cntlr.onTrue(btn.Y, () -> {
-      if (IntakeTilt.isSteadyEnabled()) {IntakeTilt.disableSteady();} else {IntakeTilt.enableSteady();}
-    });
-
-    // Button 'LB' (hold) will shoot cubes
-    final Command cShoot = IntakeWheels.getInstance().getShootCommand();
-    OI.operator_cntlr.onTrue(btn.LB, cShoot::schedule);
-    OI.operator_cntlr.onFalse(btn.LB, cShoot::cancel);
-
-    // Button 'RB' (hold) will lower and activate intake, then raise on release
-    final Command cActivateIntake = new IntakeDown().alongWith(IntakeWheels.getInstance().getIntakeCommand());
-    OI.operator_cntlr.onTrue(btn.RB, cActivateIntake::schedule);
-    OI.operator_cntlr.onFalse(btn.RB, () -> {
-      cActivateIntake.cancel();
-      cIntakeUp.schedule();
-    });
-
-    // Triggers will disable intake and manually move up (LT) and down (RT)
-    new Trigger(() -> OI.operator_cntlr.getTriggers() != 0.0)
-      .whileTrue(new FunctionalCommand(
-        IntakeTilt::disableSteady,
-        () -> {
-          double triggers = OI.operator_cntlr.getTriggers();
-          IntakeTilt.getInstance().set(triggers * triggers * ((triggers < 0) ? Constants.IntakeConstants.kUpSpeed : Constants.IntakeConstants.kDownSpeed));
-        },
-        interrupted -> IntakeTilt.disableSteady(),
-        () -> false,
-        IntakeTilt.getInstance()
-      ));
-
-    // D-pad up will angle down, then shoot
-    new Trigger(() -> OI.operator_cntlr.getPOV(0) == 0)
-      .whileTrue(
-        new AimMid().alongWith(new WaitCommand(0.5).andThen(IntakeWheels.getInstance().getShootCommand()))
-          .finallyDo(interrupted -> cIntakeUp.schedule()));
-
-    // D-pad right will spit
-    new Trigger(() -> OI.operator_cntlr.getPOV(0) == 90)
-      .whileTrue(IntakeWheels.getInstance().getSpitCommand());
-
-    // D-pad down will angle down, then spit
-    new Trigger(() -> OI.operator_cntlr.getPOV(0) == 180)
-      .whileTrue(
-        new AimMid().alongWith(new WaitCommand(0.5).andThen(IntakeWheels.getInstance().getSpitCommand()))
-          .finallyDo(interrupted -> cIntakeUp.schedule()));
-
-    // D-pad left will intake
-    new Trigger(() -> OI.operator_cntlr.getPOV(0) == 270)
-      .whileTrue(IntakeWheels.getInstance().getIntakeCommand());
-  }
+  private void configureOperator() {}
 
   /** Stops all motors and disables PID controllers. May not override other commands. */
   public static void stop() {
