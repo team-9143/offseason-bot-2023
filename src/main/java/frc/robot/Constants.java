@@ -43,7 +43,7 @@ public final class Constants {
 
     // TODO: Adjust maximum swerve rotational speed
     // Module wheel rotation
-    public static final double kSwerveRotateMaxSpeed = 0.25; // Maximum rotational motor speed
+    public static final double kSwerveRotateMaxSpeed = 0.65; // Maximum rotational motor speed
 
     // TODO: Measure maximum drivetrain velocities
     // Upper bound drivetrain velocities
@@ -78,8 +78,8 @@ public final class Constants {
       kDriveP = new TunableNumber("P", 1.5e-2, "Module Drive"),
       kDriveD = new TunableNumber("D", 2.3e-3, "Module Drive");
     public static final TunableNumber
-      kAngleP = new TunableNumber("P", 0.9e-2, "Module Angle"),
-      kAngleD = new TunableNumber("D", 1.8e-4, "Module Angle");
+      kAngleP = new TunableNumber("P", 0.0065, "Module Angle"),
+      kAngleD = new TunableNumber("D", 0.00005, "Module Angle");
 
     public static final SwerveModuleConstants
       kSwerve_fl = new SwerveModuleConstants(
