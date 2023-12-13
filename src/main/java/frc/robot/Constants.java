@@ -6,10 +6,21 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+
+import frc.robot.commands.AimMid;
+import frc.robot.commands.IntakeDown;
+import frc.robot.commands.IntakeUp;
+import frc.robot.subsystems.IntakeWheels;
+import frc.robot.util.SwerveModule.SwerveModuleConstants;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.TunableNumber;
 import frc.robot.util.SwerveModule.SwerveModuleConstants;
 import edu.wpi.first.math.controller.PIDController;
+
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -134,5 +145,14 @@ public final class Constants {
           kSwerve_br.angle_controller.setD(val);
         });
       }
+  }
+
+  public static class AutoConstants{
+    public static final Map<String, Command> eventMap = Map.of(
+      "IntakeDown", new IntakeDown().alongWith(IntakeWheels.getInstance().getIntakeCommand()),
+      "IntakeUp", new IntakeUp(),
+      "AimMid", new AimMid(),
+      "Shoot", IntakeWheels.getInstance().getShootCommand()
+    );
   }
 }

@@ -6,6 +6,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -38,6 +39,13 @@ public class Drivetrain extends SubsystemBase {
     SwerveConstants.kSwerve_fr,
     SwerveConstants.kSwerve_bl,
     SwerveConstants.kSwerve_br
+  );
+
+  SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+    SwerveConstants.kSwerve_fl.location,
+    SwerveConstants.kSwerve_fr.location,
+    SwerveConstants.kSwerve_bl.location,
+    SwerveConstants.kSwerve_br.location
   );
 
   private Drivetrain() {
