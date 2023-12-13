@@ -10,8 +10,13 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+// TODO: Setup complex paths with commands
 public class Pathplanner {
-  Command getFollowPathCommand(String pathName) {
+  /**
+   * @param pathName name of the path, ".path" excluded
+   * @return a command for path following
+   */
+  public static Command getFollowPathCommand(String pathName) {
     return new FollowPathHolonomic(
       PathPlannerPath.fromPathFile(pathName), // Path to follow
       Drivetrain.getInstance()::getPose, // Pose supplier (field relative)

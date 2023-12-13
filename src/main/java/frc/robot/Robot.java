@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.shuffleboard.ShuffleboardManager;
+import frc.robot.util.Pathplanner;
 import frc.robot.util.TunableNumber;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -52,11 +53,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // Reset yaw for autons
-    m_autonomousCommand = AutoSelector.getAuto()
+    // TODO: Setup choosable autos
+
+    // m_autonomousCommand = AutoSelector.getAuto()
+    m_autonomousCommand = Pathplanner.getFollowPathCommand("example")
       .beforeStarting(() -> {
-        OI.pigeon.setYaw(180);
-        Drivetrain.getInstance().resetPosition(0, 0, 180);
+        OI.pigeon.setYaw(180); // Reset yaw for autons
+        Drivetrain.getInstance().resetPosition(0, 0, 180); // Reset postiion for autons
       });
 
     m_autonomousCommand.schedule();
