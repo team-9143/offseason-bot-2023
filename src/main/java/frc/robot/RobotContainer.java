@@ -51,7 +51,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Universal:
     // Button 'B' (hold) will continuously stop all movement
-    new Trigger(() -> OI.driver_cntlr.getButton(btn.B) || OI.operator_cntlr.getButton(btn.B))
+    new Trigger(() -> OI.driver_cntlr.getButton(btn.B))
       .whileTrue(cStop);
 
     configureDriver();
