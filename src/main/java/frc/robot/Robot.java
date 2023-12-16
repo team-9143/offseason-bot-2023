@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     // TODO: Setup choosable autos
 
     // m_autonomousCommand = Pathplanner.getFollowPathCommand("testy");
-    m_autonomousCommand = new edu.wpi.first.wpilibj2.command.RunCommand(() -> Drivetrain.getInstance().driveToLocation(1, 1, 180), Drivetrain.getInstance());
+    m_autonomousCommand = AutoSelector.getMoveCommand(1, 0, 180);
 
     OI.pigeon.setYaw(180); // Reset yaw for autons
     Drivetrain.getInstance().resetPosition(0, 0, 180); // Reset postiion for autons
@@ -64,7 +64,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    TunableNumber.updateAll();
+  }
 
   @Override
   public void teleopInit() {

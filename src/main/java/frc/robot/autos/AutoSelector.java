@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.DrivetrainConstants;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -82,26 +81,15 @@ public final class AutoSelector {
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
    * @param ccw ccw-positive angle (UNIT: degrees)
-   * @param FFspd desired linear velocity for feedforward calculation
    * @return a command that ends when the robot is at the given position
    */
-  public static Command getMoveCommand(double forward, double left, double ccw, double FFspd) {
+  public static Command getMoveCommand(double forward, double left, double ccw) {
     return new FunctionalCommand(
       () -> {},
-      () -> Drivetrain.getInstance().driveToLocation(forward, left, ccw, FFspd),
+      () -> Drivetrain.getInstance().driveToLocation(forward, left, ccw),
       interrupted -> Drivetrain.stop(),
       Drivetrain.getInstance()::atReference,
       Drivetrain.getInstance()
     );
-  }
-
-  /**
-   * Utility method that returns a command to drive to a position, relative to the robot's starting position.
-   * Uses full speed.
-   *
-   * @see AutoSelector#getMoveCommand
-   */
-  public static Command getMoveCommand(double forward, double left, double ccw) {
-    return getMoveCommand(forward, left, ccw, DrivetrainConstants.kMaxLinearVel);
   }
 }

@@ -93,21 +93,9 @@ public class Drivetrain extends SubsystemBase {
    * @param forward forward distance (UNIT: meters)
    * @param left left distance (UNIT: meters)
    * @param ccw counter-clockwise angle (UNIT: ccw degrees)
-   * @param FFspd desired linear velocity for feedforward calculation (UNIT: meters/s)
-   */
-  public void driveToLocation(double forward, double left, double ccw, double FFspd) {
-    m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)), FFspd);
-  }
-
-  /**
-   * Drive to a position, relative to the odometry. Must be continuously called.
-   *
-   * @param forward forward distance (UNIT: meters)
-   * @param left left distance (UNIT: meters)
-   * @param ccw counter-clockwise angle (UNIT: ccw degrees)
    */
   public void driveToLocation(double forward, double left, double ccw) {
-    driveToLocation(forward, left, ccw, DrivetrainConstants.kMaxLinearVel);
+    m_swerve.setDesiredPose(new Pose2d(forward, left, Rotation2d.fromDegrees(ccw)));
   }
 
   /** Set the drivetrain to x-stance. Must be continuously called. */

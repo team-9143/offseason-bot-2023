@@ -8,12 +8,12 @@ import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.devices.CustomController.btn;
+import frc.robot.autos.AutoSelector;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,13 +61,9 @@ public class RobotContainer {
   private void configureDriver() {
     // D-pad (hold) will turn to the specified angle
     new Trigger(() -> OI.driver_cntlr.getPOV(0) != 0)
-      .whileTrue(new FunctionalCommand(
-        () -> {},
-        () -> Drivetrain.getInstance().driveToLocation(0, 0, -OI.driver_cntlr.getPOV(0), 0),
-        interrupted -> Drivetrain.stop(),
-        Drivetrain.getInstance()::atReference,
-        Drivetrain.getInstance()
-      ));
+      .whileTrue(
+        AutoSelector.getMoveCommand(0, 0, -OI.driver_cntlr.getPOV(0))
+      );
 
     // Button 'A' (hold) will auto-balance
     final Command cBalance = Drivetrain.getInstance().getBalanceCommand();

@@ -22,7 +22,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 public class SwerveDrive extends MotorSafety {
   public final SwerveModule[] modules;
   private Pose2d desiredPose;
-  private double desiredLinearVelocity; // UNIT: meters/s
   private SwerveModuleState[] desiredStates = new SwerveModuleState[] {
     new SwerveModuleState(),
     new SwerveModuleState(),
@@ -122,14 +121,11 @@ public class SwerveDrive extends MotorSafety {
 
     // If controlled by a desired location, calculates desired states through holonomic drive controller
     if (locationControl) {
-      // As far as I can guess, rotation aspect of desired pose should be an angle pointing from robot to pose
+      // Don't understand the feedforward here, choosing not to use it.
       desiredStates = kinematics.toSwerveModuleStates(m_controller.calculate(
         odometry.getEstimatedPosition(),
-        new Pose2d(desiredPose.getTranslation(), new Rotation2d(
-          desiredPose.getX()-odometry.getEstimatedPosition().getX(),
-          desiredPose.getY()-odometry.getEstimatedPosition().getY()
-        )),
-        desiredLinearVelocity,
+        desiredPose,
+        0,
         desiredPose.getRotation()
       ));
     }
@@ -191,9 +187,8 @@ public class SwerveDrive extends MotorSafety {
    * @param desiredPose robot pose with the same origin as the odometry
    * @param desiredLinearVelocity desired linear velocity for feedforward calculation
    */
-  public void setDesiredPose(Pose2d desiredPose, double desiredLinearVelocity) {
+  public void setDesiredPose(Pose2d desiredPose) {
     this.desiredPose = desiredPose;
-    this.desiredLinearVelocity = desiredLinearVelocity;
 
     if (!locationControl) {
       // Reset controllers if swapping into location control
