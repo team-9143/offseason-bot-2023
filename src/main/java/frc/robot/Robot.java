@@ -53,8 +53,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // TODO: Setup choosable autos
 
-    // m_autonomousCommand = Pathplanner.getFollowPathCommand("testy");
-    m_autonomousCommand = AutoSelector.getMoveCommand(1, 0, 180);
+    m_autonomousCommand = Pathing.getFollowPathCommand("testy");
+    // m_autonomousCommand = AutoSelector.getMoveCommand(1, 0, 180);
 
     OI.pigeon.setYaw(180); // Reset yaw for autons
     Drivetrain.getInstance().resetPosition(0, 0, 180); // Reset postiion for autons

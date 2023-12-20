@@ -43,15 +43,18 @@ public final class Constants {
     public static final double kBalanceTolerance = 2; // UNIT: degrees
     public static final double kBalanceVel = 1; // UNIT: meters/s
 
-    // TODO: Adjust maximum swerve rotational speed
     // Module wheel rotation
     public static final double kSwerveRotateMaxSpeed = 0.65; // Maximum rotational motor speed
 
     // TODO: Measure maximum drivetrain velocities
-    // Upper bound drivetrain velocities
+    // Upper bound drivetrain constraints
     public static final double kMaxLinearVel = 5.5; // 0.5 m/s decrease to account for friction (UNIT: meters/s)
     /** At 5.5 ms/s, maximum rotational velocity is just under 3.95 rotations/s, decreased to 1.5 rotations/s to allow for lateral speed while turning */
     public static final double kMaxTurnVel = 9.5; // UNIT: radians/s
+
+    // TODO: Measure maximum acceleration for autonomous movement
+    // Upper bound drivetrain accelerations for path following and pose targeting
+    public static final double kMaxLinearAccel = kMaxLinearVel * 2; // UNIT: meters/s/s
     public static final double kMaxTurnAccel = kMaxTurnVel * 2; // UNIT: radians/s/s
 
     // TODO: Tune drivetrain position PID gains
@@ -75,7 +78,7 @@ public final class Constants {
 
   public static class SwerveConstants {
     // TODO: Make sure cancoder magnetic range is within proper bounds (CANCoder.configMagnetOffset())
-    // TODO: Tune PID gains for swerve module angle and velocity error
+    // TODO: Tune PID gains for swerve module velocity error
     public static final TunableNumber
       kDriveP = new TunableNumber("P", 1.5e-2, "Module Drive"),
       kDriveD = new TunableNumber("D", 2.3e-3, "Module Drive");
