@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.shuffleboard.ShuffleboardManager;
-import frc.robot.util.Pathplanner;
+import frc.robot.util.Pathing;
 import frc.robot.util.TunableNumber;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 

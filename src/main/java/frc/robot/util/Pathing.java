@@ -10,10 +10,11 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 // TODO: Setup complex paths with commands
-public class Pathplanner {
+/** Utility class to provide pathing commands. */
+public class Pathing {
   /**
-   * @param pathName name of the path, ".path" excluded
-   * @return a command for path following
+   * @param pathName name of the path, ".path" excluded (should be under "{deploy}/pathplanner/paths/")
+   * @return a command for pathplanner path following
    */
   public static Command getFollowPathCommand(String pathName) {
     return new FollowPathHolonomic(
