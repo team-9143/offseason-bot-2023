@@ -8,6 +8,8 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+
 // Pathplanner 2024
 
 // import com.pathplanner.lib.path.PathPlannerPath;
@@ -19,8 +21,10 @@ import edu.wpi.first.math.controller.PIDController;
 /** Utility class to provide pathing commands. */
 public class Pathing {
   /**
+   * Utility method to follow a Pathplanner path.
+   *
    * @param pathName name of the path, ".path" excluded (should be under "{deploy}/pathplanner/")
-   * @return a command for pathplanner path following
+   * @return a command for Pathplanner path following
    */
   public static Command getFollowPathCommand(String pathName) {
     return new PPSwerveControllerCommand(
@@ -48,5 +52,23 @@ public class Pathing {
     //   new ReplanningConfig(false, false),
     //   Drivetrain.getInstance() // Subsystem req's
     // );
+  }
+
+  /**
+   * Utility method that returns a command to drive to a position, based on the odometry.
+   *
+   * @param forward forward distance (UNIT: meters)
+   * @param left left distance (UNIT: meters)
+   * @param ccw ccw-positive angle (UNIT: degrees)
+   * @return a command that ends when the robot is at the given position
+   */
+  public static Command getMoveCommand(double forward, double left, double ccw) {
+    return new FunctionalCommand(
+      () -> {},
+      () -> Drivetrain.getInstance().driveToLocation(forward, left, ccw),
+      interrupted -> Drivetrain.stop(),
+      Drivetrain.getInstance()::atReference,
+      Drivetrain.getInstance()
+    );
   }
 }

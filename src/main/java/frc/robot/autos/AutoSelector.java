@@ -3,9 +3,6 @@ package frc.robot.autos;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-
-import frc.robot.subsystems.Drivetrain;
 
 /** Contains auto types, choosers, and compiler. */
 public final class AutoSelector {
@@ -72,24 +69,6 @@ public final class AutoSelector {
       Bodies.getBody(body),
       Secondaries.getSecondary(secondary, body),
       Endings.getEnding(ending, body)
-    );
-  }
-
-  /**
-   * Utility method that returns a command to drive to a position, relative to the robot's starting position.
-   *
-   * @param forward forward distance (UNIT: meters)
-   * @param left left distance (UNIT: meters)
-   * @param ccw ccw-positive angle (UNIT: degrees)
-   * @return a command that ends when the robot is at the given position
-   */
-  public static Command getMoveCommand(double forward, double left, double ccw) {
-    return new FunctionalCommand(
-      () -> {},
-      () -> Drivetrain.getInstance().driveToLocation(forward, left, ccw),
-      interrupted -> Drivetrain.stop(),
-      Drivetrain.getInstance()::atReference,
-      Drivetrain.getInstance()
     );
   }
 }

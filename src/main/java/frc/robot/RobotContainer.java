@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.devices.CustomController.btn;
-import frc.robot.autos.AutoSelector;
+import frc.robot.util.Pathing;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -62,7 +62,7 @@ public class RobotContainer {
     // D-pad (hold) will turn to the specified angle
     new Trigger(() -> OI.driver_cntlr.getPOV(0) != 0)
       .whileTrue(
-        AutoSelector.getMoveCommand(0, 0, -OI.driver_cntlr.getPOV(0))
+        Pathing.getMoveCommand(0, 0, -OI.driver_cntlr.getPOV(0))
       );
 
     // Button 'A' (hold) will auto-balance
